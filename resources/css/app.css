@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --sb-dark: 28, 28, 28;
+        --sb-surface: 33, 33, 33;
+        --sb-border: 48, 48, 48;
+        --sb-input: 20, 20, 20;
+        --sb-muted: 136, 136, 136;
+        --sb-accent: 251, 191, 36;
+        --sb-accent-hover: 245, 158, 11;
+    }
+
+    html.light {
+        --sb-dark: 248, 250, 252;
+        --sb-surface: 255, 255, 255;
+        --sb-border: 226, 232, 240;
+        --sb-input: 241, 245, 249;
+        --sb-muted: 100, 116, 139;
+        --sb-accent: 251, 191, 36;
+        --sb-accent-hover: 245, 158, 11;
+    }
+
+    body, aside, main, header, footer, .bg-supabase-surface, .bg-supabase-dark, .bg-supabase-input, .border-supabase-border {
+        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    html.light {
+        color-scheme: light;
+    }
+
+    html.light .text-white {
+        color: #0f172a !important;
+    }
+
+    html.light .text-slate-300,
+    html.light .text-slate-200,
+    html.light .text-slate-100 {
+        color: #334155 !important;
+    }
+
+    html.light .text-slate-400 {
+        color: #475569 !important;
+    }
+
+    html.light .text-supabase-muted {
+        color: #64748b !important;
+    }
+
+    html.light svg.text-white,
+    html.light svg.text-slate-300,
+    html.light svg.text-slate-200 {
+        stroke: #0f172a !important;
+    }
+
+    html.light .hover\:text-white:hover {
+        color: #0f172a !important;
+    }
+
+    html.light .hover\:bg-white\/\[0\.02\]:hover {
+        background-color: rgba(0, 0, 0, 0.03) !important;
+    }
+
+    html.light .bg-white\/\[0\.02\] {
+        background-color: rgba(0, 0, 0, 0.02) !important;
+    }
+
+    html.light .bg-supabase-surface\/20 {
+        background-color: rgba(0, 0, 0, 0.015) !important;
+    }
+
+    html.light .bg-supabase-surface\/30 {
+        background-color: rgba(0, 0, 0, 0.025) !important;
+    }
+
+    html.light .bg-supabase-dark\/50 {
+        background-color: rgba(0, 0, 0, 0.02) !important;
+    }
+
+    html.light .bg-supabase-dark\/80 {
+        background-color: rgba(248, 250, 252, 0.8) !important;
+    }
+
+    html.light .border-white\/30 {
+        border-color: rgba(15, 23, 42, 0.1) !important;
+    }
+
+    html.light .hover\:border-white\/30:hover {
+        border-color: rgba(15, 23, 42, 0.2) !important;
+    }
+
+    html.light .text-supabase-dark {
+        color: #1c1c1c !important;
+    }
+    html.light .shadow-2xl {
+        box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.03) !important;
+    }
+
+    html.light .shadow-xl {
+        box-shadow: 0 8px 20px -8px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.02) !important;
+    }
+
+    html.light .shadow-lg {
+        box-shadow: 0 6px 14px -6px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.02) !important;
+    }
+
+    html.light .shadow-md {
+        box-shadow: 0 4px 8px -4px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02) !important;
+    }
+
+    html.light .shadow {
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03), 0 1px 2px rgba(15, 23, 42, 0.02) !important;
+    }
+
+    html {
+        @apply text-[14px] md:text-[15px] lg:text-[16px];
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+@layer components {
+    /* Layout & Panels */
+    .sb-layout {
+        @apply min-h-screen flex flex-col lg:flex-row bg-supabase-dark text-slate-200 antialiased;
+    }
+
+    .sb-branding-panel {
+        @apply hidden lg:flex lg:w-1/2 bg-supabase-dark border-r border-supabase-border items-center justify-center p-12 relative overflow-hidden;
+    }
+
+    .sb-form-panel {
+        @apply flex-1 flex items-center justify-center p-8 bg-supabase-dark lg:bg-[#141414];
+    }
+
+    /* Components */
+    .sb-input {
+        @apply w-full px-4 py-3 bg-supabase-input border border-supabase-border rounded-2xl text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-supabase-accent/30 focus:border-supabase-accent transition-all duration-200;
+    }
+
+    .sb-button-primary {
+        @apply w-full bg-supabase-accent hover:bg-supabase-accent-hover text-supabase-dark font-black tracking-[0.2em] text-[11px] py-4 px-6 rounded-2xl transition-all duration-200 shadow-lg shadow-supabase-accent/15 active:scale-[0.98] flex items-center justify-center;
+    }
+
+    .sb-button-secondary {
+        @apply w-full bg-supabase-surface hover:bg-supabase-input text-white border border-supabase-border font-bold tracking-[0.2em] text-[11px] py-4 px-6 rounded-2xl transition-all duration-200 active:scale-[0.98] flex items-center justify-center;
+    }
+
+    .sb-card-info {
+        @apply mt-12 p-5 bg-supabase-surface border border-supabase-border rounded-lg;
+    }
+
+    /* Docs Typography Fallback */
+    .prose-invert h1 { @apply text-4xl font-extrabold text-white mb-6; }
+    .prose-invert h2 { @apply text-3xl font-bold text-white mt-12 mb-6; }
+    .prose-invert h3 { @apply text-xl font-bold text-white mt-8 mb-4; }
+    .prose-invert p { @apply text-slate-400 leading-relaxed mb-6; }
+    .prose-invert ul { @apply list-disc pl-6 mb-6 space-y-2 text-slate-400; }
+    .prose-invert li { @apply pl-2; }
+    .prose-invert code { @apply bg-supabase-input px-1.5 py-0.5 rounded text-white font-mono text-sm; }
+    .prose-invert pre { @apply bg-[#0f0f0f] border border-supabase-border rounded-lg p-4 overflow-x-auto mb-6; }
+    .prose-invert pre code { @apply bg-transparent p-0; }
+    .prose-invert strong { @apply text-white font-semibold; }
+
+    .sb-grid-bg {
+        @apply absolute inset-0 opacity-[0.05];
+        background-image: 
+            linear-gradient(to right, #303030 1px, transparent 1px),
+            linear-gradient(to bottom, #303030 1px, transparent 1px);
+        background-size: 40px 40px;
+        animation: grid-move 20s linear infinite;
+    }
+
+    .sb-glow-ornament {
+        @apply absolute -top-24 -left-24 w-96 h-96 bg-supabase-accent/10 rounded-full blur-[120px];
+    }
+
+    @keyframes grid-move {
+        0% { background-position: 0 0; }
+        100% { background-position: 40px 40px; }
+    }
+}

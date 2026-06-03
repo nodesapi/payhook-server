@@ -1,0 +1,378 @@
+{
+  "info": {
+    "name": "PayHook Merchant API v1",
+    "description": "Postman collection for PayHook Merchant API v1 endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": {
+      "major": 1,
+      "minor": 0,
+      "patch": 0
+    }
+  },
+  "item": [
+    {
+      "name": "Webhook Config",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/v1/webhook-config",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "webhook-config"]
+        }
+      }
+    },
+    {
+      "name": "Update Webhook Config",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"webhook_url\": \"{{merchant_webhook_url}}\",\n  \"webhook_enabled\": true,\n  \"rotate_secret\": false\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/webhook-config",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "webhook-config"]
+        }
+      }
+    },
+    {
+      "name": "Webhook Events",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/v1/webhook-events?status={{webhook_status}}&limit={{limit}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "webhook-events"],
+          "query": [
+            {
+              "key": "status",
+              "value": "{{webhook_status}}"
+            },
+            {
+              "key": "limit",
+              "value": "{{limit}}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Retry Webhook Event",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}",
+            "type": "text"
+          },
+          {
+            "key": "X-Request-Timestamp",
+            "value": "{{request_timestamp}}",
+            "type": "text"
+          },
+          {
+            "key": "X-Request-Signature",
+            "value": "{{request_signature}}",
+            "type": "text"
+          },
+          {
+            "key": "X-Request-Nonce",
+            "value": "{{request_nonce}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/v1/webhook-events/{{transaction_id}}/retry",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "webhook-events", "{{transaction_id}}", "retry"]
+        }
+      }
+    },
+    {
+      "name": "Create Invoice",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotency_key}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"amount\": 125000,\n  \"external_id\": \"ORDER-20260403-0001\",\n  \"customer_name\": \"Budi Santoso\",\n  \"customer_email\": \"budi@example.com\",\n  \"customer_phone\": \"081234567890\",\n  \"description\": \"Pembelian kopi\",\n  \"channel_type\": \"qris\",\n  \"expires_in_minutes\": 60\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/invoices",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "invoices"]
+        }
+      }
+    },
+    {
+      "name": "List Invoices",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/v1/invoices?status={{invoice_status}}&external_id={{external_id}}&limit={{limit}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "invoices"],
+          "query": [
+            {
+              "key": "status",
+              "value": "{{invoice_status}}"
+            },
+            {
+              "key": "external_id",
+              "value": "{{external_id}}"
+            },
+            {
+              "key": "limit",
+              "value": "{{limit}}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Invoice",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/v1/invoices/{{invoice_ref}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "invoices", "{{invoice_ref}}"]
+        }
+      }
+    },
+    {
+      "name": "Cancel Invoice",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotency_key_cancel}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"reason\": \"Customer requested cancellation\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/invoices/{{invoice_ref}}/cancel",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "invoices", "{{invoice_ref}}", "cancel"]
+        }
+      }
+    },
+    {
+      "name": "Refund Invoice",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotency_key_refund}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"reason\": \"Partial refund approved\",\n  \"send_webhook\": true\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/invoices/{{invoice_ref}}/refund",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "invoices", "{{invoice_ref}}", "refund"]
+        }
+      }
+    },
+    {
+      "name": "List Transactions",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/v1/transactions?status={{transaction_status}}&limit={{limit}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "transactions"],
+          "query": [
+            {
+              "key": "status",
+              "value": "{{transaction_status}}"
+            },
+            {
+              "key": "limit",
+              "value": "{{limit}}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Transaction",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/v1/transactions/{{transaction_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "transactions", "{{transaction_id}}"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "api_key",
+      "value": "sk_test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    {
+      "key": "idempotency_key",
+      "value": "ORDER-20260403-0001-ATTEMPT-1"
+    },
+    {
+      "key": "invoice_ref",
+      "value": "INV-20260403-000101"
+    },
+    {
+      "key": "transaction_id",
+      "value": "PHK-EXAMPLE1234"
+    },
+    {
+      "key": "external_id",
+      "value": "ORDER-20260403-0001"
+    },
+    {
+      "key": "limit",
+      "value": "20"
+    },
+    {
+      "key": "invoice_status",
+      "value": "pending"
+    },
+    {
+      "key": "transaction_status",
+      "value": "success"
+    },
+    {
+      "key": "webhook_status",
+      "value": "sent"
+    },
+    {
+      "key": "merchant_webhook_url",
+      "value": "https://merchant.example.com/webhook/payhook"
+    },
+    {
+      "key": "request_timestamp",
+      "value": "1712123456"
+    },
+    {
+      "key": "request_signature",
+      "value": "replace-with-hmac-sha256"
+    },
+    {
+      "key": "request_nonce",
+      "value": "nonce-001"
+    },
+    {
+      "key": "idempotency_key_cancel",
+      "value": "CANCEL-ORDER-20260403-0001"
+    },
+    {
+      "key": "idempotency_key_refund",
+      "value": "REFUND-ORDER-20260403-0001"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PayHook Token QR Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .token-box {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            word-break: break-all;
+        }
+        .copy-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .copy-btn:hover {
+            background: #45a049;
+        }
+        .info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔑 PayHook Webhook Token</h1>
+    
+    <div class="info">
+        <h3>Webhook URL:</h3>
+        <p><strong>http://192.168.3.105:8000/api/payment-webhook</strong></p>
+    </div>
+
+    <div class="token-box">
+        <h3>Bearer Token:</h3>
+        <p id="token">1fec9da1fc93b70be4174aad239745ced5fae0e1c8ead0253ce2c6f289cbd091</p>
+    </div>
+
+    <button class="copy-btn" onclick="copyToken()">📋 Copy Token</button>
+    <button class="copy-btn" onclick="copyUrl()">📋 Copy URL</button>
+
+    <div class="info">
+        <h3>📱 Cara Pakai di HP:</h3>
+        <ol style="text-align: left;">
+            <li>Buka halaman ini di HP: <strong>http://192.168.3.105:8000/token-helper.html</strong></li>
+            <li>Tap "Copy Token" untuk copy token otomatis</li>
+            <li>Paste di app PayHook (long press di field Token)</li>
+        </ol>
+    </div>
+
+    <script>
+        function copyToken() {
+            const token = document.getElementById('token').textContent;
+            navigator.clipboard.writeText(token).then(() => {
+                alert('✅ Token copied to clipboard!');
+            });
+        }
+
+        function copyUrl() {
+            const url = 'http://192.168.3.105:8000/api/payment-webhook';
+            navigator.clipboard.writeText(url).then(() => {
+                alert('✅ URL copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>

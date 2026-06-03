@@ -1,0 +1,894 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "PayHook Merchant API",
+    "version": "1.0.0",
+    "description": "Merchant-facing API for creating invoices and reading payment transactions."
+  },
+  "servers": [
+    {
+      "url": "https://your-domain.com/api/v1",
+      "description": "Production"
+    },
+    {
+      "url": "http://localhost:8000/api/v1",
+      "description": "Local development"
+    }
+  ],
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/webhook-config": {
+      "get": {
+        "summary": "Get webhook configuration",
+        "description": "Read-only endpoint to retrieve merchant webhook configuration.",
+        "operationId": "getWebhookConfig",
+        "responses": {
+          "200": {
+            "description": "Webhook config",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookConfigResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update webhook configuration",
+        "description": "Update webhook URL/enabled flag and optionally rotate or replace secret. Audit data is stored in tenant settings.",
+        "operationId": "updateWebhookConfig",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebhookConfigUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Webhook config updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookConfigUpdateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/webhook-events": {
+      "get": {
+        "summary": "List webhook events",
+        "description": "Read-only list of webhook delivery events derived from transaction webhook delivery state.",
+        "operationId": "listWebhookEvents",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["sent", "pending", "failed"]
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Webhook event list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookEventListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/webhook-events/{transactionId}/retry": {
+      "post": {
+        "summary": "Retry webhook event",
+        "description": "Manually retry webhook delivery for a transaction ID or external ID.",
+        "operationId": "retryWebhookEvent",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Transaction ID (PHK-...) or external_id."
+          },
+          {
+            "in": "header",
+            "name": "X-Request-Timestamp",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unix timestamp (seconds), max 5 minutes skew."
+          },
+          {
+            "in": "header",
+            "name": "X-Request-Signature",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC SHA256 of canonical string: timestamp + method + path + body, using webhook_secret."
+          },
+          {
+            "in": "header",
+            "name": "X-Request-Nonce",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Optional nonce to strengthen replay prevention window."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Webhook sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookRetryResponse"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Webhook delivery failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookRetryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices": {
+      "post": {
+        "summary": "Create invoice",
+        "description": "Create a new invoice. Use Idempotency-Key header to safely retry without creating duplicates.",
+        "operationId": "createInvoice",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "Unique key per create operation to prevent duplicates."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInvoiceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Invoice created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateInvoiceResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Idempotent replay (existing invoice returned)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateInvoiceResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Idempotency key reused with different payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List invoices",
+        "operationId": "listInvoices",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["pending", "paid", "cancelled", "expired"]
+            }
+          },
+          {
+            "in": "query",
+            "name": "external_id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoice list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/{invoice}": {
+      "get": {
+        "summary": "Get invoice detail",
+        "operationId": "getInvoice",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "invoice",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Invoice number or numeric invoice ID."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invoice detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceDetailResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Invoice not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/{invoice}/cancel": {
+      "post": {
+        "summary": "Cancel invoice",
+        "description": "Cancel a pending invoice and mark related pending/processing transactions as failed.",
+        "operationId": "cancelInvoice",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "invoice",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "Optional key to safely retry cancel without duplicate side effects."
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceActionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Invoice cancelled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceCancelResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid invoice state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invoices/{invoice}/refund": {
+      "post": {
+        "summary": "Refund invoice",
+        "description": "Mark paid invoice transaction as refund and optionally send webhook update.",
+        "operationId": "refundInvoice",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "invoice",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "Optional key to safely retry refund without duplicate side effects."
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvoiceRefundRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Invoice refunded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceRefundResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid invoice state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions": {
+      "get": {
+        "summary": "List transactions",
+        "operationId": "listTransactions",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["pending", "processing", "success", "failed", "expired", "refund"]
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/{transactionId}": {
+      "get": {
+        "summary": "Get transaction detail",
+        "operationId": "getTransaction",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Transaction ID (PHK-...) or external_id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction detail",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionDetailResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "API Key"
+      }
+    },
+    "schemas": {
+      "CreateInvoiceRequest": {
+        "type": "object",
+        "required": ["amount", "customer_name"],
+        "properties": {
+          "amount": {
+            "type": "number",
+            "minimum": 1000,
+            "example": 125000
+          },
+          "external_id": {
+            "type": "string",
+            "example": "ORDER-20260403-0001"
+          },
+          "customer_name": {
+            "type": "string",
+            "example": "Budi Santoso"
+          },
+          "customer_email": {
+            "type": "string",
+            "format": "email",
+            "example": "budi@example.com"
+          },
+          "customer_phone": {
+            "type": "string",
+            "example": "081234567890"
+          },
+          "description": {
+            "type": "string",
+            "example": "Pembelian kopi"
+          },
+          "payment_channel_id": {
+            "type": "integer",
+            "example": 3
+          },
+          "channel_type": {
+            "type": "string",
+            "enum": ["qris", "gopay", "dana", "ovo", "linkaja", "shopeepay", "bank_transfer", "virtual_account"],
+            "example": "qris"
+          },
+          "expires_in_minutes": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 10080,
+            "example": 60
+          }
+        }
+      },
+      "CreateInvoiceResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "idempotent_replayed": {
+            "type": "boolean",
+            "example": false
+          },
+          "data": {
+            "$ref": "#/components/schemas/InvoiceCreateData"
+          }
+        }
+      },
+      "InvoiceCreateData": {
+        "type": "object",
+        "properties": {
+          "invoice_id": { "type": "integer", "example": 101 },
+          "invoice_number": { "type": "string", "example": "INV-20260403-000101" },
+          "external_id": { "type": "string", "nullable": true, "example": "ORDER-20260403-0001" },
+          "status": { "type": "string", "example": "pending" },
+          "base_amount": { "type": "number", "example": 125000 },
+          "pay_amount": { "type": "number", "example": 125321 },
+          "expires_at": { "type": "string", "format": "date-time" },
+          "channel": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "type": { "type": "string" },
+              "name": { "type": "string" },
+              "provider": { "type": "string", "nullable": true }
+            }
+          },
+          "payment_instruction": {
+            "type": "object",
+            "description": "Instruction payload varies by channel type."
+          }
+        }
+      },
+      "InvoiceDetailResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "invoice_id": { "type": "integer" },
+              "invoice_number": { "type": "string" },
+              "external_id": { "type": "string", "nullable": true },
+              "status": { "type": "string" },
+              "base_amount": { "type": "number" },
+              "pay_amount": { "type": "number" },
+              "paid_at": { "type": "string", "format": "date-time", "nullable": true },
+              "expires_at": { "type": "string", "format": "date-time", "nullable": true },
+              "payment_source": { "type": "string", "nullable": true }
+            }
+          }
+        }
+      },
+      "InvoiceListResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "count": { "type": "integer" },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "invoice_id": { "type": "integer" },
+                "invoice_number": { "type": "string" },
+                "external_id": { "type": "string", "nullable": true },
+                "status": { "type": "string" },
+                "base_amount": { "type": "number" },
+                "pay_amount": { "type": "number" },
+                "paid_at": { "type": "string", "format": "date-time", "nullable": true },
+                "expires_at": { "type": "string", "format": "date-time", "nullable": true }
+              }
+            }
+          }
+        }
+      },
+      "TransactionListResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "count": { "type": "integer" },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "transaction_id": { "type": "string" },
+                "external_id": { "type": "string", "nullable": true },
+                "status": { "type": "string" },
+                "amount": { "type": "number" },
+                "net_amount": { "type": "number" },
+                "payment_method": { "type": "string", "nullable": true },
+                "channel": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer", "nullable": true },
+                    "name": { "type": "string", "nullable": true },
+                    "type": { "type": "string", "nullable": true }
+                  }
+                },
+                "paid_at": { "type": "string", "format": "date-time", "nullable": true },
+                "created_at": { "type": "string", "format": "date-time", "nullable": true }
+              }
+            }
+          }
+        }
+      },
+      "TransactionDetailResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "transaction_id": { "type": "string" },
+              "external_id": { "type": "string", "nullable": true },
+              "status": { "type": "string" },
+              "amount": { "type": "number" },
+              "fee": { "type": "number" },
+              "net_amount": { "type": "number" },
+              "payment_method": { "type": "string", "nullable": true },
+              "payment_reference": { "type": "string", "nullable": true },
+              "customer_name": { "type": "string", "nullable": true },
+              "customer_email": { "type": "string", "nullable": true },
+              "customer_phone": { "type": "string", "nullable": true },
+              "channel": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "integer", "nullable": true },
+                  "name": { "type": "string", "nullable": true },
+                  "type": { "type": "string", "nullable": true },
+                  "provider": { "type": "string", "nullable": true }
+                }
+              },
+              "paid_at": { "type": "string", "format": "date-time", "nullable": true },
+              "expired_at": { "type": "string", "format": "date-time", "nullable": true },
+              "created_at": { "type": "string", "format": "date-time", "nullable": true }
+            }
+          }
+        }
+      },
+      "WebhookConfigResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "webhook_url": { "type": "string", "nullable": true },
+              "webhook_enabled": { "type": "boolean" },
+              "mode": { "type": "string", "nullable": true },
+              "is_active": { "type": "boolean" },
+              "secret_masked": { "type": "string", "nullable": true },
+              "updated_at": { "type": "string", "format": "date-time", "nullable": true }
+            }
+          }
+        }
+      },
+      "WebhookConfigUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "webhook_url": { "type": "string", "nullable": true, "example": "https://merchant.example.com/webhook/payhook" },
+          "webhook_enabled": { "type": "boolean", "example": true },
+          "webhook_secret": { "type": "string", "nullable": true, "minLength": 16, "maxLength": 128 },
+          "rotate_secret": { "type": "boolean", "example": false }
+        }
+      },
+      "WebhookConfigUpdateResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "webhook_url": { "type": "string", "nullable": true },
+              "webhook_enabled": { "type": "boolean" },
+              "secret_masked": { "type": "string", "nullable": true },
+              "audit": {
+                "type": "object",
+                "properties": {
+                  "updated_at": { "type": "string", "format": "date-time" },
+                  "updated_via": { "type": "string" },
+                  "api_key_type": { "type": "string", "enum": ["sandbox", "production"] },
+                  "updated_from_ip": { "type": "string", "nullable": true },
+                  "user_agent": { "type": "string", "nullable": true },
+                  "changed_fields": { "type": "array", "items": { "type": "string" } }
+                }
+              },
+              "updated_at": { "type": "string", "format": "date-time", "nullable": true }
+            }
+          }
+        }
+      },
+      "WebhookEventListResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "count": { "type": "integer" },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "event_id": { "type": "string" },
+                "transaction_id": { "type": "string" },
+                "invoice_number": { "type": "string", "nullable": true },
+                "event_type": { "type": "string" },
+                "status": { "type": "string", "enum": ["sent", "pending", "failed"] },
+                "transaction_status": { "type": "string", "nullable": true },
+                "attempts": { "type": "integer" },
+                "response": { "type": "string", "nullable": true },
+                "sent_at": { "type": "string", "format": "date-time", "nullable": true },
+                "updated_at": { "type": "string", "format": "date-time", "nullable": true }
+              }
+            }
+          }
+        }
+      },
+      "WebhookRetryResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "transaction_id": { "type": "string" },
+              "webhook_status": { "type": "string", "enum": ["sent", "failed"] },
+              "attempts": { "type": "integer" },
+              "sent_at": { "type": "string", "format": "date-time", "nullable": true },
+              "response": { "type": "string", "nullable": true }
+            }
+          }
+        }
+      },
+      "InvoiceActionRequest": {
+        "type": "object",
+        "properties": {
+          "reason": { "type": "string", "nullable": true, "maxLength": 500 }
+        }
+      },
+      "InvoiceRefundRequest": {
+        "type": "object",
+        "properties": {
+          "reason": { "type": "string", "nullable": true, "maxLength": 500 },
+          "send_webhook": { "type": "boolean", "example": true }
+        }
+      },
+      "InvoiceCancelResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "invoice_id": { "type": "integer" },
+              "invoice_number": { "type": "string" },
+              "status": { "type": "string", "example": "cancelled" },
+              "cancelled_at": { "type": "string", "format": "date-time" },
+              "reason": { "type": "string" },
+              "affected_transactions": { "type": "integer" }
+            }
+          }
+        }
+      },
+      "InvoiceRefundResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "invoice_id": { "type": "integer" },
+              "invoice_number": { "type": "string" },
+              "transaction_id": { "type": "string" },
+              "status": { "type": "string", "example": "refund" },
+              "reason": { "type": "string" },
+              "webhook": {
+                "type": "object",
+                "properties": {
+                  "attempted": { "type": "boolean" },
+                  "sent": { "type": "boolean" },
+                  "message": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": false },
+          "message": { "type": "string", "example": "Unauthorized" }
+        }
+      }
+    }
+  }
+}
