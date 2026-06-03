@@ -83,6 +83,7 @@ class TupplyIntegrationController extends Controller
                     'user_id' => $user->id,
                     'api_key_production' => $tenant->api_key_production,
                     'api_key_sandbox' => $tenant->api_key_sandbox,
+                    'webhook_secret' => $tenant->webhook_secret,
                 ]
             ]);
 
