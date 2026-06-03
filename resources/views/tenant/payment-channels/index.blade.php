@@ -71,6 +71,10 @@
                         <div class="relative z-10 p-3 bg-white rounded-2xl shadow-2xl shadow-supabase-accent/20 group-hover:scale-105 transition-transform duration-500">
                             <img src="{{ asset('storage/' . $channel->qr_code_path) }}" alt="QR Code" class="w-40 h-40 object-contain">
                         </div>
+                    @elseif($channel->masterChannel && $channel->masterChannel->logo_url)
+                        <div class="relative z-10 p-3 bg-white rounded-2xl shadow-2xl shadow-supabase-accent/20 group-hover:scale-105 transition-transform duration-500">
+                            <img src="{{ $channel->masterChannel->logo_url }}" alt="{{ $channel->channel_name }}" class="w-40 h-40 object-contain">
+                        </div>
                     @else
                         <div class="relative z-10 text-center">
                             <div class="w-24 h-24 rounded-3xl bg-supabase-dark border {{ $brand['border'] }} flex items-center justify-center mx-auto mb-4 shadow-2xl {{ $brand['text'] }}">

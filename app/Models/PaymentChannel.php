@@ -41,6 +41,11 @@ class PaymentChannel extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public function masterChannel(): BelongsTo
+    {
+        return $this->belongsTo(MasterPaymentChannel::class, 'provider', 'code');
+    }
+
     public function getChannelTypeNameAttribute(): string
     {
         return match($this->channel_type) {
