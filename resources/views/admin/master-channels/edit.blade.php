@@ -59,12 +59,12 @@
 
                 <div class="space-y-2">
                     <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Logo / Icon</label>
-                    @if($channel->logo_url)
-                        <div class="mb-4 p-2 bg-white rounded-xl inline-block border border-supabase-border">
-                            <img src="{{ $channel->logo_url }}" alt="Current Logo" class="h-12 object-contain">
-                        </div>
-                    @endif
-                    <input type="file" name="logo" accept="image/*" class="sb-input !p-2 bg-supabase-dark">
+                    
+                    <div id="imagePreviewContainer" class="{{ $channel->logo_url ? '' : 'hidden' }} mb-4 p-2 bg-white rounded-xl inline-block border border-supabase-border">
+                        <img id="imagePreview" src="{{ $channel->logo_url ?? '' }}" alt="Preview Logo" class="h-12 object-contain">
+                    </div>
+                    
+                    <input type="file" name="logo" id="logoInput" accept="image/*" class="sb-input !p-2 bg-supabase-dark">
                     <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-tighter">Leave empty to keep current.</p>
                     @error('logo')<p class="mt-1 text-[10px] font-black text-red-500 uppercase tracking-widest">{{ $message }}</p>@enderror
                 </div>
@@ -92,4 +92,22 @@
         </div>
     </form>
 </div>
+
+@push('scripts')
+<script>
+    document.getElementById('logoInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewContainer = document.getElementById('imagePreviewContainer');
+                const previewImage = document.getElementById('imagePreview');
+                previewImage.src = e.target.result;
+                previewContainer.classList.remove('hidden');
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+@endpush
 @endsection
