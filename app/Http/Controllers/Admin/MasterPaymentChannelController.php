@@ -25,7 +25,6 @@ class MasterPaymentChannelController extends Controller
             'name' => 'required|string|max:255',
             'type' => 'required|in:qris,ewallet,virtual_account,bank_transfer',
             'logo' => 'nullable|file|max:2048', // max 2MB
-            'is_active' => 'boolean',
         ]);
 
         $data = [
@@ -60,7 +59,6 @@ class MasterPaymentChannelController extends Controller
             'name' => 'required|string|max:255',
             'type' => 'required|in:qris,ewallet,virtual_account,bank_transfer',
             'logo' => 'nullable|file|max:2048',
-            'is_active' => 'boolean',
         ]);
 
         $channel->code = $validated['code'];
