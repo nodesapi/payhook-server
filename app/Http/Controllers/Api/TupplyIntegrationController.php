@@ -25,6 +25,8 @@ class TupplyIntegrationController extends Controller
             'phone' => 'nullable|string',
             'password_hash' => 'required|string', // Hashed password from Tupply
             'domain' => 'nullable|string',
+            'expired_at' => 'nullable|date',
+            'callback_url' => 'nullable|url',
         ]);
 
         try {
@@ -50,6 +52,9 @@ class TupplyIntegrationController extends Controller
                 ]);
             }
 
+            // Get the Starter Node plan to restrict to 1 channel
+            $starterPlan = \App\Models\Plan::where('slug', 'starter-node')->first();
+
             // 2. Create or Update Tenant (Merchant Account)
             $tenant = Tenant::where('email', $request->email)->first();
             if (!$tenant) {
@@ -61,6 +66,10 @@ class TupplyIntegrationController extends Controller
                     'website' => $request->domain,
                     'mode' => 'production', // Ready to accept payments
                     'is_active' => true,
+                    'plan_id' => $starterPlan ? $starterPlan->id : null,
+                    'webhook_enabled' => true,
+                    'callback_url' => $request->callback_url ?? (env('APP_URL') . '/webhook/payhook'),
+                    'expired_at' => $request->expired_at ? \Carbon\Carbon::parse($request->expired_at) : null,
                 ]);
             }
 
