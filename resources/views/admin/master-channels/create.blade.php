@@ -20,7 +20,7 @@
 </div>
 
 <!-- Form Container -->
-<div class="w-full max-w-4xl">
+<div class="w-full">
     <form action="{{ route('admin.master-channels.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
         @csrf
 
