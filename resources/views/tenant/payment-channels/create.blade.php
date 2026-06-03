@@ -32,22 +32,26 @@
                     Select Infrastructure Type
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    @foreach($channelTypes as $value => $label)
+                    @foreach($masterChannels as $channel)
                         <label class="relative flex flex-col p-6 bg-supabase-dark border border-supabase-border rounded-2xl cursor-pointer hover:border-supabase-accent/50 transition-all group overflow-hidden">
-                            <input type="radio" name="channel_type" value="{{ $value }}" class="sr-only peer channel-type-radio" required onchange="handleChannelTypeChange()">
+                            <input type="radio" name="master_code" value="{{ $channel->code }}" data-base-type="{{ $channel->type }}" class="sr-only peer channel-type-radio" required onchange="handleChannelTypeChange()">
                             <div class="absolute inset-0 bg-supabase-accent/5 opacity-0 peer-checked:opacity-100 transition-opacity"></div>
                             <div class="relative z-10">
-                                <div class="w-10 h-10 rounded-xl bg-supabase-input border border-supabase-border flex items-center justify-center mb-4 text-supabase-muted peer-checked:text-supabase-accent transition-colors">
-                                    @if($value === 'qris')
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
-                                    @elseif(in_array($value, ['gopay', 'dana', 'ovo', 'linkaja', 'shopeepay']))
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                <div class="w-10 h-10 rounded-xl bg-supabase-input border border-supabase-border flex items-center justify-center mb-4 text-supabase-muted peer-checked:text-supabase-accent transition-colors overflow-hidden">
+                                    @if($channel->logo_url)
+                                        <img src="{{ $channel->logo_url }}" class="w-full h-full object-contain p-1 bg-white" alt="{{ $channel->name }}">
                                     @else
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>
+                                        @if($channel->type === 'qris')
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+                                        @elseif($channel->type === 'ewallet')
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                                        @else
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"></path></svg>
+                                        @endif
                                     @endif
                                 </div>
-                                <span class="text-[10px] font-black text-white uppercase tracking-widest peer-checked:text-supabase-accent">{{ explode(' - ', $label)[0] }}</span>
-                                <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-tighter mt-1">{{ explode(' - ', $label)[1] ?? '' }}</p>
+                                <span class="text-[10px] font-black text-white uppercase tracking-widest peer-checked:text-supabase-accent">{{ $channel->name }}</span>
+                                <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-tighter mt-1">{{ str_replace('_', ' ', $channel->type) }}</p>
                             </div>
                             <div class="absolute bottom-0 right-0 w-8 h-8 flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity">
                                 <div class="w-3 h-3 bg-supabase-accent rounded-full shadow-[0_0_10px_rgba(251,191,36,0.8)]"></div>
@@ -203,10 +207,10 @@
 @push('scripts')
 <script>
 function handleChannelTypeChange() {
-    const selectedType = document.querySelector('input[name="channel_type"]:checked');
+    const selectedType = document.querySelector('input[name="master_code"]:checked');
     if (!selectedType) return;
     
-    const type = selectedType.value;
+    const type = selectedType.dataset.baseType; // Use the base type for UI logic
     
     // Hide all sections
     ['ewallet-fields', 'qris-fields', 'bank-fields', 'va-fields'].forEach(id => {
@@ -231,7 +235,7 @@ function handleChannelTypeChange() {
         document.getElementById('qris-fields').classList.remove('hidden');
         document.getElementById('qr_code').removeAttribute('disabled');
         document.getElementById('qr_code').setAttribute('required', 'required');
-    } else if (['gopay', 'dana', 'ovo', 'linkaja', 'shopeepay'].includes(type)) {
+    } else if (type === 'ewallet') {
         document.getElementById('ewallet-fields').classList.remove('hidden');
         ['ewallet_phone', 'ewallet_name'].forEach(id => {
             document.getElementById(id).removeAttribute('disabled');

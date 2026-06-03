@@ -39,18 +39,9 @@ class PaymentChannelController extends Controller
     {
         $tenant = $this->getTenant();
         
-        $channelTypes = [
-            'qris' => 'QRIS - Quick Response Code Indonesian Standard',
-            'gopay' => 'GoPay - Gojek E-Wallet',
-            'dana' => 'DANA - Digital Wallet',
-            'ovo' => 'OVO - E-Wallet',
-            'linkaja' => 'LinkAja - Digital Payment',
-            'shopeepay' => 'ShopeePay - E-Commerce Wallet',
-            'bank_transfer' => 'Bank Transfer - Manual Transfer',
-            'virtual_account' => 'Virtual Account - Auto Credit',
-        ];
+        $masterChannels = \App\Models\MasterPaymentChannel::where('is_active', true)->orderBy('name')->get();
 
-        return view('tenant.payment-channels.create', compact('tenant', 'channelTypes'));
+        return view('tenant.payment-channels.create', compact('tenant', 'masterChannels'));
     }
 
     public function store(Request $request)
@@ -69,7 +60,7 @@ class PaymentChannelController extends Controller
         }
 
         $validated = $request->validate([
-            'channel_type' => 'required|in:qris,gopay,dana,ovo,linkaja,shopeepay,bank_transfer,virtual_account',
+            'master_code' => 'required|string',
             'channel_name' => 'required|string|max:255',
             'provider' => 'nullable|string|max:255',
             'account_number' => 'nullable|string|max:255',
@@ -83,6 +74,11 @@ class PaymentChannelController extends Controller
 
         $validated['tenant_id'] = $tenant->id;
         $validated['is_active'] = true;
+
+        $masterChannel = \App\Models\MasterPaymentChannel::where('code', $validated['master_code'])->firstOrFail();
+        $validated['channel_type'] = $masterChannel->type; // base type for logic
+        $validated['provider'] = $masterChannel->code; // specific provider code
+        unset($validated['master_code']);
 
         // Handle QR Code upload
         if ($request->hasFile('qr_code')) {
@@ -122,18 +118,9 @@ class PaymentChannelController extends Controller
             abort(403);
         }
 
-        $channelTypes = [
-            'qris' => 'QRIS - Quick Response Code Indonesian Standard',
-            'gopay' => 'GoPay - Gojek E-Wallet',
-            'dana' => 'DANA - Digital Wallet',
-            'ovo' => 'OVO - E-Wallet',
-            'linkaja' => 'LinkAja - Digital Payment',
-            'shopeepay' => 'ShopeePay - E-Commerce Wallet',
-            'bank_transfer' => 'Bank Transfer - Manual Transfer',
-            'virtual_account' => 'Virtual Account - Auto Credit',
-        ];
+        $masterChannels = \App\Models\MasterPaymentChannel::where('is_active', true)->orderBy('name')->get();
 
-        return view('tenant.payment-channels.edit', compact('tenant', 'paymentChannel', 'channelTypes'));
+        return view('tenant.payment-channels.edit', compact('tenant', 'paymentChannel', 'masterChannels'));
     }
 
     public function update(Request $request, PaymentChannel $paymentChannel)
