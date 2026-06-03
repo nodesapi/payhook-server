@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WebhookController;
 use App\Http\Controllers\Api\MobileAuthController;
 use App\Http\Controllers\Api\MerchantApiController;
+use App\Http\Controllers\Api\TupplyIntegrationController;
 use Illuminate\Http\Request;
 
 // Mobile App Authentication
@@ -35,6 +36,15 @@ Route::get('/pending-invoices', [WebhookController::class, 'pendingInvoices'])
 
 Route::post('/invoices/{invoice}/confirm', [WebhookController::class, 'confirm'])
     ->name('api.webhook.confirm');
+// Internal API for Tupply Auto-Provisioning
+Route::prefix('internal/tupply')
+    ->middleware([\App\Http\Middleware\TupplyInternalAuth::class])
+    ->group(function () {
+        Route::post('/merchants', [TupplyIntegrationController::class, 'autoRegister'])
+            ->name('api.internal.tupply.merchants.register');
+        Route::post('/merchants/{tenant}/qris', [TupplyIntegrationController::class, 'uploadQris'])
+            ->name('api.internal.tupply.merchants.qris');
+    });
 
 // Merchant API v1
 Route::prefix('v1')->group(function () {
