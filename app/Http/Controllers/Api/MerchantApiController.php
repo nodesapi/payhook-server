@@ -109,6 +109,18 @@ class MerchantApiController extends Controller
             ->map(function ($channel) {
                 // Determine logo url based on provider code via MasterPaymentChannel
                 $master = \App\Models\MasterPaymentChannel::where('code', $channel->provider)->first();
+                
+                // Fallback for legacy channels where provider might be a custom name
+                if (!$master) {
+                    if (stripos($channel->provider, 'dana') !== false || stripos($channel->channel_name, 'dana') !== false) {
+                        $master = \App\Models\MasterPaymentChannel::where('code', 'dana')->first();
+                    } elseif (stripos($channel->provider, 'gopay') !== false || stripos($channel->channel_name, 'gopay') !== false) {
+                        $master = \App\Models\MasterPaymentChannel::where('code', 'gopay')->first();
+                    } elseif ($channel->channel_type === 'qris' || stripos($channel->provider, 'qris') !== false) {
+                        $master = \App\Models\MasterPaymentChannel::where('code', 'qris')->first();
+                    }
+                }
+
                 $logoUrl = $master ? $master->logo_url : null;
                 
                 return [
