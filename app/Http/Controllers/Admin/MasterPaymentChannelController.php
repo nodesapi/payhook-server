@@ -24,7 +24,7 @@ class MasterPaymentChannelController extends Controller
             'code' => 'required|string|unique:master_payment_channels',
             'name' => 'required|string|max:255',
             'type' => 'required|in:qris,ewallet,virtual_account,bank_transfer',
-            'logo' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp|max:2048', // max 2MB
+            'logo' => 'nullable|file|max:2048', // max 2MB
             'is_active' => 'boolean',
         ]);
 
@@ -59,7 +59,7 @@ class MasterPaymentChannelController extends Controller
             'code' => 'required|string|unique:master_payment_channels,code,' . $id,
             'name' => 'required|string|max:255',
             'type' => 'required|in:qris,ewallet,virtual_account,bank_transfer',
-            'logo' => 'nullable|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'logo' => 'nullable|file|max:2048',
             'is_active' => 'boolean',
         ]);
 
