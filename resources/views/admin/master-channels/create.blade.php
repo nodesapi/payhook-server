@@ -3,74 +3,89 @@
 @section('title', 'Add Master Payment Channel')
 
 @section('content')
-<div class="container-fluid py-4">
-    <div class="row">
-        <div class="col-12 col-lg-8 mx-auto">
-            <div class="card mb-4">
-                <div class="card-header pb-0">
-                    <h6>Add New Master Payment Channel</h6>
+
+<!-- Page Header -->
+<div class="mb-12">
+    <div class="flex items-center space-x-4">
+        <a href="{{ route('admin.master-channels.index') }}" class="p-3 bg-supabase-surface border border-supabase-border rounded-xl text-supabase-muted hover:text-white transition-all">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </a>
+        <div>
+            <h1 class="text-4xl font-black text-white tracking-tight uppercase">Add <span class="text-supabase-accent">Channel</span></h1>
+            <p class="text-supabase-muted mt-2">Initialize a new master payment method.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Form Container -->
+<div class="w-full max-w-4xl">
+    <form action="{{ route('admin.master-channels.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+        @csrf
+
+        <div class="bg-supabase-surface border border-supabase-border rounded-3xl p-8 space-y-8 shadow-2xl">
+            <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-6 flex items-center">
+                <span class="w-1.5 h-1.5 bg-supabase-accent rounded-full mr-3 shadow-[0_0_10px_rgba(251,191,36,0.5)]"></span>
+                Channel Properties
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Channel Name</label>
+                    <input type="text" name="name" value="{{ old('name') }}" placeholder="e.g. BCA Virtual Account" class="sb-input" required>
+                    @error('name')<p class="mt-1 text-[10px] font-black text-red-500 uppercase tracking-widest">{{ $message }}</p>@enderror
                 </div>
-                <div class="card-body">
-                    <form action="{{ route('admin.master-channels.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="name" class="form-label">Channel Name</label>
-                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" placeholder="e.g. BCA Virtual Account" required>
-                                @error('name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            
-                            <div class="col-md-6 mb-3">
-                                <label for="code" class="form-label">Internal Code</label>
-                                <input type="text" class="form-control @error('code') is-invalid @enderror" id="code" name="code" value="{{ old('code') }}" placeholder="e.g. bca_va" required>
-                                <small class="text-muted">Must be unique, no spaces.</small>
-                                @error('code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
+                
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Internal Code</label>
+                    <input type="text" name="code" value="{{ old('code') }}" placeholder="e.g. bca_va" class="sb-input" required>
+                    <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-tighter">Must be unique, no spaces.</p>
+                    @error('code')<p class="mt-1 text-[10px] font-black text-red-500 uppercase tracking-widest">{{ $message }}</p>@enderror
+                </div>
+            </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="type" class="form-label">Channel Type</label>
-                                <select class="form-select @error('type') is-invalid @enderror" id="type" name="type" required>
-                                    <option value="" disabled selected>Select Type</option>
-                                    <option value="qris" {{ old('type') == 'qris' ? 'selected' : '' }}>QRIS</option>
-                                    <option value="ewallet" {{ old('type') == 'ewallet' ? 'selected' : '' }}>E-Wallet</option>
-                                    <option value="virtual_account" {{ old('type') == 'virtual_account' ? 'selected' : '' }}>Virtual Account</option>
-                                    <option value="bank_transfer" {{ old('type') == 'bank_transfer' ? 'selected' : '' }}>Bank Transfer (Manual)</option>
-                                </select>
-                                @error('type')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            
-                            <div class="col-md-6 mb-3">
-                                <label for="logo" class="form-label">Logo / Icon</label>
-                                <input type="file" class="form-control @error('logo') is-invalid @enderror" id="logo" name="logo" accept="image/*">
-                                <small class="text-muted">Recommended size: 200x200px (PNG with transparent background)</small>
-                                @error('logo')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Base Type</label>
+                    <select name="type" class="sb-input bg-supabase-dark" required>
+                        <option value="" disabled selected>Select Type</option>
+                        <option value="qris" {{ old('type') == 'qris' ? 'selected' : '' }}>QRIS</option>
+                        <option value="ewallet" {{ old('type') == 'ewallet' ? 'selected' : '' }}>E-Wallet</option>
+                        <option value="virtual_account" {{ old('type') == 'virtual_account' ? 'selected' : '' }}>Virtual Account</option>
+                        <option value="bank_transfer" {{ old('type') == 'bank_transfer' ? 'selected' : '' }}>Bank Transfer (Manual)</option>
+                    </select>
+                    @error('type')<p class="mt-1 text-[10px] font-black text-red-500 uppercase tracking-widest">{{ $message }}</p>@enderror
+                </div>
 
-                        <div class="form-check form-switch mb-4">
-                            <input class="form-check-input" type="checkbox" id="is_active" name="is_active" checked>
-                            <label class="form-check-label" for="is_active">Channel is Active</label>
-                        </div>
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Logo / Icon</label>
+                    <input type="file" name="logo" accept="image/*" class="sb-input !p-2 bg-supabase-dark">
+                    <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-tighter">Recommended: 200x200px PNG transparent.</p>
+                    @error('logo')<p class="mt-1 text-[10px] font-black text-red-500 uppercase tracking-widest">{{ $message }}</p>@enderror
+                </div>
+            </div>
 
-                        <div class="d-flex justify-content-end">
-                            <a href="{{ route('admin.master-channels.index') }}" class="btn btn-light me-2">Cancel</a>
-                            <button type="submit" class="btn bg-gradient-primary">Save Channel</button>
-                        </div>
-                    </form>
+            <div class="pt-4 border-t border-supabase-border flex items-center space-x-4">
+                <div class="relative flex items-start">
+                    <div class="flex h-6 items-center">
+                        <input id="is_active" name="is_active" type="checkbox" class="h-4 w-4 rounded border-supabase-border bg-supabase-dark text-supabase-accent focus:ring-supabase-accent focus:ring-offset-supabase-dark" checked>
+                    </div>
+                    <div class="ml-3 text-sm leading-6">
+                        <label for="is_active" class="font-black text-white uppercase tracking-widest text-[10px]">Channel is Active</label>
+                        <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-tighter">Toggle global availability for this channel.</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- Form Actions -->
+        <div class="flex items-center justify-end space-x-6 pt-8">
+            <a href="{{ route('admin.master-channels.index') }}" class="text-[10px] font-black text-supabase-muted uppercase tracking-widest hover:text-white transition-colors">Cancel</a>
+            <button type="submit" class="sb-button-primary !w-auto !py-4 !px-16">
+                Save Channel
+            </button>
+        </div>
+    </form>
 </div>
 @endsection
