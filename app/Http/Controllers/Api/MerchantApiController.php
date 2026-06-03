@@ -96,6 +96,39 @@ class MerchantApiController extends Controller
         ]);
     }
 
+    public function getChannels(Request $request): JsonResponse
+    {
+        $tenant = $this->authenticateTenant($request);
+        if (!$tenant) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        $channels = $tenant->paymentChannels()
+            ->where('is_active', true)
+            ->get()
+            ->map(function ($channel) {
+                // Determine logo url based on provider code via MasterPaymentChannel
+                $master = \App\Models\MasterPaymentChannel::where('code', $channel->provider)->first();
+                $logoUrl = $master ? $master->logo_url : null;
+                
+                return [
+                    'id' => $channel->id,
+                    'type' => $channel->channel_type, // 'qris', 'ewallet', 'bank_transfer', etc
+                    'code' => $channel->provider,     // 'bca_va', 'dana', etc
+                    'name' => $channel->channel_name,
+                    'provider_name' => $master ? $master->name : $channel->provider,
+                    'fee_percentage' => (float) $channel->fee_percentage,
+                    'fee_fixed' => (float) $channel->fee_fixed,
+                    'logo_url' => $logoUrl,
+                ];
+            });
+
+        return response()->json([
+            'success' => true,
+            'data' => $channels,
+        ]);
+    }
+
     public function updateWebhookConfig(Request $request): JsonResponse
     {
         $tenant = $this->authenticateTenant($request);

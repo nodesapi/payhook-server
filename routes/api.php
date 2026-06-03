@@ -38,6 +38,9 @@ Route::post('/invoices/{invoice}/confirm', [WebhookController::class, 'confirm']
 
 // Merchant API v1
 Route::prefix('v1')->group(function () {
+    Route::get('/channels', [MerchantApiController::class, 'getChannels'])
+        ->name('api.v1.channels');
+
     Route::get('/webhook-config', [MerchantApiController::class, 'getWebhookConfig'])
         ->name('api.v1.webhook.config');
 
