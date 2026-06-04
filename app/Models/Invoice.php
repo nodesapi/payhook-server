@@ -52,7 +52,7 @@ class Invoice extends Model
             $invoice->unique_amount = $invoice->amount + $invoice->unique_suffix;
 
             if (empty($invoice->expires_at)) {
-                $invoice->expires_at = now()->addDays(7);
+                $invoice->expires_at = now()->addDays(1);
             }
         });
 
