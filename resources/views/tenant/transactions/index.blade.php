@@ -188,4 +188,13 @@
     @endif
 </div>
 
+@if(!request()->hasAny(['search', 'status', 'channel', 'date_from', 'page']) || request('page') == 1)
+<script>
+    // Auto-refresh ledger every 15 seconds to keep it live
+    setTimeout(() => {
+        window.location.reload();
+    }, 15000);
+</script>
+@endif
+
 @endsection
