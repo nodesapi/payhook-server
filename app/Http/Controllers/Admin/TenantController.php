@@ -201,4 +201,42 @@ class TenantController extends Controller
 
         return back()->with('success', "Subscription extended by {$months} month(s) for {$tenant->name}!");
     }
+
+    /**
+     * Approve KYC
+     */
+    public function approveKyc(Tenant $tenant)
+    {
+        $tenant->update([
+            'kyc_status' => 'VERIFIED',
+            'is_active' => true,
+        ]);
+        
+        // Also extend subscription based on plan if expired_at is null or past
+        if ($tenant->plan && (!$tenant->expired_at || $tenant->expired_at->isPast())) {
+            $tenant->update([
+                'expired_at' => now()->addDays($tenant->plan->duration_days)
+            ]);
+        }
+
+        return back()->with('success', "KYC for {$tenant->name} approved successfully!");
+    }
+
+    /**
+     * Reject KYC
+     */
+    public function rejectKyc(Request $request, Tenant $tenant)
+    {
+        $request->validate([
+            'kyc_reject_reason' => 'required|string|max:1000',
+        ]);
+
+        $tenant->update([
+            'kyc_status' => 'REJECTED',
+            'kyc_reject_reason' => $request->kyc_reject_reason,
+            'is_active' => false,
+        ]);
+
+        return back()->with('success', "KYC for {$tenant->name} rejected.");
+    }
 }

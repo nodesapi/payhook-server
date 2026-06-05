@@ -33,6 +33,11 @@ class Tenant extends Model
         'activated_at',
         'suspended_at',
         'expired_at',
+        'kyc_status',
+        'ktp_name',
+        'ktp_number',
+        'ktp_image_path',
+        'kyc_reject_reason',
     ];
 
     protected $casts = [

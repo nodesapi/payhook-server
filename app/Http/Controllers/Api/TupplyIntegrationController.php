@@ -70,6 +70,7 @@ class TupplyIntegrationController extends Controller
                     'webhook_enabled' => true,
                     'callback_url' => $request->callback_url ?? (env('APP_URL') . '/webhook/payhook'),
                     'expired_at' => $request->expired_at ? \Carbon\Carbon::parse($request->expired_at) : null,
+                    'kyc_status' => 'VERIFIED', // Auto verify for Tupply users
                 ]);
             }
 

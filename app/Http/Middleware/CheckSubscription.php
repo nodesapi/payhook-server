@@ -37,7 +37,10 @@ class CheckSubscription
                 $request->is('docs*') || 
                 $request->is('tenant/settings*') || 
                 $request->is('auth/logout') || 
-                $request->is('tenant/subscription-expired')) {
+                $request->is('tenant/subscription-expired') ||
+                $request->is('tenant/setup') ||
+                $request->is('tenant/kyc-pending') ||
+                $request->is('tenant/kyc-rejected')) {
                 return $next($request);
             }
 

@@ -76,6 +76,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('tenants/{tenant}/suspend', [TenantController::class, 'suspend'])->name('tenants.suspend');
     Route::post('tenants/{tenant}/regenerate-key', [TenantController::class, 'regenerateKey'])->name('tenants.regenerate-key');
     Route::post('tenants/{tenant}/extend', [TenantController::class, 'extend'])->name('tenants.extend');
+    Route::post('tenants/{tenant}/approve-kyc', [TenantController::class, 'approveKyc'])->name('tenants.approve-kyc');
+    Route::post('tenants/{tenant}/reject-kyc', [TenantController::class, 'rejectKyc'])->name('tenants.reject-kyc');
     
     // Webhook Logs
     Route::get('webhook-logs', [WebhookLogController::class, 'index'])->name('webhook-logs.index');
@@ -88,8 +90,22 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('master-channels', \App\Http\Controllers\Admin\MasterPaymentChannelController::class);
 });
 
-// Tenant Dashboard Routes (Protected)
+// Tenant Setup Routes (Auth only, no KYC/Subscription check)
 Route::middleware(['auth'])->prefix('tenant')->name('tenant.')->group(function () {
+    Route::get('/setup', [\App\Http\Controllers\Tenant\SetupController::class, 'create'])->name('setup');
+    Route::post('/setup', [\App\Http\Controllers\Tenant\SetupController::class, 'store'])->name('setup.store');
+    
+    Route::get('/kyc-pending', function () {
+        return view('tenant.kyc-pending');
+    })->name('kyc.pending');
+
+    Route::get('/kyc-rejected', function () {
+        return view('tenant.kyc-rejected');
+    })->name('kyc.rejected');
+});
+
+// Tenant Dashboard Routes (Protected)
+Route::middleware(['auth', \App\Http\Middleware\CheckKyc::class])->prefix('tenant')->name('tenant.')->group(function () {
     // Dashboard
     Route::get('/dashboard', [TenantDashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/live-stats', [TenantDashboardController::class, 'liveStats'])->name('dashboard.live-stats');
