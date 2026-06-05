@@ -63,7 +63,7 @@ Route::get('/dashboard', function () {
     }
     
     return redirect()->route('tenant.dashboard');
-})->middleware('auth')->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 // Admin Dashboard Routes (Protected)
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
@@ -91,7 +91,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 });
 
 // Tenant Setup Routes (Auth only, no KYC/Subscription check)
-Route::middleware(['auth'])->prefix('tenant')->name('tenant.')->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('tenant')->name('tenant.')->group(function () {
     Route::get('/setup', [\App\Http\Controllers\Tenant\SetupController::class, 'create'])->name('setup');
     Route::post('/setup', [\App\Http\Controllers\Tenant\SetupController::class, 'store'])->name('setup.store');
     
@@ -105,7 +105,7 @@ Route::middleware(['auth'])->prefix('tenant')->name('tenant.')->group(function (
 });
 
 // Tenant Dashboard Routes (Protected)
-Route::middleware(['auth', \App\Http\Middleware\CheckKyc::class])->prefix('tenant')->name('tenant.')->group(function () {
+Route::middleware(['auth', 'verified', \App\Http\Middleware\CheckKyc::class])->prefix('tenant')->name('tenant.')->group(function () {
     // Dashboard
     Route::get('/dashboard', [TenantDashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/live-stats', [TenantDashboardController::class, 'liveStats'])->name('dashboard.live-stats');
