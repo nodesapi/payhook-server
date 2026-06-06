@@ -21,8 +21,9 @@
         @csrf
         @method('PUT')
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Identity -->
+        <!-- FIRST ROW: Identity & KYC, SECOND ROW: Subscription & Webhook -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <!-- Merchant Identity -->
             <div class="bg-supabase-surface border border-supabase-border rounded-2xl p-8 space-y-6">
                 <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-4 flex items-center">
                     <span class="w-1.5 h-1.5 bg-supabase-accent rounded-full mr-3"></span>
@@ -42,7 +43,78 @@
                 </div>
             </div>
 
-            <!-- Subscription -->
+            <!-- KYC Configuration -->
+            <div class="bg-supabase-surface border border-supabase-border rounded-2xl p-8">
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] flex items-center">
+                        <span class="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3"></span>
+                        KYC Verification
+                    </h3>
+                    <span class="px-2 py-1 text-[10px] font-black uppercase tracking-widest rounded 
+                        @if($tenant->kyc_status === 'VERIFIED') bg-green-500/10 text-green-500
+                        @elseif($tenant->kyc_status === 'PENDING') bg-yellow-500/10 text-yellow-500
+                        @else bg-red-500/10 text-red-500 @endif">
+                        {{ $tenant->kyc_status }}
+                    </span>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-[8px] font-black text-supabase-muted uppercase tracking-widest">KTP Name</p>
+                            <p class="text-sm font-bold text-white mt-1">{{ $tenant->ktp_name ?? '-' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-[8px] font-black text-supabase-muted uppercase tracking-widest">KTP NIK</p>
+                            <p class="text-sm font-bold text-white mt-1">{{ $tenant->ktp_number ?? '-' }}</p>
+                        </div>
+                    </div>
+
+                    @if($tenant->kyc_reject_reason)
+                    <div>
+                        <p class="text-[8px] font-black text-red-500 uppercase tracking-widest">Reject Reason</p>
+                        <p class="text-xs text-red-400 mt-1">{{ $tenant->kyc_reject_reason }}</p>
+                    </div>
+                    @endif
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-supabase-border/50">
+                        @if($tenant->ktp_image_path)
+                        <a href="{{ asset('storage/' . $tenant->ktp_image_path) }}" target="_blank" class="flex items-center justify-center p-3 bg-supabase-dark border border-supabase-border rounded-xl hover:border-supabase-accent/50 transition-colors group">
+                            <svg class="w-4 h-4 text-supabase-muted group-hover:text-supabase-accent mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            <span class="text-[10px] font-black text-white uppercase tracking-widest">View KTP</span>
+                        </a>
+                        @else
+                        <div class="flex items-center justify-center p-3 bg-supabase-dark border border-supabase-border/50 rounded-xl text-[10px] font-bold text-supabase-muted uppercase">
+                            No KTP
+                        </div>
+                        @endif
+
+                        @if($tenant->payment_proof_path)
+                        <a href="{{ asset('storage/' . $tenant->payment_proof_path) }}" target="_blank" class="flex items-center justify-center p-3 bg-supabase-dark border border-supabase-border rounded-xl hover:border-yellow-500/50 transition-colors group">
+                            <svg class="w-4 h-4 text-supabase-muted group-hover:text-yellow-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <span class="text-[10px] font-black text-white uppercase tracking-widest">Bukti Transfer</span>
+                        </a>
+                        @else
+                        <div class="flex items-center justify-center p-3 bg-supabase-dark border border-supabase-border/50 rounded-xl text-[10px] font-bold text-supabase-muted uppercase">
+                            No Payment
+                        </div>
+                        @endif
+                    </div>
+
+                    @if($tenant->kyc_status === 'PENDING')
+                    <div class="flex space-x-3 pt-4">
+                        <button type="button" onclick="document.getElementById('approve-kyc-form').submit();" class="flex-1 sb-button-primary !py-2.5 bg-green-500 text-white border-none hover:bg-green-600">
+                            Approve KYC
+                        </button>
+                        <button type="button" onclick="showRejectKycModal()" class="flex-1 p-2.5 bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-red-500 hover:text-white transition-colors">
+                            Reject
+                        </button>
+                    </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Subscription Matrix -->
             <div class="bg-supabase-surface border border-supabase-border rounded-2xl p-8 space-y-6">
                 <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-4 flex items-center">
                     <span class="w-1.5 h-1.5 bg-supabase-accent rounded-full mr-3"></span>
@@ -80,7 +152,7 @@
                 </div>
             </div>
 
-            <!-- Webhook Control -->
+            <!-- Webhook Pipeline -->
             <div class="bg-supabase-surface border border-supabase-border rounded-2xl p-8 space-y-6">
                 <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-4 flex items-center">
                     <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3"></span>
@@ -97,65 +169,6 @@
                     <label for="callback_url" class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Panel Callback URL</label>
                     <input type="url" id="callback_url" name="callback_url" value="{{ old('callback_url', $tenant->callback_url) }}" class="sb-input"/>
                     @error('callback_url')<p class="text-[10px] text-red-500 font-bold uppercase mt-1">{{ $message }}</p>@enderror
-                </div>
-            </div>
-        </div>
-
-        <!-- KYC Configuration -->
-        <div class="bg-supabase-surface border border-supabase-border rounded-2xl p-8">
-            <div class="flex items-center justify-between mb-8">
-                <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] flex items-center">
-                    <span class="w-1.5 h-1.5 bg-yellow-500 rounded-full mr-3"></span>
-                    KYC Verification
-                </h3>
-                <span class="px-2 py-1 text-[10px] font-black uppercase tracking-widest rounded 
-                    @if($tenant->kyc_status === 'VERIFIED') bg-green-500/10 text-green-500
-                    @elseif($tenant->kyc_status === 'PENDING') bg-yellow-500/10 text-yellow-500
-                    @else bg-red-500/10 text-red-500 @endif">
-                    {{ $tenant->kyc_status }}
-                </span>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="space-y-4">
-                    <div>
-                        <p class="text-[8px] font-black text-supabase-muted uppercase tracking-widest">KTP Name</p>
-                        <p class="text-sm font-bold text-white mt-1">{{ $tenant->ktp_name ?? '-' }}</p>
-                    </div>
-                    <div>
-                        <p class="text-[8px] font-black text-supabase-muted uppercase tracking-widest">KTP NIK</p>
-                        <p class="text-sm font-bold text-white mt-1">{{ $tenant->ktp_number ?? '-' }}</p>
-                    </div>
-                    @if($tenant->kyc_reject_reason)
-                    <div>
-                        <p class="text-[8px] font-black text-red-500 uppercase tracking-widest">Reject Reason</p>
-                        <p class="text-xs text-red-400 mt-1">{{ $tenant->kyc_reject_reason }}</p>
-                    </div>
-                    @endif
-                </div>
-
-                <div class="flex flex-col space-y-4">
-                    @if($tenant->ktp_image_path)
-                    <a href="{{ asset('storage/' . $tenant->ktp_image_path) }}" target="_blank" class="flex items-center justify-center p-4 bg-supabase-dark border border-supabase-border rounded-xl hover:border-supabase-accent/50 transition-colors group">
-                        <svg class="w-6 h-6 text-supabase-muted group-hover:text-supabase-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                        <span class="text-xs font-black text-white uppercase tracking-widest">View KTP Document</span>
-                    </a>
-                    @else
-                    <div class="p-4 bg-supabase-dark border border-supabase-border/50 rounded-xl text-center text-[10px] font-bold text-supabase-muted uppercase">
-                        No Document Uploaded
-                    </div>
-                    @endif
-
-                    @if($tenant->kyc_status === 'PENDING')
-                    <div class="flex space-x-3 pt-2">
-                        <button type="button" onclick="document.getElementById('approve-kyc-form').submit();" class="flex-1 sb-button-primary !py-2 bg-green-500 text-white border-none hover:bg-green-600">
-                            Approve KYC
-                        </button>
-                        <button type="button" onclick="showRejectKycModal()" class="flex-1 p-2 bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-black uppercase tracking-widest rounded-lg hover:bg-red-500 hover:text-white transition-colors">
-                            Reject
-                        </button>
-                    </div>
-                    @endif
                 </div>
             </div>
         </div>

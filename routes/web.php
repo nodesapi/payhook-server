@@ -95,9 +95,8 @@ Route::middleware(['auth', 'verified'])->prefix('tenant')->name('tenant.')->grou
     Route::get('/setup', [\App\Http\Controllers\Tenant\SetupController::class, 'create'])->name('setup');
     Route::post('/setup', [\App\Http\Controllers\Tenant\SetupController::class, 'store'])->name('setup.store');
     
-    Route::get('/kyc-pending', function () {
-        return view('tenant.kyc-pending');
-    })->name('kyc.pending');
+    Route::get('/kyc-pending', [\App\Http\Controllers\Tenant\SetupController::class, 'pending'])->name('kyc.pending');
+    Route::post('/kyc-pending/payment-proof', [\App\Http\Controllers\Tenant\SetupController::class, 'uploadPaymentProof'])->name('kyc.upload-payment');
 
     Route::get('/kyc-rejected', function () {
         return view('tenant.kyc-rejected');

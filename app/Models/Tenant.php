@@ -38,6 +38,7 @@ class Tenant extends Model
         'ktp_number',
         'ktp_image_path',
         'kyc_reject_reason',
+        'payment_proof_path',
     ];
 
     protected $casts = [

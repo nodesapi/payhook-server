@@ -75,4 +75,34 @@ class SetupController extends Controller
 
         return redirect()->route('tenant.kyc.pending')->with('success', 'Setup completed. Please wait for admin approval.');
     }
+
+    public function pending()
+    {
+        $user = auth()->user();
+        $tenant = Tenant::where('email', $user->email)->first();
+
+        return view('tenant.kyc-pending', compact('tenant'));
+    }
+
+    public function uploadPaymentProof(Request $request)
+    {
+        $user = auth()->user();
+        $tenant = Tenant::where('email', $user->email)->first();
+
+        if (!$tenant) {
+            return redirect()->route('tenant.setup');
+        }
+
+        $request->validate([
+            'payment_proof' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        $path = $request->file('payment_proof')->store('payment-proofs', 'public');
+
+        $tenant->update([
+            'payment_proof_path' => $path,
+        ]);
+
+        return back()->with('success', 'Bukti pembayaran berhasil diunggah dan sedang ditinjau.');
+    }
 }
