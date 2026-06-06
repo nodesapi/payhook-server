@@ -229,62 +229,157 @@
 </div>
 
 <!-- Modal Add QRIS -->
-<div id="modalAddQris" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-    <div class="bg-supabase-surface border border-supabase-border rounded-3xl w-full max-w-md overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
+<div id="modalAddQris" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300 pointer-events-none">
+    <div class="pointer-events-auto bg-supabase-surface border border-supabase-border rounded-3xl w-full max-w-2xl overflow-hidden shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] transform scale-95 transition-transform duration-300">
         <form action="{{ route('admin.system-config.qris') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="p-6 border-b border-supabase-border flex justify-between items-center bg-supabase-dark/50">
-                <h3 class="text-xs font-black text-white uppercase tracking-[0.2em]">Add Platform QRIS</h3>
-                <button type="button" onclick="toggleModal('modalAddQris')" class="text-supabase-muted hover:text-white transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <div class="p-6 border-b border-supabase-border flex justify-between items-center bg-supabase-dark/80 backdrop-blur-md">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-supabase-accent/10 flex items-center justify-center border border-supabase-accent/20">
+                        <svg class="w-4 h-4 text-supabase-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    </div>
+                    <h3 class="text-sm font-black text-white uppercase tracking-[0.2em]">Add Platform QRIS</h3>
+                </div>
+                <button type="button" onclick="toggleModal('modalAddQris')" class="p-2 rounded-xl bg-supabase-dark border border-supabase-border text-supabase-muted hover:text-white hover:border-white/20 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            <div class="p-6 space-y-6">
-                <div class="space-y-2">
-                    <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">QRIS Name</label>
-                    <input type="text" name="name" class="sb-input" placeholder="e.g. Main QRIS" required>
+            <div class="p-8 space-y-8 bg-gradient-to-b from-supabase-surface to-supabase-dark/30">
+                <div class="space-y-4">
+                    <label class="block text-[10px] font-black text-supabase-accent uppercase tracking-[0.2em]">1. Select QRIS Provider</label>
+                    @if($qrisChannels->count() > 0)
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            @foreach($qrisChannels as $channel)
+                                <label class="relative cursor-pointer group">
+                                    <input type="radio" name="name" value="{{ $channel->name }}" class="peer sr-only" required>
+                                    <div class="p-4 border border-supabase-border rounded-2xl bg-supabase-dark peer-checked:border-supabase-accent peer-checked:bg-supabase-accent/5 group-hover:border-supabase-border/80 transition-all flex flex-col items-center justify-center h-28 text-center gap-3 relative overflow-hidden">
+                                        <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 peer-checked:opacity-100"></div>
+                                        @if($channel->logo_url)
+                                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1 shadow-inner relative z-10">
+                                                <img src="{{ $channel->logo_url }}" class="max-h-full max-w-full object-contain" alt="{{ $channel->name }}">
+                                            </div>
+                                        @else
+                                            <div class="w-12 h-12 bg-supabase-surface rounded-xl flex items-center justify-center border border-supabase-border relative z-10">
+                                                <span class="text-xs font-black text-white">{{ substr($channel->name, 0, 2) }}</span>
+                                            </div>
+                                        @endif
+                                        <span class="text-[9px] font-black text-supabase-muted uppercase tracking-widest relative z-10 group-hover:text-white transition-colors peer-checked:text-white">{{ $channel->name }}</span>
+                                    </div>
+                                    <div class="absolute -top-2 -right-2 w-6 h-6 bg-supabase-accent rounded-full text-supabase-dark flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-all shadow-[0_0_15px_rgba(251,191,36,0.4)] scale-50 peer-checked:scale-100">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                    </div>
+                                </label>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="p-6 bg-red-500/10 border border-red-500/20 rounded-2xl flex flex-col items-center justify-center text-center">
+                            <div class="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mb-3">
+                                <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            </div>
+                            <p class="text-xs font-black text-white uppercase tracking-widest">No QRIS Master Channels</p>
+                            <p class="text-[10px] text-supabase-muted mt-2 font-bold uppercase tracking-widest">Please add them in Master Channels first.</p>
+                        </div>
+                    @endif
                 </div>
-                <div class="space-y-2">
-                    <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">QRIS Image</label>
-                    <input type="file" name="qris_image" class="sb-input !p-2 bg-supabase-dark" accept="image/*" required>
+                <div class="space-y-4 pt-6 border-t border-supabase-border/50">
+                    <label class="block text-[10px] font-black text-supabase-accent uppercase tracking-[0.2em]">2. Upload QRIS Image</label>
+                    <div class="relative border-2 border-dashed border-supabase-border hover:border-supabase-accent/50 rounded-2xl bg-supabase-dark/50 p-8 text-center transition-colors group cursor-pointer overflow-hidden">
+                        <input type="file" name="qris_image" id="qrisFileInput" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/*" required>
+                        <div id="qrisUploadState" class="flex flex-col items-center justify-center space-y-3 relative z-0">
+                            <div class="w-12 h-12 bg-supabase-surface rounded-full flex items-center justify-center border border-supabase-border group-hover:bg-supabase-accent/10 group-hover:border-supabase-accent/30 transition-all">
+                                <svg class="w-6 h-6 text-supabase-muted group-hover:text-supabase-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div>
+                                <p class="text-xs font-black text-white uppercase tracking-widest">Click to browse or drag image here</p>
+                                <p class="text-[10px] text-supabase-muted mt-1 font-bold uppercase tracking-widest">PNG, JPG up to 2MB</p>
+                            </div>
+                        </div>
+                        <img id="qrisImagePreview" src="" class="hidden absolute inset-0 w-full h-full object-contain p-2 bg-supabase-dark z-20 pointer-events-none">
+                    </div>
                 </div>
             </div>
-            <div class="p-6 border-t border-supabase-border bg-supabase-dark/50 flex justify-end space-x-4">
-                <button type="button" onclick="toggleModal('modalAddQris')" class="text-[10px] font-black text-supabase-muted uppercase tracking-widest hover:text-white">Cancel</button>
-                <button type="submit" class="sb-button-primary !w-auto !py-3 !px-8 !text-[10px]">Save QRIS</button>
+            <div class="p-6 border-t border-supabase-border bg-supabase-dark flex justify-end items-center space-x-6">
+                <button type="button" onclick="toggleModal('modalAddQris')" class="text-[10px] font-black text-supabase-muted uppercase tracking-[0.2em] hover:text-white transition-colors">Cancel</button>
+                <button type="submit" class="sb-button-primary !w-auto !py-3 !px-10 !text-[10px]">
+                    Save QRIS Template
+                </button>
             </div>
         </form>
     </div>
 </div>
 
 <!-- Modal Add Bank -->
-<div id="modalAddBank" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-    <div class="bg-supabase-surface border border-supabase-border rounded-3xl w-full max-w-md overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
+<div id="modalAddBank" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300 pointer-events-none">
+    <div class="pointer-events-auto bg-supabase-surface border border-supabase-border rounded-3xl w-full max-w-2xl overflow-hidden shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] transform scale-95 transition-transform duration-300">
         <form action="{{ route('admin.system-config.bank') }}" method="POST">
             @csrf
-            <div class="p-6 border-b border-supabase-border flex justify-between items-center bg-supabase-dark/50">
-                <h3 class="text-xs font-black text-white uppercase tracking-[0.2em]">Add Platform Bank</h3>
-                <button type="button" onclick="toggleModal('modalAddBank')" class="text-supabase-muted hover:text-white transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <div class="p-6 border-b border-supabase-border flex justify-between items-center bg-supabase-dark/80 backdrop-blur-md">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    </div>
+                    <h3 class="text-sm font-black text-white uppercase tracking-[0.2em]">Add Platform Bank</h3>
+                </div>
+                <button type="button" onclick="toggleModal('modalAddBank')" class="p-2 rounded-xl bg-supabase-dark border border-supabase-border text-supabase-muted hover:text-white hover:border-white/20 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
-            <div class="p-6 space-y-6">
-                <div class="space-y-2">
-                    <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Bank Name</label>
-                    <input type="text" name="bank_name" class="sb-input" placeholder="e.g. BCA / Mandiri" required>
+            <div class="p-8 space-y-8 bg-gradient-to-b from-supabase-surface to-supabase-dark/30">
+                <div class="space-y-4">
+                    <label class="block text-[10px] font-black text-blue-500 uppercase tracking-[0.2em]">1. Select Bank Provider</label>
+                    @if($bankChannels->count() > 0)
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            @foreach($bankChannels as $channel)
+                                <label class="relative cursor-pointer group">
+                                    <input type="radio" name="bank_name" value="{{ $channel->name }}" class="peer sr-only" required>
+                                    <div class="p-4 border border-supabase-border rounded-2xl bg-supabase-dark peer-checked:border-blue-500 peer-checked:bg-blue-500/5 group-hover:border-supabase-border/80 transition-all flex flex-col items-center justify-center h-28 text-center gap-3 relative overflow-hidden">
+                                        <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 peer-checked:opacity-100"></div>
+                                        @if($channel->logo_url)
+                                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1 shadow-inner relative z-10">
+                                                <img src="{{ $channel->logo_url }}" class="max-h-full max-w-full object-contain" alt="{{ $channel->name }}">
+                                            </div>
+                                        @else
+                                            <div class="w-12 h-12 bg-supabase-surface rounded-xl flex items-center justify-center border border-supabase-border relative z-10">
+                                                <span class="text-xs font-black text-white uppercase">{{ substr($channel->name, 0, 3) }}</span>
+                                            </div>
+                                        @endif
+                                        <span class="text-[9px] font-black text-supabase-muted uppercase tracking-widest relative z-10 group-hover:text-white transition-colors peer-checked:text-white">{{ $channel->name }}</span>
+                                    </div>
+                                    <div class="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 rounded-full text-white flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-all shadow-[0_0_15px_rgba(59,130,246,0.4)] scale-50 peer-checked:scale-100">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                    </div>
+                                </label>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="p-6 bg-red-500/10 border border-red-500/20 rounded-2xl flex flex-col items-center justify-center text-center">
+                            <div class="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mb-3">
+                                <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            </div>
+                            <p class="text-xs font-black text-white uppercase tracking-widest">No Bank Master Channels</p>
+                            <p class="text-[10px] text-supabase-muted mt-2 font-bold uppercase tracking-widest">Please add them in Master Channels first.</p>
+                        </div>
+                    @endif
                 </div>
-                <div class="space-y-2">
-                    <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Account Number</label>
-                    <input type="text" name="account_number" class="sb-input" required>
-                </div>
-                <div class="space-y-2">
-                    <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Account Name</label>
-                    <input type="text" name="account_name" class="sb-input" required>
+                <div class="space-y-4 pt-6 border-t border-supabase-border/50">
+                    <label class="block text-[10px] font-black text-blue-500 uppercase tracking-[0.2em]">2. Account Details</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Account Number</label>
+                            <input type="text" name="account_number" class="sb-input" placeholder="e.g. 1234567890" required>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Account Name</label>
+                            <input type="text" name="account_name" class="sb-input" placeholder="e.g. PT Cekbayar Teknologi" required>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="p-6 border-t border-supabase-border bg-supabase-dark/50 flex justify-end space-x-4">
-                <button type="button" onclick="toggleModal('modalAddBank')" class="text-[10px] font-black text-supabase-muted uppercase tracking-widest hover:text-white">Cancel</button>
-                <button type="submit" class="sb-button-primary !w-auto !py-3 !px-8 !text-[10px] !bg-blue-500 !text-white !shadow-blue-500/20">Save Bank</button>
+            <div class="p-6 border-t border-supabase-border bg-supabase-dark flex justify-end items-center space-x-6">
+                <button type="button" onclick="toggleModal('modalAddBank')" class="text-[10px] font-black text-supabase-muted uppercase tracking-[0.2em] hover:text-white transition-colors">Cancel</button>
+                <button type="submit" class="sb-button-primary !w-auto !py-3 !px-10 !text-[10px] !bg-blue-500 !text-white !shadow-blue-500/20">
+                    Save Bank Account
+                </button>
             </div>
         </form>
     </div>
@@ -320,17 +415,37 @@
             // Small delay for transition
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
-                modalContent.classList.remove('scale-95');
-                modalContent.classList.add('scale-100');
+                modalContent.classList.remove('scale-95', 'translate-y-4');
+                modalContent.classList.add('scale-100', 'translate-y-0');
             }, 10);
         } else {
             modal.classList.add('opacity-0');
-            modalContent.classList.remove('scale-100');
-            modalContent.classList.add('scale-95');
+            modalContent.classList.remove('scale-100', 'translate-y-0');
+            modalContent.classList.add('scale-95', 'translate-y-4');
             setTimeout(() => {
                 modal.classList.add('hidden');
             }, 300);
         }
+    }
+
+    // QRIS Image Preview Logic
+    const qrisInput = document.getElementById('qrisFileInput');
+    const qrisPreview = document.getElementById('qrisImagePreview');
+    const qrisUploadState = document.getElementById('qrisUploadState');
+
+    if(qrisInput) {
+        qrisInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    qrisPreview.src = e.target.result;
+                    qrisPreview.classList.remove('hidden');
+                    qrisUploadState.style.opacity = '0';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
     }
 </script>
 <style>

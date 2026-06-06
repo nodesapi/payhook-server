@@ -29,7 +29,10 @@ class SystemConfigController extends Controller
             'MAIL_FROM_ADDRESS' => env('MAIL_FROM_ADDRESS', 'finance@cekbayar.com'),
         ];
 
-        return view('admin.settings.index', compact('masterTenant', 'mailConfig'));
+        $bankChannels = \App\Models\MasterPaymentChannel::where('type', 'bank_transfer')->where('is_active', true)->get();
+        $qrisChannels = \App\Models\MasterPaymentChannel::where('type', 'qris')->where('is_active', true)->get();
+
+        return view('admin.settings.index', compact('masterTenant', 'mailConfig', 'bankChannels', 'qrisChannels'));
     }
 
     public function initializeBilling(Request $request)
