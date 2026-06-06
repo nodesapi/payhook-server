@@ -36,14 +36,14 @@
         <div class="space-y-4">
             <form method="POST" action="{{ route('verification.send') }}">
                 @csrf
-                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-black bg-yellow-500 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 focus:ring-offset-[#111111] transition-all duration-200">
+                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-black bg-yellow-500 hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 focus:ring-offset-[#111111] transition-all duration-200" style="color: #000000 !important;">
                     {{ __('Kirim Ulang Email Verifikasi') }}
                 </button>
             </form>
 
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-gray-700 rounded-xl shadow-sm text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 focus:ring-offset-[#111111] transition-all duration-200">
+                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-gray-700 rounded-xl shadow-sm text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 focus:ring-offset-[#111111] transition-all duration-200" style="border-color: #374151 !important;">
                     {{ __('Log Out') }}
                 </button>
             </form>
