@@ -20,7 +20,11 @@
         <!-- Message -->
         <h1 class="text-3xl font-black text-white mb-4 uppercase tracking-tight">SEDANG <span class="text-yellow-500">DIPROSES</span></h1>
         <p class="text-supabase-muted mb-8 leading-relaxed text-sm font-bold">
-            Pengajuan langganan dan verifikasi identitas (KYC) Anda sedang ditinjau oleh tim kami. Silakan selesaikan pembayaran paket secara manual jika belum melakukannya.
+            @if(isset($tenant) && $tenant->payment_proof_path)
+                Terima kasih! Bukti pembayaran dan dokumen identitas Anda telah kami terima. Tim admin sedang melakukan verifikasi akhir untuk mengaktifkan akun Anda.
+            @else
+                Pengajuan langganan dan verifikasi identitas (KYC) Anda sedang ditinjau oleh tim kami. Silakan selesaikan pembayaran paket secara manual jika belum melakukannya.
+            @endif
         </p>
 
         <!-- Actions -->
