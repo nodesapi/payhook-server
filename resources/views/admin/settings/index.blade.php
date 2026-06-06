@@ -1,306 +1,341 @@
 @extends('layouts.admin')
 
+@section('page-title', 'System Config')
+
 @section('content')
-<div class="container-fluid py-4">
-    <div class="row mb-4">
-        <div class="col-12">
-            <h2 class="font-weight-bolder mb-0">Platform Settings & Config</h2>
-            <p class="text-sm text-muted">Kelola SMTP Email dan Saluran Pembayaran Platform (Master Tenant).</p>
-        </div>
-    </div>
 
-    @if(session('success'))
-    <div class="alert alert-success text-white">
-        {{ session('success') }}
-    </div>
-    @endif
-    @if(session('error'))
-    <div class="alert alert-danger text-white">
-        {{ session('error') }}
-    </div>
-    @endif
-    @if ($errors->any())
-    <div class="alert alert-danger text-white">
-        <ul class="mb-0">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-
-    <div class="row">
-        <!-- TABS NAV -->
-        <div class="col-md-3">
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-body p-3">
-                    <ul class="nav nav-pills flex-column" id="settingsTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="billing-tab" data-bs-toggle="tab" href="#billing" role="tab">
-                                <i class="fas fa-wallet me-2"></i> Master Billing (QRIS)
-                            </a>
-                        </li>
-                        <li class="nav-item mt-1">
-                            <a class="nav-link" id="email-tab" data-bs-toggle="tab" href="#email" role="tab">
-                                <i class="fas fa-envelope me-2"></i> SMTP Email
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- TABS CONTENT -->
-        <div class="col-md-9">
-            <div class="tab-content" id="settingsTabContent">
-                
-                <!-- TAB 1: MASTER BILLING -->
-                <div class="tab-pane fade show active" id="billing" role="tabpanel">
-                    @if(!$masterTenant)
-                    <div class="card shadow-sm border-0">
-                        <div class="card-header bg-white border-bottom pb-0 pt-4">
-                            <h5 class="mb-0 text-primary"><i class="fas fa-info-circle me-2"></i> Inisialisasi Master Billing</h5>
-                            <p class="text-sm text-muted mt-2">Anda belum memiliki akun Master Tenant untuk menerima pembayaran langganan pengguna. Masukkan password di bawah ini untuk meng-otomatisasi pembuatan akun <b>finance@cekbayar.com</b>.</p>
-                        </div>
-                        <div class="card-body">
-                            <form action="{{ route('admin.system-config.initialize') }}" method="POST">
-                                @csrf
-                                <div class="mb-3">
-                                    <label class="form-label">Email Master</label>
-                                    <input type="text" class="form-control" value="finance@cekbayar.com" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Password Aplikasi Android</label>
-                                    <input type="password" name="password" class="form-control" placeholder="Minimal 8 karakter" required>
-                                    <small class="text-muted">Password ini akan Anda gunakan untuk login di aplikasi Android Relay Payhook.</small>
-                                </div>
-                                <button type="submit" class="btn btn-primary w-100">Buat Akun Billing</button>
-                            </form>
-                        </div>
-                    </div>
-                    @else
-                    
-                    <!-- KELOLA QRIS & BANK -->
-                    <div class="card shadow-sm border-0 mb-4">
-                        <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center pb-3 pt-4">
-                            <div>
-                                <h5 class="mb-0 text-primary"><i class="fas fa-qrcode me-2"></i> QRIS Platform</h5>
-                                <p class="text-sm text-muted mt-1 mb-0">QRIS untuk tagihan langganan otomatis</p>
-                            </div>
-                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddQris">
-                                + Tambah QRIS
-                            </button>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table align-items-center mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama QRIS</th>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Gambar</th>
-                                            <th class="text-secondary opacity-7"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse($masterTenant->qrisTemplates as $qris)
-                                        <tr>
-                                            <td>
-                                                <p class="text-sm font-weight-bold mb-0 ps-3">{{ $qris->name }}</p>
-                                            </td>
-                                            <td>
-                                                <img src="{{ Storage::url($qris->image_path) }}" alt="{{ $qris->name }}" class="img-fluid rounded" style="max-height: 50px;">
-                                            </td>
-                                            <td class="text-end pe-4">
-                                                <form action="{{ route('admin.system-config.qris.destroy', $qris->id) }}" method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-link text-danger mb-0" onclick="return confirm('Hapus QRIS ini?')"><i class="fas fa-trash"></i></button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        @empty
-                                        <tr>
-                                            <td colspan="3" class="text-center py-4">
-                                                <p class="text-sm text-muted mb-0">Belum ada QRIS platform. Silakan tambahkan.</p>
-                                            </td>
-                                        </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card shadow-sm border-0">
-                        <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center pb-3 pt-4">
-                            <div>
-                                <h5 class="mb-0 text-primary"><i class="fas fa-university me-2"></i> Rekening Bank Platform</h5>
-                                <p class="text-sm text-muted mt-1 mb-0">Opsi transfer bank manual (Dicek oleh Relay Android)</p>
-                            </div>
-                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddBank">
-                                + Tambah Bank
-                            </button>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table align-items-center mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Bank</th>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">No Rekening</th>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Atas Nama</th>
-                                            <th class="text-secondary opacity-7"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                            $bankAccounts = \App\Models\BankAccount::where('tenant_id', $masterTenant->id)->get();
-                                        @endphp
-                                        @forelse($bankAccounts as $bank)
-                                        <tr>
-                                            <td>
-                                                <p class="text-sm font-weight-bold mb-0 ps-3">{{ $bank->bank_name }}</p>
-                                            </td>
-                                            <td>
-                                                <p class="text-sm mb-0">{{ $bank->account_number }}</p>
-                                            </td>
-                                            <td>
-                                                <p class="text-sm mb-0">{{ $bank->account_name }}</p>
-                                            </td>
-                                            <td class="text-end pe-4">
-                                                <form action="{{ route('admin.system-config.bank.destroy', $bank->id) }}" method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-link text-danger mb-0" onclick="return confirm('Hapus Bank ini?')"><i class="fas fa-trash"></i></button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        @empty
-                                        <tr>
-                                            <td colspan="4" class="text-center py-4">
-                                                <p class="text-sm text-muted mb-0">Belum ada Rekening Bank. Silakan tambahkan.</p>
-                                            </td>
-                                        </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    @endif
-                </div>
-
-                <!-- TAB 2: EMAIL SMTP -->
-                <div class="tab-pane fade" id="email" role="tabpanel">
-                    <div class="card shadow-sm border-0">
-                        <div class="card-header bg-white border-bottom pb-0 pt-4">
-                            <h5 class="mb-0 text-primary"><i class="fas fa-envelope-open-text me-2"></i> Konfigurasi SMTP Email</h5>
-                            <p class="text-sm text-muted mt-2">Email ini akan digunakan untuk mengirim *Invoice* pendaftaran dan Notifikasi Lunas ke pengguna. Data disimpan ke file <code>.env</code>.</p>
-                        </div>
-                        <div class="card-body">
-                            <form action="{{ route('admin.system-config.smtp') }}" method="POST">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-md-8 mb-3">
-                                        <label class="form-label">MAIL_HOST</label>
-                                        <input type="text" name="MAIL_HOST" class="form-control" value="{{ $mailConfig['MAIL_HOST'] }}" required>
-                                        <small class="text-muted">Contoh: mail.cekbayar.com</small>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label class="form-label">MAIL_PORT</label>
-                                        <input type="text" name="MAIL_PORT" class="form-control" value="{{ $mailConfig['MAIL_PORT'] }}" required>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">MAIL_USERNAME</label>
-                                    <input type="text" name="MAIL_USERNAME" class="form-control" value="{{ $mailConfig['MAIL_USERNAME'] }}" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">MAIL_PASSWORD</label>
-                                    <input type="password" name="MAIL_PASSWORD" class="form-control" placeholder="Kosongkan jika tidak ingin mengubah password saat ini">
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">MAIL_ENCRYPTION</label>
-                                        <input type="text" name="MAIL_ENCRYPTION" class="form-control" value="{{ $mailConfig['MAIL_ENCRYPTION'] }}">
-                                        <small class="text-muted">ssl / tls / kosong</small>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">MAIL_FROM_ADDRESS</label>
-                                        <input type="email" name="MAIL_FROM_ADDRESS" class="form-control" value="{{ $mailConfig['MAIL_FROM_ADDRESS'] }}" required>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary w-100 mt-2">Simpan Konfigurasi SMTP</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+<!-- Page Header -->
+<div class="mb-12">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div>
+            <h1 class="text-4xl font-black text-white tracking-tight uppercase">System <span class="text-supabase-accent">Config</span></h1>
+            <p class="text-supabase-muted mt-2">Manage SMTP email and platform master billing channels.</p>
         </div>
     </div>
 </div>
 
+<div class="flex flex-col lg:flex-row gap-8">
+    <!-- TABS NAV -->
+    <div class="w-full lg:w-64 flex-shrink-0">
+        <div class="bg-supabase-surface border border-supabase-border rounded-3xl p-4 shadow-2xl sticky top-24">
+            <ul class="space-y-2">
+                <li>
+                    <button onclick="switchTab('billing')" id="tab-btn-billing" class="w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all bg-supabase-accent text-supabase-dark shadow-lg shadow-supabase-accent/20">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Master Billing
+                        </div>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="switchTab('email')" id="tab-btn-email" class="w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all text-supabase-muted hover:bg-supabase-dark hover:text-white">
+                        <div class="flex items-center">
+                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            SMTP Email
+                        </div>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- TABS CONTENT -->
+    <div class="flex-1 min-w-0">
+        
+        <!-- TAB 1: MASTER BILLING -->
+        <div id="tab-content-billing" class="block space-y-8">
+            @if(!$masterTenant)
+            <div class="bg-supabase-surface border border-supabase-border rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+                <div class="absolute inset-0 opacity-5 bg-[radial-gradient(#fbbf24_1px,transparent_1px)] [background-size:24px_24px]"></div>
+                <div class="relative z-10">
+                    <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-2 flex items-center">
+                        <span class="w-2 h-2 bg-supabase-accent rounded-full mr-3 animate-pulse"></span>
+                        Initialize Master Billing
+                    </h3>
+                    <p class="text-xs font-bold text-supabase-muted uppercase tracking-widest mb-8">You don't have a Master Tenant. Provide a password to auto-generate the finance@cekbayar.com account.</p>
+
+                    <form action="{{ route('admin.system-config.initialize') }}" method="POST" class="space-y-6 max-w-md">
+                        @csrf
+                        <div class="space-y-2">
+                            <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Master Email</label>
+                            <input type="text" value="finance@cekbayar.com" class="sb-input bg-supabase-dark/50 cursor-not-allowed text-supabase-muted" readonly>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Mobile App Password</label>
+                            <input type="password" name="password" class="sb-input" placeholder="Min 8 characters" required>
+                            <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-tighter">You will use this to login to the Android Relay App.</p>
+                        </div>
+                        <button type="submit" class="sb-button-primary !w-full">Initialize Account</button>
+                    </form>
+                </div>
+            </div>
+            @else
+            
+            <!-- QRIS SECTION -->
+            <div class="bg-supabase-surface border border-supabase-border rounded-3xl overflow-hidden shadow-2xl">
+                <div class="p-6 border-b border-supabase-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] flex items-center">
+                            <span class="w-1.5 h-1.5 bg-supabase-accent rounded-full mr-3 shadow-[0_0_10px_rgba(251,191,36,0.5)]"></span>
+                            Platform QRIS
+                        </h3>
+                        <p class="text-[10px] text-supabase-muted uppercase font-bold tracking-tighter mt-1">QRIS used for subscription automated billing.</p>
+                    </div>
+                    <button onclick="toggleModal('modalAddQris')" class="sb-button-primary !w-auto !py-3 !px-6 !text-[10px]">
+                        + Add QRIS
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-supabase-dark border-b border-supabase-border">
+                            <tr>
+                                <th class="px-6 py-4 text-[10px] font-black text-supabase-muted uppercase tracking-widest">QRIS Name</th>
+                                <th class="px-6 py-4 text-[10px] font-black text-supabase-muted uppercase tracking-widest">Image</th>
+                                <th class="px-6 py-4 text-[10px] font-black text-supabase-muted uppercase tracking-widest text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-supabase-border/50">
+                            @forelse($masterTenant->qrisTemplates as $qris)
+                            <tr class="hover:bg-supabase-dark/50 transition-colors">
+                                <td class="px-6 py-4"><span class="text-sm font-black text-white uppercase tracking-tight">{{ $qris->name }}</span></td>
+                                <td class="px-6 py-4">
+                                    <div class="w-16 h-16 bg-white p-1 rounded-xl">
+                                        <img src="{{ Storage::url($qris->image_path) }}" class="w-full h-full object-contain rounded-lg">
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <form action="{{ route('admin.system-config.qris.destroy', $qris->id) }}" method="POST" onsubmit="return confirm('Delete this QRIS?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="text-[10px] font-black text-red-500 hover:text-white uppercase tracking-widest transition-colors">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="3" class="px-6 py-12 text-center">
+                                    <p class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">No QRIS templates found.</p>
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- BANK SECTION -->
+            <div class="bg-supabase-surface border border-supabase-border rounded-3xl overflow-hidden shadow-2xl">
+                <div class="p-6 border-b border-supabase-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] flex items-center">
+                            <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
+                            Platform Bank Accounts
+                        </h3>
+                        <p class="text-[10px] text-supabase-muted uppercase font-bold tracking-tighter mt-1">Manual bank transfer options.</p>
+                    </div>
+                    <button onclick="toggleModal('modalAddBank')" class="sb-button-primary !w-auto !py-3 !px-6 !text-[10px] !bg-blue-500 !text-white !shadow-blue-500/20">
+                        + Add Bank
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-supabase-dark border-b border-supabase-border">
+                            <tr>
+                                <th class="px-6 py-4 text-[10px] font-black text-supabase-muted uppercase tracking-widest">Bank Name</th>
+                                <th class="px-6 py-4 text-[10px] font-black text-supabase-muted uppercase tracking-widest">Account Number</th>
+                                <th class="px-6 py-4 text-[10px] font-black text-supabase-muted uppercase tracking-widest">Account Name</th>
+                                <th class="px-6 py-4 text-[10px] font-black text-supabase-muted uppercase tracking-widest text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-supabase-border/50">
+                            @php $bankAccounts = \App\Models\BankAccount::where('tenant_id', $masterTenant->id)->get(); @endphp
+                            @forelse($bankAccounts as $bank)
+                            <tr class="hover:bg-supabase-dark/50 transition-colors">
+                                <td class="px-6 py-4"><span class="text-sm font-black text-white uppercase tracking-tight">{{ $bank->bank_name }}</span></td>
+                                <td class="px-6 py-4"><span class="text-xs font-bold text-supabase-muted">{{ $bank->account_number }}</span></td>
+                                <td class="px-6 py-4"><span class="text-xs font-bold text-supabase-muted">{{ $bank->account_name }}</span></td>
+                                <td class="px-6 py-4 text-right">
+                                    <form action="{{ route('admin.system-config.bank.destroy', $bank->id) }}" method="POST" onsubmit="return confirm('Delete this Bank Account?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="text-[10px] font-black text-red-500 hover:text-white uppercase tracking-widest transition-colors">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="px-6 py-12 text-center">
+                                    <p class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">No Bank accounts found.</p>
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @endif
+        </div>
+
+        <!-- TAB 2: EMAIL SMTP -->
+        <div id="tab-content-email" class="hidden">
+            <div class="bg-supabase-surface border border-supabase-border rounded-3xl p-8 shadow-2xl">
+                <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-2 flex items-center">
+                    <span class="w-1.5 h-1.5 bg-supabase-accent rounded-full mr-3 shadow-[0_0_10px_rgba(251,191,36,0.5)]"></span>
+                    SMTP Configuration
+                </h3>
+                <p class="text-[10px] text-supabase-muted uppercase font-bold tracking-widest mb-8">This writes directly to the .env file.</p>
+
+                <form action="{{ route('admin.system-config.smtp') }}" method="POST" class="space-y-6">
+                    @csrf
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="space-y-2 md:col-span-2">
+                            <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">MAIL_HOST</label>
+                            <input type="text" name="MAIL_HOST" class="sb-input" value="{{ $mailConfig['MAIL_HOST'] }}" required>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">MAIL_PORT</label>
+                            <input type="text" name="MAIL_PORT" class="sb-input" value="{{ $mailConfig['MAIL_PORT'] }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">MAIL_USERNAME</label>
+                        <input type="text" name="MAIL_USERNAME" class="sb-input" value="{{ $mailConfig['MAIL_USERNAME'] }}" required>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">MAIL_PASSWORD</label>
+                        <input type="password" name="MAIL_PASSWORD" class="sb-input" placeholder="Leave blank to keep unchanged">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">MAIL_ENCRYPTION</label>
+                            <input type="text" name="MAIL_ENCRYPTION" class="sb-input" value="{{ $mailConfig['MAIL_ENCRYPTION'] }}" placeholder="ssl / tls">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">MAIL_FROM_ADDRESS</label>
+                            <input type="email" name="MAIL_FROM_ADDRESS" class="sb-input" value="{{ $mailConfig['MAIL_FROM_ADDRESS'] }}" required>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-supabase-border flex justify-end">
+                        <button type="submit" class="sb-button-primary !w-auto !py-4 !px-12">Save SMTP Config</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <!-- Modal Add QRIS -->
-<div class="modal fade" id="modalAddQris" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+<div id="modalAddQris" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+    <div class="bg-supabase-surface border border-supabase-border rounded-3xl w-full max-w-md overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
         <form action="{{ route('admin.system-config.qris') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Tambah QRIS Platform</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="p-6 border-b border-supabase-border flex justify-between items-center bg-supabase-dark/50">
+                <h3 class="text-xs font-black text-white uppercase tracking-[0.2em]">Add Platform QRIS</h3>
+                <button type="button" onclick="toggleModal('modalAddQris')" class="text-supabase-muted hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-6 space-y-6">
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">QRIS Name</label>
+                    <input type="text" name="name" class="sb-input" placeholder="e.g. Main QRIS" required>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Nama QRIS</label>
-                        <input type="text" class="form-control" name="name" placeholder="Misal: QRIS Utama" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Gambar QRIS</label>
-                        <input type="file" class="form-control" name="qris_image" accept="image/*" required>
-                    </div>
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">QRIS Image</label>
+                    <input type="file" name="qris_image" class="sb-input !p-2 bg-supabase-dark" accept="image/*" required>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan QRIS</button>
-                </div>
+            </div>
+            <div class="p-6 border-t border-supabase-border bg-supabase-dark/50 flex justify-end space-x-4">
+                <button type="button" onclick="toggleModal('modalAddQris')" class="text-[10px] font-black text-supabase-muted uppercase tracking-widest hover:text-white">Cancel</button>
+                <button type="submit" class="sb-button-primary !w-auto !py-3 !px-8 !text-[10px]">Save QRIS</button>
             </div>
         </form>
     </div>
 </div>
 
 <!-- Modal Add Bank -->
-<div class="modal fade" id="modalAddBank" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+<div id="modalAddBank" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+    <div class="bg-supabase-surface border border-supabase-border rounded-3xl w-full max-w-md overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300">
         <form action="{{ route('admin.system-config.bank') }}" method="POST">
             @csrf
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Tambah Bank Platform</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="p-6 border-b border-supabase-border flex justify-between items-center bg-supabase-dark/50">
+                <h3 class="text-xs font-black text-white uppercase tracking-[0.2em]">Add Platform Bank</h3>
+                <button type="button" onclick="toggleModal('modalAddBank')" class="text-supabase-muted hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-6 space-y-6">
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Bank Name</label>
+                    <input type="text" name="bank_name" class="sb-input" placeholder="e.g. BCA / Mandiri" required>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Nama Bank</label>
-                        <input type="text" class="form-control" name="bank_name" placeholder="BCA / Mandiri / BNI" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">No Rekening</label>
-                        <input type="text" class="form-control" name="account_number" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Atas Nama</label>
-                        <input type="text" class="form-control" name="account_name" required>
-                    </div>
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Account Number</label>
+                    <input type="text" name="account_number" class="sb-input" required>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan Bank</button>
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Account Name</label>
+                    <input type="text" name="account_name" class="sb-input" required>
                 </div>
+            </div>
+            <div class="p-6 border-t border-supabase-border bg-supabase-dark/50 flex justify-end space-x-4">
+                <button type="button" onclick="toggleModal('modalAddBank')" class="text-[10px] font-black text-supabase-muted uppercase tracking-widest hover:text-white">Cancel</button>
+                <button type="submit" class="sb-button-primary !w-auto !py-3 !px-8 !text-[10px] !bg-blue-500 !text-white !shadow-blue-500/20">Save Bank</button>
             </div>
         </form>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    function switchTab(tabName) {
+        const tabs = ['billing', 'email'];
+        
+        tabs.forEach(t => {
+            const btn = document.getElementById('tab-btn-' + t);
+            const content = document.getElementById('tab-content-' + t);
+            
+            if (t === tabName) {
+                btn.className = 'w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all bg-supabase-accent text-supabase-dark shadow-lg shadow-supabase-accent/20';
+                content.classList.remove('hidden');
+                content.classList.add('block', 'animate-fade-in');
+            } else {
+                btn.className = 'w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all text-supabase-muted hover:bg-supabase-dark hover:text-white';
+                content.classList.add('hidden');
+                content.classList.remove('block', 'animate-fade-in');
+            }
+        });
+    }
+
+    function toggleModal(modalID) {
+        const modal = document.getElementById(modalID);
+        const modalContent = modal.querySelector('div');
+        
+        if (modal.classList.contains('hidden')) {
+            modal.classList.remove('hidden');
+            // Small delay for transition
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
+        } else {
+            modal.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+    }
+</script>
+<style>
+    .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+@endpush
 @endsection
