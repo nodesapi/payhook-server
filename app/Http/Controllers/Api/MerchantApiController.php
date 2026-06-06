@@ -1091,10 +1091,16 @@ class MerchantApiController extends Controller
             return null;
         }
 
-        return Tenant::where('api_key_production', $apiKey)
+        $tenant = Tenant::where('api_key_production', $apiKey)
             ->orWhere('api_key_sandbox', $apiKey)
             ->where('is_active', true)
             ->first();
+
+        if ($tenant && !$tenant->is_master && !$tenant->isSubscriptionActive()) {
+            abort(response()->json(['success' => false, 'message' => 'Subscription expired or inactive. Please renew.'], 403));
+        }
+
+        return $tenant;
     }
 
     private function maskSecret(?string $secret): ?string

@@ -146,7 +146,7 @@ class DashboardController extends Controller
                 $invoice->generateQris();
             }
 
-            return redirect()->route('invoices.show', $invoice->id)
+            return redirect()->route('invoices.show', $invoice->invoice_number)
                 ->with('success', '✅ Test invoice created! You can now pay using QRIS or bank transfer.');
         } catch (\Exception $e) {
             return back()->with('error', "❌ Failed to create test invoice: {$e->getMessage()}");

@@ -73,6 +73,35 @@ class SetupController extends Controller
             ]);
         }
 
+        // Generate Subscription Invoice using Master Tenant
+        $masterTenant = Tenant::where('is_master', true)->first();
+        if ($masterTenant && $validated['plan_id']) {
+            $plan = Plan::find($validated['plan_id']);
+            
+            $invoice = \App\Models\Invoice::firstOrCreate([
+                'tenant_id' => $masterTenant->id,
+                'customer_email' => $user->email,
+                'status' => 'pending',
+                'description' => 'Subscription: ' . $plan->name,
+            ], [
+                'customer_name' => $tenant->name,
+                'customer_phone' => $tenant->phone ?? '-',
+                'amount' => $plan->price,
+                'expires_at' => now()->addDays(1),
+            ]);
+
+            // Auto-generate QRIS if master tenant has a template
+            $template = \App\Models\QrisTemplate::where('tenant_id', $masterTenant->id)->active()->first();
+            if ($template && !$invoice->qris_string) {
+                $invoice->generateQris($template->id);
+            }
+
+            // Send Email Notification
+            \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\SubscriptionInvoiceMail($invoice, $tenant));
+
+            return redirect()->route('invoices.show', $invoice->invoice_number)->with('success', 'Setup completed. Please complete your subscription payment.');
+        }
+
         return redirect()->route('tenant.kyc.pending')->with('success', 'Setup completed. Please wait for admin approval.');
     }
 

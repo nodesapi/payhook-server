@@ -150,6 +150,25 @@ class WebhookController extends Controller
         $invoice = $matchingInvoices->first();
         $invoice->markAsPaid($source, $notificationText);
 
+        // Dogfooding Auto-Activation
+        if ($tenant->is_master && \Illuminate\Support\Str::startsWith($invoice->description, 'Subscription:')) {
+            $customerTenant = Tenant::where('email', $invoice->customer_email)->first();
+            if ($customerTenant) {
+                $planName = trim(str_replace('Subscription:', '', $invoice->description));
+                $plan = \App\Models\Plan::where('name', $planName)->first();
+                $days = $plan ? $plan->duration_days : 30;
+                $newExpiry = $customerTenant->isSubscriptionActive() 
+                    ? $customerTenant->expired_at->addDays($days) 
+                    : now()->addDays($days);
+                
+                $customerTenant->update([
+                    'expired_at' => $newExpiry,
+                ]);
+
+                \Illuminate\Support\Facades\Mail::to($customerTenant->email)->send(new \App\Mail\SubscriptionActivatedMail($customerTenant, $planName));
+            }
+        }
+
         // Dispatch outgoing callback to tenant if configured
         $invoiceTenant = Tenant::find($invoice->tenant_id);
         if ($invoiceTenant && $invoiceTenant->webhook_enabled && $invoiceTenant->callback_url) {
@@ -277,6 +296,29 @@ class WebhookController extends Controller
             $request->input('source', 'Manual Confirmation'),
             $request->input('notes')
         );
+
+        // Dogfooding Auto-Activation
+        if ($tenant->is_master && \Illuminate\Support\Str::startsWith($invoice->description, 'Subscription:')) {
+            $customerTenant = Tenant::where('email', $invoice->customer_email)->first();
+            if ($customerTenant) {
+                // Find plan name from description "Subscription: Plan Name"
+                $planName = trim(str_replace('Subscription:', '', $invoice->description));
+                $plan = \App\Models\Plan::where('name', $planName)->first();
+                
+                $days = $plan ? $plan->duration_days : 30; // Fallback to 30 days
+                
+                $newExpiry = $customerTenant->isSubscriptionActive() 
+                    ? $customerTenant->expired_at->addDays($days) 
+                    : now()->addDays($days);
+                
+                $customerTenant->update([
+                    'expired_at' => $newExpiry,
+                    // keep kyc_status as is, but subscription is active
+                ]);
+
+                \Illuminate\Support\Facades\Mail::to($customerTenant->email)->send(new \App\Mail\SubscriptionActivatedMail($customerTenant, $planName));
+            }
+        }
 
         return response()->json([
             'status' => 'confirmed',

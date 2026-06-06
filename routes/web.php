@@ -44,6 +44,11 @@ if (!function_exists('registerPublicRoutes')) {
                 app()->setLocale($prefix ?: 'id');
                 return view('privacy');
             })->name('public.privacy');
+
+            // Public Invoice Routes
+            Route::get('/invoices/{invoice:invoice_number}', [\App\Http\Controllers\InvoiceController::class, 'show'])->name('invoices.show');
+            Route::get('/invoices/{invoice:invoice_number}/pdf', [\App\Http\Controllers\InvoiceController::class, 'downloadPdf'])->name('invoices.pdf');
+            Route::get('/invoices/{invoice:invoice_number}/print', [\App\Http\Controllers\InvoiceController::class, 'print'])->name('invoices.print');
         });
     }
 }
