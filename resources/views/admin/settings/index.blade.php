@@ -147,14 +147,13 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-supabase-border/50">
-                            @php $bankAccounts = \App\Models\BankAccount::where('tenant_id', $masterTenant->id)->get(); @endphp
                             @forelse($bankAccounts as $bank)
                             <tr class="hover:bg-supabase-dark/50 transition-colors">
                                 <td class="px-6 py-4"><span class="text-sm font-bold text-white uppercase tracking-normal">{{ $bank->bank_name }}</span></td>
                                 <td class="px-6 py-4"><span class="text-xs font-bold text-supabase-muted">{{ $bank->account_number }}</span></td>
                                 <td class="px-6 py-4"><span class="text-xs font-bold text-supabase-muted">{{ $bank->account_name }}</span></td>
                                 <td class="px-6 py-4 text-right">
-                                    <form action="{{ route('admin.system-config.bank.destroy', $bank->id) }}" method="POST" onsubmit="return confirm('Delete this Bank Account?')">
+                                    <form action="{{ route('admin.system-config.bank.delete', $bank->id) }}" method="POST" onsubmit="return confirm('Delete this Bank Account?')">
                                         @csrf @method('DELETE')
                                         <button type="submit" class="text-[10px] font-bold text-red-500 hover:text-white uppercase tracking-wider transition-colors">Delete</button>
                                     </form>
@@ -164,6 +163,55 @@
                             <tr>
                                 <td colspan="4" class="px-6 py-12 text-center">
                                     <p class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">No Bank accounts found.</p>
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- EWALLET SECTION -->
+            <div class="bg-supabase-surface border border-supabase-border rounded-3xl overflow-hidden shadow-2xl">
+                <div class="p-6 border-b border-supabase-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center">
+                            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-3 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></span>
+                            Platform E-Wallets
+                        </h3>
+                        <p class="text-[10px] text-supabase-muted uppercase font-bold tracking-normal mt-1">Manual E-Wallet transfer options.</p>
+                    </div>
+                    <button onclick="toggleModal('modalAddEwallet')" class="sb-button-primary !w-auto !py-3 !px-6 !text-[10px] !bg-emerald-500 !text-white !shadow-emerald-500/20">
+                        + Add E-Wallet
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-supabase-dark border-b border-supabase-border">
+                            <tr>
+                                <th class="px-6 py-4 text-[10px] font-bold text-supabase-muted uppercase tracking-wider">E-Wallet Name</th>
+                                <th class="px-6 py-4 text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Phone Number</th>
+                                <th class="px-6 py-4 text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Account Name</th>
+                                <th class="px-6 py-4 text-[10px] font-bold text-supabase-muted uppercase tracking-wider text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-supabase-border/50">
+                            @forelse($ewalletAccounts as $ewallet)
+                            <tr class="hover:bg-supabase-dark/50 transition-colors">
+                                <td class="px-6 py-4"><span class="text-sm font-bold text-white uppercase tracking-normal">{{ $ewallet->bank_name }}</span></td>
+                                <td class="px-6 py-4"><span class="text-xs font-bold text-supabase-muted">{{ $ewallet->account_number }}</span></td>
+                                <td class="px-6 py-4"><span class="text-xs font-bold text-supabase-muted">{{ $ewallet->account_name }}</span></td>
+                                <td class="px-6 py-4 text-right">
+                                    <form action="{{ route('admin.system-config.bank.delete', $ewallet->id) }}" method="POST" onsubmit="return confirm('Delete this E-Wallet?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="text-[10px] font-bold text-red-500 hover:text-white uppercase tracking-wider transition-colors">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="px-6 py-12 text-center">
+                                    <p class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">No E-Wallet accounts found.</p>
                                 </td>
                             </tr>
                             @endforelse
@@ -379,6 +427,83 @@
                 <button type="button" onclick="toggleModal('modalAddBank')" class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider hover:text-white transition-colors">Cancel</button>
                 <button type="submit" class="sb-button-primary !w-auto !py-3 !px-10 !text-[10px] !bg-blue-500 !text-white !shadow-blue-500/20">
                     Save Bank Account
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Add E-Wallet -->
+<div id="modalAddEwallet" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300 pointer-events-none">
+    <div class="pointer-events-auto bg-supabase-surface border border-supabase-border rounded-3xl w-full max-w-2xl overflow-hidden shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] transform scale-95 transition-transform duration-300">
+        <form action="{{ route('admin.system-config.ewallet') }}" method="POST">
+            @csrf
+            <div class="p-6 border-b border-supabase-border flex justify-between items-center bg-supabase-dark/80 backdrop-blur-md">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                        <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    </div>
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wider">Add Platform E-Wallet</h3>
+                </div>
+                <button type="button" onclick="toggleModal('modalAddEwallet')" class="p-2 rounded-xl bg-supabase-dark border border-supabase-border text-supabase-muted hover:text-white hover:border-white/20 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-8 space-y-8 bg-gradient-to-b from-supabase-surface to-supabase-dark/30">
+                <div class="space-y-4">
+                    <label class="block text-[10px] font-bold text-emerald-500 uppercase tracking-wider">1. Select E-Wallet Provider</label>
+                    @if($ewalletChannels->count() > 0)
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            @foreach($ewalletChannels as $channel)
+                                <label class="relative cursor-pointer group">
+                                    <input type="radio" name="ewallet_name" value="{{ $channel->name }}" class="peer sr-only" required>
+                                    <div class="p-4 border border-supabase-border rounded-2xl bg-supabase-dark peer-checked:border-emerald-500 peer-checked:bg-emerald-500/5 group-hover:border-supabase-border/80 transition-all flex flex-col items-center justify-center h-28 text-center gap-3 relative overflow-hidden">
+                                        <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 peer-checked:opacity-100"></div>
+                                        @if($channel->logo_url)
+                                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1 shadow-inner relative z-10">
+                                                <img src="{{ $channel->logo_url }}" class="max-h-full max-w-full object-contain" alt="{{ $channel->name }}">
+                                            </div>
+                                        @else
+                                            <div class="w-12 h-12 bg-supabase-surface rounded-xl flex items-center justify-center border border-supabase-border relative z-10">
+                                                <span class="text-xs font-bold text-white uppercase">{{ substr($channel->name, 0, 3) }}</span>
+                                            </div>
+                                        @endif
+                                        <span class="text-[9px] font-bold text-supabase-muted uppercase tracking-wider relative z-10 group-hover:text-white transition-colors peer-checked:text-white">{{ $channel->name }}</span>
+                                    </div>
+                                    <div class="absolute -top-2 -right-2 w-6 h-6 bg-emerald-500 rounded-full text-white flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-all shadow-[0_0_15px_rgba(16,185,129,0.4)] scale-50 peer-checked:scale-100">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                    </div>
+                                </label>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="p-6 bg-red-500/10 border border-red-500/20 rounded-2xl flex flex-col items-center justify-center text-center">
+                            <div class="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mb-3">
+                                <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            </div>
+                            <p class="text-xs font-bold text-white uppercase tracking-wider">No E-Wallet Master Channels</p>
+                            <p class="text-[10px] text-supabase-muted mt-2 font-bold uppercase tracking-wider">Please add them in Master Channels first.</p>
+                        </div>
+                    @endif
+                </div>
+                <div class="space-y-4 pt-6 border-t border-supabase-border/50">
+                    <label class="block text-[10px] font-bold text-emerald-500 uppercase tracking-wider">2. Account Details</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Phone Number</label>
+                            <input type="text" name="phone_number" class="sb-input" placeholder="e.g. 08123456789" required>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Account Name</label>
+                            <input type="text" name="account_name" class="sb-input" placeholder="e.g. PT Cekbayar" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 border-t border-supabase-border bg-supabase-dark flex justify-end items-center space-x-6">
+                <button type="button" onclick="toggleModal('modalAddEwallet')" class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider hover:text-white transition-colors">Cancel</button>
+                <button type="submit" class="sb-button-primary !w-auto !py-3 !px-10 !text-[10px] !bg-emerald-500 !text-white !shadow-emerald-500/20">
+                    Save E-Wallet
                 </button>
             </div>
         </form>

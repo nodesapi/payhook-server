@@ -100,8 +100,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('system-config/smtp', [\App\Http\Controllers\Admin\SystemConfigController::class, 'updateSmtp'])->name('system-config.smtp');
     Route::post('system-config/qris', [\App\Http\Controllers\Admin\SystemConfigController::class, 'storeQris'])->name('system-config.qris');
     Route::delete('system-config/qris/{id}', [\App\Http\Controllers\Admin\SystemConfigController::class, 'deleteQris'])->name('system-config.qris.destroy');
-    Route::post('system-config/bank', [\App\Http\Controllers\Admin\SystemConfigController::class, 'storeBank'])->name('system-config.bank');
-    Route::delete('system-config/bank/{id}', [\App\Http\Controllers\Admin\SystemConfigController::class, 'deleteBank'])->name('system-config.bank.destroy');
+    Route::post('/system-config/bank', [\App\Http\Controllers\Admin\SystemConfigController::class, 'storeBank'])->name('system-config.bank');
+    Route::delete('/system-config/bank/{id}', [\App\Http\Controllers\Admin\SystemConfigController::class, 'deleteBank'])->name('system-config.bank.delete');
+    Route::post('/system-config/ewallet', [\App\Http\Controllers\Admin\SystemConfigController::class, 'storeEwallet'])->name('system-config.ewallet');
 });
 
 // Tenant Setup Routes (Auth only, no KYC/Subscription check)

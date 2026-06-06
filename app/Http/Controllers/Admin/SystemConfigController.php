@@ -30,9 +30,25 @@ class SystemConfigController extends Controller
         ];
 
         $bankChannels = \App\Models\MasterPaymentChannel::where('type', 'bank_transfer')->where('is_active', true)->get();
+        $ewalletChannels = \App\Models\MasterPaymentChannel::where('type', 'ewallet')->where('is_active', true)->get();
         $qrisChannels = \App\Models\MasterPaymentChannel::where('type', 'qris')->where('is_active', true)->get();
 
-        return view('admin.settings.index', compact('masterTenant', 'mailConfig', 'bankChannels', 'qrisChannels'));
+        $bankAccounts = [];
+        $ewalletAccounts = [];
+        if ($masterTenant) {
+            $allAccounts = \App\Models\BankAccount::where('tenant_id', $masterTenant->id)->get();
+            foreach ($allAccounts as $acc) {
+                if ($bankChannels->contains('name', $acc->bank_name)) {
+                    $bankAccounts[] = $acc;
+                } elseif ($ewalletChannels->contains('name', $acc->bank_name)) {
+                    $ewalletAccounts[] = $acc;
+                } else {
+                    $bankAccounts[] = $acc; // default to bank if unknown
+                }
+            }
+        }
+
+        return view('admin.settings.index', compact('masterTenant', 'mailConfig', 'bankChannels', 'ewalletChannels', 'qrisChannels', 'bankAccounts', 'ewalletAccounts'));
     }
 
     public function initializeBilling(Request $request)
@@ -221,5 +237,37 @@ class SystemConfigController extends Controller
         $bank->delete();
 
         return back()->with('success', 'Rekening Bank dihapus.');
+    }
+
+    public function storeEwallet(Request $request)
+    {
+        $request->validate([
+            'ewallet_name' => 'required|string|max:100',
+            'phone_number' => 'required|string|max:50',
+            'account_name' => 'required|string|max:100',
+        ]);
+
+        $masterTenant = Tenant::where('is_master', true)->firstOrFail();
+
+        \App\Models\BankAccount::create([
+            'tenant_id' => $masterTenant->id,
+            'bank_name' => $request->ewallet_name,
+            'account_number' => $request->phone_number,
+            'account_name' => $request->account_name,
+            'is_active' => true,
+        ]);
+
+        // Auto create or update an E-Wallet payment channel
+        $masterTenant->paymentChannels()->updateOrCreate(
+            ['channel_type' => 'ewallet', 'provider' => $request->ewallet_name],
+            [
+                'channel_name' => 'E-Wallet ' . $request->ewallet_name,
+                'is_active' => true,
+                'fee_percentage' => 0,
+                'fee_fixed' => 0,
+            ]
+        );
+
+        return back()->with('success', 'E-Wallet berhasil ditambahkan.');
     }
 }
