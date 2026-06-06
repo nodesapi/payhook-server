@@ -103,16 +103,27 @@
                             <label class="block text-sm font-medium text-slate-300">Unggah Foto KTP <span class="text-red-500">*</span></label>
                             <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-supabase-border border-dashed rounded-2xl hover:border-supabase-accent/50 transition-colors">
                                 <div class="space-y-1 text-center">
-                                    <svg class="mx-auto h-12 w-12 text-supabase-muted" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                    <svg id="ktp-icon" class="mx-auto h-12 w-12 text-supabase-muted transition-colors" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                                         <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
-                                    <div class="flex text-sm text-slate-400 justify-center">
-                                        <label for="ktp_image" class="relative cursor-pointer rounded-md font-medium text-supabase-accent hover:text-white focus-within:outline-none">
-                                            <span>Pilih File KTP</span>
-                                            <input id="ktp_image" name="ktp_image" type="file" class="sr-only" required accept="image/*">
+                                    <div class="flex text-sm text-slate-400 justify-center mt-2">
+                                        <label for="ktp_image" class="relative cursor-pointer rounded-md font-medium text-supabase-accent hover:text-white focus-within:outline-none transition-colors">
+                                            <span id="ktp-btn-text">Pilih File KTP</span>
+                                            <input id="ktp_image" name="ktp_image" type="file" class="sr-only" required accept="image/*" 
+                                                onchange="
+                                                    const file = this.files[0];
+                                                    if(file) {
+                                                        document.getElementById('ktp-filename').textContent = 'File terpilih: ' + file.name;
+                                                        document.getElementById('ktp-filename').classList.remove('hidden');
+                                                        document.getElementById('ktp-icon').classList.remove('text-supabase-muted');
+                                                        document.getElementById('ktp-icon').classList.add('text-supabase-accent');
+                                                        document.getElementById('ktp-btn-text').textContent = 'Ganti File KTP';
+                                                    }
+                                                ">
                                         </label>
                                     </div>
-                                    <p class="text-xs text-supabase-muted">PNG, JPG, WEBP maksimal 2MB</p>
+                                    <p id="ktp-filename" class="text-sm font-bold text-white mt-1 hidden"></p>
+                                    <p class="text-xs text-supabase-muted mt-1">PNG, JPG, WEBP maksimal 2MB</p>
                                 </div>
                             </div>
                             @error('ktp_image') <p class="text-xs text-red-400 mt-1">{{ $message }}</p> @enderror
