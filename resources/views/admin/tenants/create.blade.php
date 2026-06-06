@@ -6,12 +6,12 @@
 <div class="w-full mx-auto">
     <!-- Header -->
     <div class="mb-12">
-        <div class="flex items-center space-x-2 text-[10px] font-bold text-supabase-muted uppercase tracking-widest mb-4">
+        <div class="flex items-center space-x-2 text-[10px] font-bold text-supabase-muted uppercase tracking-wider mb-4">
             <a href="{{ route('admin.tenants.index') }}" class="hover:text-supabase-accent transition-colors">Tenants</a>
             <span>/</span>
             <span class="text-white">New Registry</span>
         </div>
-        <h1 class="text-4xl font-black text-white tracking-tight uppercase">Onboard <span class="text-supabase-accent">Merchant</span></h1>
+        <h1 class="text-4xl font-bold text-white tracking-normal uppercase">Onboard <span class="text-supabase-accent">Merchant</span></h1>
         <p class="text-supabase-muted mt-2">Initialize a new business entity into the Cekbayar ecosystem.</p>
     </div>
 
@@ -22,19 +22,19 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Identity -->
             <div class="bg-supabase-surface border border-supabase-border rounded-2xl p-8 space-y-6">
-                <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-4 flex items-center">
+                <h3 class="text-xs font-bold text-white uppercase tracking-wider mb-4 flex items-center">
                     <span class="w-1.5 h-1.5 bg-supabase-accent rounded-full mr-3"></span>
                     Merchant Identity
                 </h3>
                 
                 <div class="space-y-2">
-                    <label for="name" class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Legal Name</label>
+                    <label for="name" class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Legal Name</label>
                     <input type="text" id="name" name="name" value="{{ old('name') }}" required class="sb-input" placeholder="e.g. PT Maju Jaya Digital"/>
                     @error('name')<p class="text-[10px] text-red-500 font-bold uppercase mt-1">{{ $message }}</p>@enderror
                 </div>
 
                 <div class="space-y-2">
-                    <label for="email" class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Primary Contact Email</label>
+                    <label for="email" class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Primary Contact Email</label>
                     <input type="email" id="email" name="email" value="{{ old('email') }}" required class="sb-input" placeholder="owner@merchant.com"/>
                     @error('email')<p class="text-[10px] text-red-500 font-bold uppercase mt-1">{{ $message }}</p>@enderror
                 </div>
@@ -42,13 +42,13 @@
 
             <!-- Subscription -->
             <div class="bg-supabase-surface border border-supabase-border rounded-2xl p-8 space-y-6">
-                <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-4 flex items-center">
+                <h3 class="text-xs font-bold text-white uppercase tracking-wider mb-4 flex items-center">
                     <span class="w-1.5 h-1.5 bg-supabase-accent rounded-full mr-3"></span>
                     Subscription Plan
                 </h3>
                 
                 <div class="space-y-2">
-                    <label for="plan_id" class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Select Plan Matrix</label>
+                    <label for="plan_id" class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Select Plan Matrix</label>
                     <select id="plan_id" name="plan_id" class="sb-input bg-supabase-dark">
                         <option value="">No Active Plan</option>
                         @foreach($plans as $plan)
@@ -59,24 +59,24 @@
                     </select>
                     @error('plan_id')<p class="text-[10px] text-red-500 font-bold uppercase mt-1">{{ $message }}</p>@enderror
                 </div>
-                <p class="text-[8px] text-supabase-muted font-bold uppercase tracking-tight">Assigning a plan will automatically calculate the initial expiry date based on the plan duration.</p>
+                <p class="text-[8px] text-supabase-muted font-bold uppercase tracking-normal">Assigning a plan will automatically calculate the initial expiry date based on the plan duration.</p>
             </div>
 
             <!-- Connectivity -->
             <div class="bg-supabase-surface border border-supabase-border rounded-2xl p-8 space-y-6">
-                <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-4 flex items-center">
+                <h3 class="text-xs font-bold text-white uppercase tracking-wider mb-4 flex items-center">
                     <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3"></span>
                     Webhook Architecture
                 </h3>
 
                 <div class="space-y-2">
-                    <label for="webhook_url" class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Endpoint URL</label>
+                    <label for="webhook_url" class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Endpoint URL</label>
                     <input type="url" id="webhook_url" name="webhook_url" value="{{ old('webhook_url') }}" required class="sb-input" placeholder="https://api.merchant.com/Cekbayar"/>
                     @error('webhook_url')<p class="text-[10px] text-red-500 font-bold uppercase mt-1">{{ $message }}</p>@enderror
                 </div>
 
                 <div class="space-y-2">
-                    <label for="webhook_secret" class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Signing Secret</label>
+                    <label for="webhook_secret" class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Signing Secret</label>
                     <div class="relative group">
                         <input type="text" id="webhook_secret" name="webhook_secret" value="{{ old('webhook_secret') }}" class="sb-input pr-12" placeholder="Auto-generated if blank"/>
                         <button type="button" onclick="copyField('webhook_secret')" class="absolute right-3 top-1/2 -translate-y-1/2 text-supabase-muted hover:text-supabase-accent transition-colors">
@@ -91,20 +91,20 @@
         <div class="bg-supabase-surface border border-supabase-border rounded-2xl p-8">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
                 <div>
-                    <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] flex items-center">
+                    <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center">
                         <span class="w-1.5 h-1.5 bg-red-500 rounded-full mr-3"></span>
                         Android App Authentication
                     </h3>
                     <p class="text-[10px] text-supabase-muted font-bold uppercase mt-1">Credentials for the Android Notification Relay</p>
                 </div>
-                <button type="button" onclick="generatePassword()" class="text-[10px] font-black bg-supabase-accent text-supabase-dark px-4 py-2 rounded-lg uppercase tracking-widest hover:scale-105 transition-transform active:scale-95 shadow-lg shadow-supabase-accent/10">
+                <button type="button" onclick="generatePassword()" class="text-[10px] font-bold bg-supabase-accent text-supabase-dark px-4 py-2 rounded-lg uppercase tracking-wider hover:scale-105 transition-transform active:scale-95 shadow-lg shadow-supabase-accent/10">
                     Auto-Generate Keys
                 </button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="space-y-2">
-                    <label for="password" class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Master Password</label>
+                    <label for="password" class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Master Password</label>
                     <div class="relative">
                         <input type="text" id="password" name="password" required class="sb-input font-mono" placeholder="Min. 8 characters"/>
                         <button type="button" onclick="copyField('password')" class="absolute right-3 top-1/2 -translate-y-1/2 text-supabase-muted hover:text-supabase-accent transition-colors">
@@ -114,7 +114,7 @@
                     @error('password')<p class="text-[10px] text-red-500 font-bold uppercase mt-1">{{ $message }}</p>@enderror
                 </div>
                 <div class="space-y-2">
-                    <label for="password_confirmation" class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Confirm Logic</label>
+                    <label for="password_confirmation" class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Confirm Logic</label>
                     <input type="text" id="password_confirmation" name="password_confirmation" required class="sb-input font-mono" placeholder="Verify password"/>
                 </div>
             </div>
@@ -126,7 +126,7 @@
                     <div class="h-1 flex-1 rounded-full bg-supabase-input border border-supabase-border overflow-hidden"><div class="h-full transition-all duration-500 w-0" id="str-3"></div></div>
                     <div class="h-1 flex-1 rounded-full bg-supabase-input border border-supabase-border overflow-hidden"><div class="h-full transition-all duration-500 w-0" id="str-4"></div></div>
                 </div>
-                <p id="str-label" class="text-[8px] font-black uppercase tracking-[0.2em] text-supabase-muted text-right"></p>
+                <p id="str-label" class="text-[8px] font-bold uppercase tracking-wider text-supabase-muted text-right"></p>
             </div>
         </div>
 
@@ -137,7 +137,7 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
                 <div class="space-y-4">
-                    <h4 class="text-sm font-black text-white uppercase tracking-widest">Onboarding Protocol</h4>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider">Onboarding Protocol</h4>
                     <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
                         <li class="flex items-center text-[10px] font-bold text-blue-400 uppercase tracking-wider">
                             <span class="w-1 h-1 bg-blue-400 rounded-full mr-3"></span>
@@ -162,7 +162,7 @@
 
         <!-- Actions -->
         <div class="flex items-center justify-end space-x-6 pt-8 border-t border-supabase-border">
-            <a href="{{ route('admin.tenants.index') }}" class="text-[10px] font-black text-supabase-muted uppercase tracking-widest hover:text-white transition-colors">Abort Changes</a>
+            <a href="{{ route('admin.tenants.index') }}" class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider hover:text-white transition-colors">Abort Changes</a>
             <button type="submit" class="sb-button-primary !w-auto !py-3 !px-12">
                 Deploy Tenant
             </button>
@@ -206,7 +206,7 @@ function checkStrength(pwd) {
         b.className = 'h-full transition-all duration-500 ' + (i < score ? colors[score - 1] : 'w-0');
     });
     label.textContent = labels[score - 1] || 'Scanning...';
-    label.className = 'text-[8px] font-black uppercase tracking-[0.2em] text-right ' + (score > 0 ? colors[score-1].replace('bg-', 'text-') : 'text-supabase-muted');
+    label.className = 'text-[8px] font-bold uppercase tracking-wider text-right ' + (score > 0 ? colors[score-1].replace('bg-', 'text-') : 'text-supabase-muted');
 }
 
 document.getElementById('password').addEventListener('input', e => checkStrength(e.target.value));

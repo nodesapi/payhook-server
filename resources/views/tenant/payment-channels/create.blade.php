@@ -13,7 +13,7 @@
             </svg>
         </a>
         <div>
-            <h1 class="text-4xl font-black text-white tracking-tight uppercase">Provision <span class="text-supabase-accent">Channel</span></h1>
+            <h1 class="text-4xl font-bold text-white tracking-normal uppercase">Provision <span class="text-supabase-accent">Channel</span></h1>
             <p class="text-supabase-muted mt-2">Initialize a new financial entry node for automated reconciliation.</p>
         </div>
     </div>
@@ -27,7 +27,7 @@
         <!-- Channel Type Selection -->
         <div class="bg-supabase-surface border border-supabase-border rounded-3xl p-8 space-y-8 shadow-2xl">
             <div>
-                <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-6 flex items-center">
+                <h3 class="text-xs font-bold text-white uppercase tracking-wider mb-6 flex items-center">
                     <span class="w-1.5 h-1.5 bg-supabase-accent rounded-full mr-3 shadow-[0_0_10px_rgba(251,191,36,0.5)]"></span>
                     Select Infrastructure Type
                 </h3>
@@ -50,8 +50,8 @@
                                         @endif
                                     @endif
                                 </div>
-                                <span class="text-[10px] font-black text-white uppercase tracking-widest peer-checked:text-supabase-accent">{{ $channel->name }}</span>
-                                <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-tighter mt-1">{{ str_replace('_', ' ', $channel->type) }}</p>
+                                <span class="text-[10px] font-bold text-white uppercase tracking-wider peer-checked:text-supabase-accent">{{ $channel->name }}</span>
+                                <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-normal mt-1">{{ str_replace('_', ' ', $channel->type) }}</p>
                             </div>
                             <div class="absolute bottom-0 right-0 w-8 h-8 flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity">
                                 <div class="w-3 h-3 bg-supabase-accent rounded-full shadow-[0_0_10px_rgba(251,191,36,0.8)]"></div>
@@ -59,15 +59,15 @@
                         </label>
                     @endforeach
                 </div>
-                @error('channel_type')<p class="mt-4 text-[10px] font-black text-red-500 uppercase tracking-widest">{{ $message }}</p>@enderror
+                @error('channel_type')<p class="mt-4 text-[10px] font-bold text-red-500 uppercase tracking-wider">{{ $message }}</p>@enderror
             </div>
 
             <!-- Identity Input -->
             <div class="space-y-2">
-                <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Internal Node Alias</label>
+                <label class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Internal Node Alias</label>
                 <input type="text" name="channel_name" value="{{ old('channel_name') }}" placeholder="e.g. Master QRIS Branch A" class="sb-input" required>
-                <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-tighter">Recognition label for dashboard metrics</p>
-                @error('channel_name')<p class="mt-1 text-[10px] font-black text-red-500 uppercase tracking-widest">{{ $message }}</p>@enderror
+                <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-normal">Recognition label for dashboard metrics</p>
+                @error('channel_name')<p class="mt-1 text-[10px] font-bold text-red-500 uppercase tracking-wider">{{ $message }}</p>@enderror
             </div>
         </div>
 
@@ -75,17 +75,17 @@
         <div id="dynamic-fields-container" class="space-y-8">
             <!-- E-Wallet Section -->
             <div id="ewallet-fields" class="hidden bg-supabase-surface border border-supabase-border rounded-3xl p-8 space-y-6 animate-in fade-in slide-in-from-top-4 duration-500">
-                <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-4 flex items-center">
+                <h3 class="text-xs font-bold text-white uppercase tracking-wider mb-4 flex items-center">
                     <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
                     E-Wallet Parameters
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="space-y-2">
-                        <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Phone Identifier</label>
+                        <label class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Phone Identifier</label>
                         <input type="text" name="account_number" id="ewallet_phone" value="{{ old('account_number') }}" placeholder="08XXXXXXXXXX" class="sb-input">
                     </div>
                     <div class="space-y-2">
-                        <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Owner Identity</label>
+                        <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Owner Identity</label>
                         <input type="text" name="account_name" id="ewallet_name" value="{{ old('account_name') }}" placeholder="As listed in application" class="sb-input">
                     </div>
                 </div>
@@ -93,7 +93,7 @@
 
             <!-- QRIS Section -->
             <div id="qris-fields" class="hidden bg-supabase-surface border border-supabase-border rounded-3xl p-8 space-y-8 animate-in fade-in slide-in-from-top-4 duration-500">
-                <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-4 flex items-center">
+                <h3 class="text-xs font-bold text-white uppercase tracking-wider mb-4 flex items-center">
                     <span class="w-1.5 h-1.5 bg-supabase-accent rounded-full mr-3 shadow-[0_0_10px_rgba(251,191,36,0.5)]"></span>
                     QRIS Core Matrix
                 </h3>
@@ -109,8 +109,8 @@
                                     <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                                 </div>
                                 <div class="space-y-1">
-                                    <p class="text-[10px] font-black text-white uppercase tracking-widest">Inject Static QRIS</p>
-                                    <p class="text-[8px] text-supabase-muted font-bold uppercase tracking-tighter">Supports PNG, JPG (MAX 2MB)</p>
+                                    <p class="text-[10px] font-bold text-white uppercase tracking-wider">Inject Static QRIS</p>
+                                    <p class="text-[8px] text-supabase-muted font-bold uppercase tracking-normal">Supports PNG, JPG (MAX 2MB)</p>
                                 </div>
                             </div>
                         </label>
@@ -120,21 +120,21 @@
 
             <!-- Bank Transfer Section -->
             <div id="bank-fields" class="hidden bg-supabase-surface border border-supabase-border rounded-3xl p-8 space-y-8 animate-in fade-in slide-in-from-top-4 duration-500">
-                <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-4 flex items-center">
+                <h3 class="text-xs font-bold text-white uppercase tracking-wider mb-4 flex items-center">
                     <span class="w-1.5 h-1.5 bg-green-500 rounded-full mr-3 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></span>
                     Bank Protocol Settings
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="space-y-2">
-                        <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Bank Institution</label>
+                        <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Bank Institution</label>
                         <input type="text" name="provider" id="bank_name" placeholder="e.g. BCA, BNI" class="sb-input">
                     </div>
                     <div class="space-y-2">
-                        <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Account Number</label>
+                        <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Account Number</label>
                         <input type="text" name="account_number" id="bank_account" placeholder="XXXXXXXXXX" class="sb-input">
                     </div>
                     <div class="space-y-2">
-                        <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Account Holder</label>
+                        <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Account Holder</label>
                         <input type="text" name="account_name" id="bank_holder" placeholder="Legal Account Name" class="sb-input">
                     </div>
                 </div>
@@ -142,13 +142,13 @@
 
             <!-- Virtual Account Section -->
             <div id="va-fields" class="hidden bg-supabase-surface border border-supabase-border rounded-3xl p-8 space-y-8 animate-in fade-in slide-in-from-top-4 duration-500">
-                <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-4 flex items-center">
+                <h3 class="text-xs font-bold text-white uppercase tracking-wider mb-4 flex items-center">
                     <span class="w-1.5 h-1.5 bg-purple-500 rounded-full mr-3 shadow-[0_0_10px_rgba(168,85,247,0.5)]"></span>
                     Virtual Account Configuration
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="space-y-2">
-                        <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Bank Provider</label>
+                        <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Bank Provider</label>
                         <select name="provider" id="va_bank" class="sb-input bg-supabase-dark">
                             <option value="">Select Institution</option>
                             <option value="BCA">BCA</option>
@@ -159,7 +159,7 @@
                         </select>
                     </div>
                     <div class="space-y-2">
-                        <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Merchant Name Display</label>
+                        <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Merchant Name Display</label>
                         <input type="text" name="account_name" id="va_holder" placeholder="Name shown on ATM/Mobile" class="sb-input">
                     </div>
                 </div>
@@ -168,17 +168,17 @@
 
         <!-- Commission Management -->
         <div class="bg-supabase-surface border border-supabase-border rounded-3xl p-8 space-y-8 shadow-2xl">
-            <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-4 flex items-center">
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider mb-4 flex items-center">
                 <span class="w-1.5 h-1.5 bg-white rounded-full mr-3"></span>
                 Commission Pipeline
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="space-y-2">
-                    <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Percentage MDR (%)</label>
+                    <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Percentage MDR (%)</label>
                     <input type="number" name="fee_percentage" value="{{ old('fee_percentage', 0) }}" min="0" max="100" step="0.01" class="sb-input">
                 </div>
                 <div class="space-y-2">
-                    <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Fixed Convenience Fee (Rp)</label>
+                    <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Fixed Convenience Fee (Rp)</label>
                     <input type="number" name="fee_fixed" value="{{ old('fee_fixed', 0) }}" min="0" step="100" class="sb-input">
                 </div>
             </div>
@@ -187,15 +187,15 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                 </div>
                 <div>
-                    <p class="text-[10px] font-black text-white uppercase tracking-widest leading-tight">Net Logic Calculation</p>
-                    <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-tighter mt-1">Total Fee = (Gross × Percentage) + Fixed</p>
+                    <p class="text-[10px] font-bold text-white uppercase tracking-wider leading-tight">Net Logic Calculation</p>
+                    <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-normal mt-1">Total Fee = (Gross × Percentage) + Fixed</p>
                 </div>
             </div>
         </div>
 
         <!-- Form Actions -->
         <div class="flex items-center justify-end space-x-6 pt-8 border-t border-supabase-border">
-            <a href="{{ route('tenant.payment-channels.index') }}" class="text-[10px] font-black text-supabase-muted uppercase tracking-widest hover:text-white transition-colors">Cancel Provisioning</a>
+            <a href="{{ route('tenant.payment-channels.index') }}" class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider hover:text-white transition-colors">Cancel Provisioning</a>
             <button type="submit" class="sb-button-primary !w-auto !py-4 !px-16">
                 Activate Node
             </button>

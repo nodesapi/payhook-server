@@ -18,8 +18,8 @@
         </div>
 
         <!-- Message -->
-        <h1 class="text-3xl font-black text-white mb-4 uppercase tracking-tight">Identity <span class="text-supabase-accent">Orphaned</span></h1>
-        <p class="text-supabase-muted mb-12 leading-relaxed font-bold uppercase text-[10px] tracking-widest">
+        <h1 class="text-3xl font-bold text-white mb-4 uppercase tracking-normal">Identity <span class="text-supabase-accent">Orphaned</span></h1>
+        <p class="text-supabase-muted mb-12 leading-relaxed font-bold uppercase text-[10px] tracking-wider">
             Your authentication node is not currently mapped to a verified merchant tenant. Access to terminal infrastructure is restricted.
         </p>
 
@@ -30,7 +30,7 @@
                 <button type="submit" class="sb-button-primary">Terminate Session</button>
             </form>
             
-            <a href="mailto:admin@Cekbayar.local" class="block text-[10px] font-black text-supabase-muted hover:text-white transition-colors uppercase tracking-[0.2em]">
+            <a href="mailto:admin@Cekbayar.local" class="block text-[10px] font-bold text-supabase-muted hover:text-white transition-colors uppercase tracking-wider">
                 Request Node Mapping
             </a>
         </div>
@@ -39,7 +39,7 @@
         <div class="mt-12 p-6 bg-supabase-surface border border-supabase-border rounded-2xl text-left relative overflow-hidden">
             <div class="absolute inset-0 opacity-5 bg-[radial-gradient(#fbbf24_1px,transparent_1px)] [background-size:16px_16px]"></div>
             <div class="relative z-10">
-                <p class="text-[8px] font-black text-supabase-accent uppercase tracking-widest mb-2 flex items-center">
+                <p class="text-[8px] font-bold text-supabase-accent uppercase tracking-wider mb-2 flex items-center">
                     <span class="w-1 h-1 bg-supabase-accent rounded-full mr-2"></span>
                     Diagnostic Note
                 </p>

@@ -10,16 +10,16 @@
 <div class="w-full max-w-none space-y-8">
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-            <h1 class="text-3xl font-black text-white tracking-tight uppercase">Account <span class="text-supabase-accent">Profile</span></h1>
+            <h1 class="text-3xl font-bold text-white tracking-normal uppercase">Account <span class="text-supabase-accent">Profile</span></h1>
             <p class="mt-1 text-sm text-supabase-muted">Manage your account identity and security credentials.</p>
         </div>
         <div class="flex items-center gap-3 rounded-lg border border-supabase-border bg-supabase-surface px-4 py-3">
-            <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-supabase-border bg-supabase-input text-sm font-black text-supabase-accent">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-supabase-border bg-supabase-input text-sm font-bold text-supabase-accent">
                 {{ strtoupper(substr($user->name ?? 'U', 0, 1)) }}
             </div>
             <div class="min-w-0">
                 <p class="truncate text-sm font-bold text-white">{{ $user->name }}</p>
-                <p class="truncate text-[10px] font-bold uppercase tracking-widest text-supabase-muted">{{ $user->email }}</p>
+                <p class="truncate text-[10px] font-bold uppercase tracking-wider text-supabase-muted">{{ $user->email }}</p>
             </div>
         </div>
     </div>
@@ -27,7 +27,7 @@
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
         <section class="rounded-lg border border-supabase-border bg-supabase-surface p-6 shadow-2xl">
             <div class="mb-6">
-                <h2 class="text-lg font-black uppercase tracking-tight text-white">Profile Information</h2>
+                <h2 class="text-lg font-bold uppercase tracking-normal text-white">Profile Information</h2>
                 <p class="mt-1 text-sm text-supabase-muted">Update your name and account email address.</p>
             </div>
 
@@ -36,7 +36,7 @@
                 @method('patch')
 
                 <div>
-                    <label for="name" class="mb-2 block text-[10px] font-black uppercase tracking-widest text-supabase-muted">Name</label>
+                    <label for="name" class="mb-2 block text-[10px] font-bold uppercase tracking-wider text-supabase-muted">Name</label>
                     <input id="name" name="name" type="text" value="{{ old('name', $user->name) }}" required autofocus autocomplete="name" class="sb-input !rounded-lg">
                     @error('name')
                         <p class="mt-2 text-[10px] font-bold uppercase tracking-wider text-red-500">{{ $message }}</p>
@@ -44,7 +44,7 @@
                 </div>
 
                 <div>
-                    <label for="email" class="mb-2 block text-[10px] font-black uppercase tracking-widest text-supabase-muted">Email</label>
+                    <label for="email" class="mb-2 block text-[10px] font-bold uppercase tracking-wider text-supabase-muted">Email</label>
                     <input id="email" type="email" value="{{ $user->email }}" readonly class="sb-input !rounded-lg cursor-not-allowed bg-supabase-dark/50 text-supabase-muted">
                     <p class="mt-2 text-[10px] font-bold uppercase tracking-wider text-supabase-muted">Email is locked for account identity.</p>
                 </div>
@@ -60,7 +60,7 @@
 
         <section class="rounded-lg border border-supabase-border bg-supabase-surface p-6 shadow-2xl">
             <div class="mb-6">
-                <h2 class="text-lg font-black uppercase tracking-tight text-white">Update Password</h2>
+                <h2 class="text-lg font-bold uppercase tracking-normal text-white">Update Password</h2>
                 <p class="mt-1 text-sm text-supabase-muted">Use a strong password to keep admin access secure.</p>
             </div>
 
@@ -69,7 +69,7 @@
                 @method('put')
 
                 <div>
-                    <label for="update_password_current_password" class="mb-2 block text-[10px] font-black uppercase tracking-widest text-supabase-muted">Current Password</label>
+                    <label for="update_password_current_password" class="mb-2 block text-[10px] font-bold uppercase tracking-wider text-supabase-muted">Current Password</label>
                     <div class="relative">
                         <input id="update_password_current_password" name="current_password" type="password" autocomplete="current-password" class="sb-input !rounded-lg pr-11" data-password-toggle>
                         <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-supabase-muted transition-colors hover:text-supabase-accent" data-toggle-password="update_password_current_password" aria-label="Show current password">
@@ -88,7 +88,7 @@
                 </div>
 
                 <div>
-                    <label for="update_password_password" class="mb-2 block text-[10px] font-black uppercase tracking-widest text-supabase-muted">New Password</label>
+                    <label for="update_password_password" class="mb-2 block text-[10px] font-bold uppercase tracking-wider text-supabase-muted">New Password</label>
                     <div class="relative">
                         <input id="update_password_password" name="password" type="password" autocomplete="new-password" class="sb-input !rounded-lg pr-11" data-password-toggle>
                         <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-supabase-muted transition-colors hover:text-supabase-accent" data-toggle-password="update_password_password" aria-label="Show new password">
@@ -107,7 +107,7 @@
                 </div>
 
                 <div>
-                    <label for="update_password_password_confirmation" class="mb-2 block text-[10px] font-black uppercase tracking-widest text-supabase-muted">Confirm Password</label>
+                    <label for="update_password_password_confirmation" class="mb-2 block text-[10px] font-bold uppercase tracking-wider text-supabase-muted">Confirm Password</label>
                     <div class="relative">
                         <input id="update_password_password_confirmation" name="password_confirmation" type="password" autocomplete="new-password" class="sb-input !rounded-lg pr-11" data-password-toggle>
                         <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-supabase-muted transition-colors hover:text-supabase-accent" data-toggle-password="update_password_password_confirmation" aria-label="Show password confirmation">

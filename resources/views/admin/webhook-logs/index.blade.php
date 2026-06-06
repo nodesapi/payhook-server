@@ -21,11 +21,11 @@
 <div class="max-w-full min-w-0 space-y-8 overflow-x-hidden">
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-            <h1 class="text-3xl font-black text-white tracking-tight uppercase">Webhook <span class="text-supabase-accent">Logs</span></h1>
+            <h1 class="text-3xl font-bold text-white tracking-normal uppercase">Webhook <span class="text-supabase-accent">Logs</span></h1>
             <p class="text-supabase-muted mt-1 text-sm">Real-time payment notification bridge history.</p>
         </div>
         <div class="flex items-center px-4 py-2 bg-supabase-surface border border-supabase-border rounded-xl">
-            <span class="text-xs font-bold text-white uppercase tracking-widest">{{ number_format($logs->total()) }} <span class="text-supabase-muted ml-1 font-medium">Total Events</span></span>
+            <span class="text-xs font-bold text-white uppercase tracking-wider">{{ number_format($logs->total()) }} <span class="text-supabase-muted ml-1 font-medium">Total Events</span></span>
         </div>
     </div>
 
@@ -76,7 +76,7 @@
                     <col class="w-[148px]">
                     <col class="w-[64px]">
                 </colgroup>
-                <thead class="bg-supabase-dark/50 text-[10px] uppercase tracking-widest font-black text-supabase-muted border-b border-supabase-border">
+                <thead class="bg-supabase-dark/50 text-[10px] uppercase tracking-wider font-bold text-supabase-muted border-b border-supabase-border">
                     <tr>
                         @foreach([
                             'created_at' => ['label' => 'Timestamp', 'align' => 'text-left'],
@@ -119,26 +119,26 @@
                         <td class="px-4 py-3 whitespace-nowrap">
                             <div class="flex flex-col">
                                 <span class="text-xs font-bold text-white">{{ $log->created_at->format('d M Y') }}</span>
-                                <span class="text-[10px] text-supabase-muted uppercase tracking-tighter">{{ $log->created_at->format('H:i:s') }}</span>
+                                <span class="text-[10px] text-supabase-muted uppercase tracking-normal">{{ $log->created_at->format('H:i:s') }}</span>
                             </div>
                         </td>
                         <td class="px-4 py-3">
-                            <span class="block truncate text-xs font-black text-white group-hover:text-supabase-accent transition-colors">{{ strtoupper($log->source ?? 'Unknown') }}</span>
+                            <span class="block truncate text-xs font-bold text-white group-hover:text-supabase-accent transition-colors">{{ strtoupper($log->source ?? 'Unknown') }}</span>
                         </td>
                         <td class="px-4 py-3">
                             <div class="font-bold text-white text-xs truncate">{{ $log->notification_title ?: '-' }}</div>
                             <div class="text-supabase-muted text-[10px] truncate">{{ $log->notification_text ?? '' }}</div>
                         </td>
                         <td class="px-4 py-3 text-right whitespace-nowrap">
-                            <span class="font-mono font-black text-white text-xs">
+                            <span class="font-mono font-bold text-white text-xs">
                                 {{ $log->amount ? 'Rp ' . number_format($log->amount, 0, ',', '.') : '-' }}
                             </span>
                         </td>
                         <td class="px-4 py-3 whitespace-nowrap">
-                            <span class="block truncate text-[10px] font-bold text-supabase-muted uppercase tracking-widest">{{ $log->tenant?->name ?? '-' }}</span>
+                            <span class="block truncate text-[10px] font-bold text-supabase-muted uppercase tracking-wider">{{ $log->tenant?->name ?? '-' }}</span>
                         </td>
                         <td class="px-4 py-3 whitespace-nowrap">
-                            <span class="inline-flex px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest {{ $badgeCls }}">
+                            <span class="inline-flex px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-wider {{ $badgeCls }}">
                                 {{ $badgeLbl }}
                             </span>
                         </td>
@@ -160,7 +160,7 @@
                                 <div class="w-14 h-14 bg-supabase-input border border-supabase-border rounded-2xl flex items-center justify-center text-supabase-muted mb-5">
                                     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                 </div>
-                                <h3 class="text-base font-black text-white uppercase tracking-tight">No Events Logged</h3>
+                                <h3 class="text-base font-bold text-white uppercase tracking-normal">No Events Logged</h3>
                                 <p class="text-supabase-muted text-sm mt-2 italic">Connect an Android device to start receiving payment hooks.</p>
                             </div>
                         </td>

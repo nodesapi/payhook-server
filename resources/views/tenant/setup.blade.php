@@ -17,8 +17,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                 </svg>
             </div>
-            <h1 class="text-2xl md:text-3xl font-black text-white mb-2 tracking-tight">SETUP <span class="text-supabase-accent">TENANT</span></h1>
-            <p class="text-supabase-muted text-xs uppercase tracking-widest font-bold max-w-xl">
+            <h1 class="text-2xl md:text-3xl font-bold text-white mb-2 tracking-normal">SETUP <span class="text-supabase-accent">TENANT</span></h1>
+            <p class="text-supabase-muted text-xs uppercase tracking-wider font-bold max-w-xl">
                 Lengkapi profil merchant, pilih paket langganan, dan unggah KYC untuk mulai menerima pembayaran.
             </p>
         </div>
@@ -67,9 +67,9 @@
                                     <svg class="w-6 h-6 text-supabase-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 </div>
                                 <div class="font-bold text-white text-base pr-6 min-h-[3rem]">{{ $plan->name }}</div>
-                                <div class="text-supabase-accent font-black mb-3 flex items-baseline">
+                                <div class="text-supabase-accent font-bold mb-3 flex items-baseline">
                                     <span class="text-xs mr-1">Rp</span>
-                                    <span class="text-2xl tracking-tight">{{ number_format($plan->price, 0, ',', '.') }}</span>
+                                    <span class="text-2xl tracking-normal">{{ number_format($plan->price, 0, ',', '.') }}</span>
                                 </div>
                                 <div class="text-sm text-slate-400 space-y-2 mt-auto">
                                     <div class="flex items-center"><svg class="w-4 h-4 mr-2 text-supabase-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg> Aktif {{ $plan->duration_days }} hari</div>
@@ -132,7 +132,7 @@
                 </div>
 
                 <div class="pt-6 border-t border-supabase-border flex flex-col-reverse md:flex-row justify-between items-center gap-6">
-                    <button type="button" onclick="document.getElementById('logout-form').submit();" class="w-full md:w-auto py-2.5 px-6 text-sm font-bold text-slate-400 hover:text-white uppercase tracking-widest transition-colors border border-transparent hover:border-slate-700 rounded-xl">
+                    <button type="button" onclick="document.getElementById('logout-form').submit();" class="w-full md:w-auto py-2.5 px-6 text-sm font-bold text-slate-400 hover:text-white uppercase tracking-wider transition-colors border border-transparent hover:border-slate-700 rounded-xl">
                         LOGOUT
                     </button>
                     <button type="submit" class="w-full md:flex-1 md:max-w-md flex justify-center items-center py-3.5 px-8 rounded-xl shadow-lg shadow-yellow-500/20 text-sm font-bold transition-all active:scale-95 border border-transparent" style="background-color: #eab308; color: #000000;">

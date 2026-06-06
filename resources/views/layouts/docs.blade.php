@@ -37,33 +37,33 @@
                 <aside class="hidden lg:block w-80 flex-shrink-0 border-r border-supabase-border/50 overflow-y-auto docs-sidebar sticky top-20 h-[calc(100vh-5rem)] bg-supabase-dark/20 backdrop-blur-sm">
                     <nav class="p-10 space-y-12">
                         <div>
-                            <h3 class="text-[10px] font-black text-white uppercase tracking-[0.2em] mb-6 flex items-center">
+                            <h3 class="text-[10px] font-bold text-white uppercase tracking-wider mb-6 flex items-center">
                                 <span class="w-1 h-1 bg-supabase-accent rounded-full mr-3 animate-pulse"></span>
                                 Introduction
                             </h3>
                             <ul class="space-y-4">
-                                <li><a href="#getting-started" class="text-xs font-bold text-supabase-muted hover:text-supabase-accent transition-colors flex items-center group uppercase tracking-widest"><span class="w-1.5 h-1.5 rounded-full border border-supabase-muted mr-4 group-hover:border-supabase-accent transition-colors"></span>Getting Started</a></li>
-                                <li><a href="#architecture" class="text-xs font-bold text-supabase-muted hover:text-supabase-accent transition-colors flex items-center group uppercase tracking-widest"><span class="w-1.5 h-1.5 rounded-full border border-supabase-muted mr-4 group-hover:border-supabase-accent transition-colors"></span>Architecture</a></li>
+                                <li><a href="#getting-started" class="text-xs font-bold text-supabase-muted hover:text-supabase-accent transition-colors flex items-center group uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full border border-supabase-muted mr-4 group-hover:border-supabase-accent transition-colors"></span>Getting Started</a></li>
+                                <li><a href="#architecture" class="text-xs font-bold text-supabase-muted hover:text-supabase-accent transition-colors flex items-center group uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full border border-supabase-muted mr-4 group-hover:border-supabase-accent transition-colors"></span>Architecture</a></li>
                             </ul>
                         </div>
                         <div>
-                            <h3 class="text-[10px] font-black text-white uppercase tracking-[0.2em] mb-6 flex items-center">
+                            <h3 class="text-[10px] font-bold text-white uppercase tracking-wider mb-6 flex items-center">
                                 <span class="w-1 h-1 bg-blue-500 rounded-full mr-3"></span>
                                 Integration
                             </h3>
                             <ul class="space-y-4">
-                                <li><a href="#android-setup" class="text-xs font-bold text-supabase-muted hover:text-supabase-accent transition-colors flex items-center group uppercase tracking-widest"><span class="w-1.5 h-1.5 rounded-full border border-supabase-muted mr-4 group-hover:border-supabase-accent transition-colors"></span>Android Setup</a></li>
-                                <li><a href="#authentication" class="text-xs font-bold text-supabase-muted hover:text-supabase-accent transition-colors flex items-center group uppercase tracking-widest"><span class="w-1.5 h-1.5 rounded-full border border-supabase-muted mr-4 group-hover:border-supabase-accent transition-colors"></span>Security</a></li>
+                                <li><a href="#android-setup" class="text-xs font-bold text-supabase-muted hover:text-supabase-accent transition-colors flex items-center group uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full border border-supabase-muted mr-4 group-hover:border-supabase-accent transition-colors"></span>Android Setup</a></li>
+                                <li><a href="#authentication" class="text-xs font-bold text-supabase-muted hover:text-supabase-accent transition-colors flex items-center group uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full border border-supabase-muted mr-4 group-hover:border-supabase-accent transition-colors"></span>Security</a></li>
                             </ul>
                         </div>
                         <div>
-                            <h3 class="text-[10px] font-black text-white uppercase tracking-[0.2em] mb-6 flex items-center">
+                            <h3 class="text-[10px] font-bold text-white uppercase tracking-wider mb-6 flex items-center">
                                 <span class="w-1 h-1 bg-green-500 rounded-full mr-3"></span>
                                 API Engine
                             </h3>
                             <ul class="space-y-4">
-                                <li><a href="#create-invoice" class="text-xs font-bold text-supabase-muted hover:text-supabase-accent transition-colors flex items-center group uppercase tracking-widest"><span class="w-1.5 h-1.5 rounded-full border border-supabase-muted mr-4 group-hover:border-supabase-accent transition-colors"></span>Create Invoice</a></li>
-                                <li><a href="#receiving-webhook" class="text-xs font-bold text-supabase-muted hover:text-supabase-accent transition-colors flex items-center group uppercase tracking-widest"><span class="w-1.5 h-1.5 rounded-full border border-supabase-muted mr-4 group-hover:border-supabase-accent transition-colors"></span>Webhooks</a></li>
+                                <li><a href="#create-invoice" class="text-xs font-bold text-supabase-muted hover:text-supabase-accent transition-colors flex items-center group uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full border border-supabase-muted mr-4 group-hover:border-supabase-accent transition-colors"></span>Create Invoice</a></li>
+                                <li><a href="#receiving-webhook" class="text-xs font-bold text-supabase-muted hover:text-supabase-accent transition-colors flex items-center group uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full border border-supabase-muted mr-4 group-hover:border-supabase-accent transition-colors"></span>Webhooks</a></li>
                             </ul>
                         </div>
                     </nav>
@@ -78,8 +78,8 @@
                 
                 <!-- Table of Contents (Desktop) -->
                 <aside class="hidden xl:block w-72 flex-shrink-0 p-10 sticky top-20 h-[calc(100vh-5rem)]">
-                    <h3 class="text-[10px] font-black text-white uppercase tracking-[0.2em] mb-6">In this block</h3>
-                    <nav class="space-y-4 text-[10px] font-black text-supabase-muted uppercase tracking-[0.1em]">
+                    <h3 class="text-[10px] font-bold text-white uppercase tracking-wider mb-6">In this block</h3>
+                    <nav class="space-y-4 text-[10px] font-bold text-supabase-muted uppercase tracking-[0.1em]">
                         @yield('toc')
                     </nav>
                 </aside>

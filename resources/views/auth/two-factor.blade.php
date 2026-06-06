@@ -2,7 +2,7 @@
 
 @section('content')
     <div>
-        <h2 class="text-2xl font-black text-white tracking-tight uppercase mb-2">
+        <h2 class="text-2xl font-bold text-white tracking-normal uppercase mb-2">
             Verification <span class="text-supabase-accent">Required</span>
         </h2>
         <p class="text-supabase-muted text-xs leading-relaxed mb-6">
@@ -14,7 +14,7 @@
 
             <!-- Verification Code -->
             <div class="space-y-2">
-                <label for="code" class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">{{ __('Kode Autentikator 6-Digit') }}</label>
+                <label for="code" class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">{{ __('Kode Autentikator 6-Digit') }}</label>
                 <input id="code" class="sb-input text-center font-mono tracking-[0.5em] text-xl py-4 rounded-2xl" 
                        type="text" 
                        name="code" 

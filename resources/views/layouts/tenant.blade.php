@@ -35,7 +35,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                 </svg>
             </div>
-            <span class="text-white font-black uppercase tracking-tight">Cek<span class="text-supabase-accent">bayar</span></span>
+            <span class="text-white font-bold uppercase tracking-normal">Cek<span class="text-supabase-accent">bayar</span></span>
         </div>
         <button id="mobileSidebarToggle" class="text-white p-2">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,8 +61,8 @@
                         </svg>
                     </div>
                     <div>
-                        <div class="text-white font-black text-xl uppercase tracking-tighter">Cek<span class="text-supabase-accent">bayar</span></div>
-                        <div class="text-[10px] text-supabase-muted uppercase tracking-[0.2em] font-bold">Merchant Portal</div>
+                        <div class="text-white font-bold text-xl uppercase tracking-normal">Cek<span class="text-supabase-accent">bayar</span></div>
+                        <div class="text-[10px] text-supabase-muted uppercase tracking-wider font-bold">Merchant Portal</div>
                     </div>
                 </div>
                 <button id="closeSidebar" class="lg:hidden text-slate-400 hover:text-white">
@@ -76,7 +76,7 @@
         <!-- Navigation -->
         <nav class="flex-1 px-4 py-4 overflow-y-auto sidebar-scrollbar space-y-8">
             <div>
-                <h3 class="px-4 text-[10px] font-bold text-supabase-muted uppercase tracking-[0.2em] mb-4">Main Menu</h3>
+                <h3 class="px-4 text-[10px] font-bold text-supabase-muted uppercase tracking-wider mb-4">Main Menu</h3>
                 <div class="space-y-1">
                     <x-nav-link href="{{ route('tenant.dashboard') }}" :active="request()->routeIs('tenant.dashboard')" icon="m3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
                         Dashboard
@@ -93,7 +93,7 @@
             </div>
 
             <div>
-                <h3 class="px-4 text-[10px] font-bold text-supabase-muted uppercase tracking-[0.2em] mb-4">Developer</h3>
+                <h3 class="px-4 text-[10px] font-bold text-supabase-muted uppercase tracking-wider mb-4">Developer</h3>
                 <div class="space-y-1">
                     <x-nav-link href="{{ route('tenant.api-playground') }}" :active="request()->routeIs('tenant.api-playground')" icon="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4">
                         API Playground
@@ -103,7 +103,7 @@
             </div>
 
             <div>
-                <h3 class="px-4 text-[10px] font-bold text-supabase-muted uppercase tracking-[0.2em] mb-4">Account</h3>
+                <h3 class="px-4 text-[10px] font-bold text-supabase-muted uppercase tracking-wider mb-4">Account</h3>
                 <div class="space-y-1">
                     <x-nav-link href="{{ route('profile.edit') }}" :active="request()->routeIs('profile.*')" icon="M5.121 17.804A9 9 0 1118.88 6.196M15 11a3 3 0 11-6 0 3 3 0 016 0zm-6.5 6.5a5 5 0 017 0">
                         Account Profile
@@ -159,7 +159,7 @@
 
                 <div class="flex items-center px-2 py-0.5 lg:px-3 lg:py-1 bg-supabase-surface border border-supabase-border rounded-full whitespace-nowrap">
                     <div class="w-1 h-1 lg:w-2 lg:h-2 rounded-full bg-green-500 mr-1 lg:mr-2 animate-pulse"></div>
-                    <span class="text-[8px] lg:text-[10px] font-bold uppercase tracking-wider lg:tracking-widest text-slate-300">System Live</span>
+                    <span class="text-[8px] lg:text-[10px] font-bold uppercase tracking-wider lg:tracking-wider text-slate-300">System Live</span>
                 </div>
             </div>
         </header>

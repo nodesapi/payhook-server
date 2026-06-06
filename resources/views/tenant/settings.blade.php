@@ -5,14 +5,14 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
-            <h1 class="text-4xl font-black text-white tracking-tight uppercase">Node <span class="text-supabase-accent">Settings</span></h1>
+            <h1 class="text-4xl font-bold text-white tracking-normal uppercase">Node <span class="text-supabase-accent">Settings</span></h1>
             <p class="text-supabase-muted mt-2">Manage your merchant profile, security, and integration parameters.</p>
         </div>
         <div class="flex items-center px-4 py-2 bg-supabase-surface border border-supabase-border rounded-xl">
-            <span class="text-[10px] font-black text-supabase-muted uppercase tracking-widest mr-3">Status:</span>
+            <span class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider mr-3">Status:</span>
             <div class="flex items-center">
                 <div class="w-2 h-2 rounded-full {{ $tenant->is_active ? 'bg-green-500 animate-pulse' : 'bg-red-500' }} mr-2"></div>
-                <span class="text-[10px] font-black text-white uppercase tracking-widest">{{ $tenant->is_active ? 'Active' : 'Offline' }}</span>
+                <span class="text-[10px] font-bold text-white uppercase tracking-wider">{{ $tenant->is_active ? 'Active' : 'Offline' }}</span>
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
     @if(session('success'))
         <div class="bg-green-500/10 border border-green-500/20 text-green-500 px-6 py-4 rounded-2xl flex items-center shadow-lg">
             <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            <span class="text-xs font-black uppercase tracking-widest">{{ session('success') }}</span>
+            <span class="text-xs font-bold uppercase tracking-wider">{{ session('success') }}</span>
         </div>
     @endif
 
@@ -29,7 +29,7 @@
         <div class="bg-red-500/10 border border-red-500/20 text-red-500 px-6 py-4 rounded-2xl shadow-lg">
             <div class="flex items-center mb-2">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <span class="text-xs font-black uppercase tracking-widest">Validation Failed</span>
+                <span class="text-xs font-bold uppercase tracking-wider">Validation Failed</span>
             </div>
             <ul class="text-[10px] font-bold uppercase tracking-wider space-y-1 ml-8">
                 @foreach($errors->all() as $error)
@@ -47,31 +47,31 @@
                     <div class="w-8 h-8 rounded-lg bg-supabase-input border border-supabase-border flex items-center justify-center text-supabase-muted group-hover:text-supabase-accent transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                     </div>
-                    <span class="text-[10px] font-black text-white uppercase tracking-widest">Business Identity</span>
+                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">Business Identity</span>
                 </button>
                 <button onclick="scrollToSection('api-keys')" class="w-full flex items-center space-x-4 px-4 py-3 rounded-xl hover:bg-white/[0.03] transition-colors group text-left">
                     <div class="w-8 h-8 rounded-lg bg-supabase-input border border-supabase-border flex items-center justify-center text-supabase-muted group-hover:text-supabase-accent transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
                     </div>
-                    <span class="text-[10px] font-black text-white uppercase tracking-widest">Infrastructure Keys</span>
+                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">Infrastructure Keys</span>
                 </button>
                 <button onclick="scrollToSection('subscription-plan')" class="w-full flex items-center space-x-4 px-4 py-3 rounded-xl hover:bg-white/[0.03] transition-colors group text-left">
                     <div class="w-8 h-8 rounded-lg bg-supabase-input border border-supabase-border flex items-center justify-center text-supabase-muted group-hover:text-supabase-accent transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
                     </div>
-                    <span class="text-[10px] font-black text-white uppercase tracking-widest">Subscription Plan</span>
+                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">Subscription Plan</span>
                 </button>
                 <button onclick="scrollToSection('two-factor-auth')" class="w-full flex items-center space-x-4 px-4 py-3 rounded-xl hover:bg-white/[0.03] transition-colors group text-left">
                     <div class="w-8 h-8 rounded-lg bg-supabase-input border border-supabase-border flex items-center justify-center text-supabase-muted group-hover:text-supabase-accent transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                     </div>
-                    <span class="text-[10px] font-black text-white uppercase tracking-widest">{{ __('Two-Factor Auth') }}</span>
+                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">{{ __('Two-Factor Auth') }}</span>
                 </button>
                 <button onclick="scrollToSection('mobile-sync')" class="w-full flex items-center space-x-4 px-4 py-3 rounded-xl hover:bg-white/[0.03] transition-colors group text-left">
                     <div class="w-8 h-8 rounded-lg bg-supabase-input border border-supabase-border flex items-center justify-center text-supabase-muted group-hover:text-supabase-accent transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                     </div>
-                    <span class="text-[10px] font-black text-white uppercase tracking-widest">Mobile Relay</span>
+                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">Mobile Relay</span>
                 </button>
             </div>
 
@@ -80,7 +80,7 @@
                 <div class="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
                     <svg class="w-32 h-32 text-supabase-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                 </div>
-                <h4 class="text-sm font-black text-white uppercase tracking-widest mb-4">Relay Engine</h4>
+                <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Relay Engine</h4>
                 <p class="text-[10px] text-supabase-muted font-bold uppercase leading-relaxed mb-6">Deploy the Cekbayar Android client to start intercepting payment notifications.</p>
                 <a href="#" class="sb-button-primary block text-center !py-3">Download APK</a>
             </div>
@@ -93,11 +93,11 @@
                 <div class="bg-supabase-surface border border-supabase-border rounded-2xl overflow-hidden">
                     <div class="px-8 py-6 border-b border-supabase-border bg-supabase-dark/30 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                         <div>
-                            <h3 class="text-xs font-black text-white uppercase tracking-[0.2em]">Subscription Plan</h3>
+                            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Subscription Plan</h3>
                             <p class="mt-1 text-[10px] font-bold uppercase tracking-wider text-supabase-muted">Current package capacity and upgrade path</p>
                         </div>
                         @if(data_get($tenant->settings, 'upgrade_request.status') === 'pending')
-                            <span class="inline-flex items-center rounded-lg border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-[9px] font-black uppercase tracking-widest text-amber-400">
+                            <span class="inline-flex items-center rounded-lg border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-[9px] font-bold uppercase tracking-wider text-amber-400">
                                 Upgrade Pending
                             </span>
                         @endif
@@ -106,35 +106,35 @@
                     <div class="p-8 space-y-8">
                         <div class="grid grid-cols-1 gap-4 md:grid-cols-4">
                             <div class="md:col-span-2 rounded-xl border border-supabase-border bg-supabase-dark/40 p-5">
-                                <p class="text-[9px] font-black uppercase tracking-[0.2em] text-supabase-muted">Active Package</p>
-                                <h4 class="mt-2 text-2xl font-black uppercase tracking-tight text-white">{{ $tenant->plan?->name ?? 'Custom Plan' }}</h4>
+                                <p class="text-[9px] font-bold uppercase tracking-wider text-supabase-muted">Active Package</p>
+                                <h4 class="mt-2 text-2xl font-bold uppercase tracking-normal text-white">{{ $tenant->plan?->name ?? 'Custom Plan' }}</h4>
                                 <p class="mt-2 text-xs font-bold text-supabase-muted">{{ $tenant->plan?->description ?? 'Your subscription is managed manually by the admin team.' }}</p>
                             </div>
                             <div class="rounded-xl border border-supabase-border bg-supabase-dark/40 p-5">
-                                <p class="text-[9px] font-black uppercase tracking-[0.2em] text-supabase-muted">Price</p>
-                                <p class="mt-3 text-lg font-black text-white">
+                                <p class="text-[9px] font-bold uppercase tracking-wider text-supabase-muted">Price</p>
+                                <p class="mt-3 text-lg font-bold text-white">
                                     {{ $tenant->plan ? 'Rp ' . number_format($tenant->plan->price, 0, ',', '.') : '-' }}
                                 </p>
                                 <p class="text-[10px] font-bold uppercase tracking-wider text-supabase-muted">{{ $tenant->plan?->duration_days ?? 0 }} days cycle</p>
                             </div>
                             <div class="rounded-xl border border-supabase-border bg-supabase-dark/40 p-5">
-                                <p class="text-[9px] font-black uppercase tracking-[0.2em] text-supabase-muted">Capacity</p>
-                                <p class="mt-3 text-lg font-black text-white">{{ $tenant->plan?->max_channels ?? $tenant->monthly_limit ?? '-' }}</p>
+                                <p class="text-[9px] font-bold uppercase tracking-wider text-supabase-muted">Capacity</p>
+                                <p class="mt-3 text-lg font-bold text-white">{{ $tenant->plan?->max_channels ?? $tenant->monthly_limit ?? '-' }}</p>
                                 <p class="text-[10px] font-bold uppercase tracking-wider text-supabase-muted">Active nodes</p>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div class="rounded-xl border border-supabase-border bg-supabase-input/30 p-5">
-                                <p class="text-[9px] font-black uppercase tracking-[0.2em] text-supabase-muted">Subscription Status</p>
+                                <p class="text-[9px] font-bold uppercase tracking-wider text-supabase-muted">Subscription Status</p>
                                 <div class="mt-3 flex items-center gap-2">
                                     <span class="h-2 w-2 rounded-full {{ $tenant->isSubscriptionActive() ? 'bg-green-500' : 'bg-red-500' }}"></span>
-                                    <span class="text-xs font-black uppercase tracking-widest text-white">{{ $tenant->isSubscriptionActive() ? 'Active' : 'Expired' }}</span>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-white">{{ $tenant->isSubscriptionActive() ? 'Active' : 'Expired' }}</span>
                                 </div>
                             </div>
                             <div class="rounded-xl border border-supabase-border bg-supabase-input/30 p-5">
-                                <p class="text-[9px] font-black uppercase tracking-[0.2em] text-supabase-muted">Valid Until</p>
-                                <p class="mt-3 text-xs font-black uppercase tracking-widest text-white">
+                                <p class="text-[9px] font-bold uppercase tracking-wider text-supabase-muted">Valid Until</p>
+                                <p class="mt-3 text-xs font-bold uppercase tracking-wider text-white">
                                     {{ $tenant->expired_at ? $tenant->expired_at->format('d M Y') : 'No expiry set' }}
                                 </p>
                                 @if($tenant->expired_at)
@@ -145,7 +145,7 @@
 
                         @if(($tenant->plan?->features))
                             <div class="rounded-xl border border-supabase-border bg-supabase-dark/40 p-5">
-                                <p class="mb-4 text-[9px] font-black uppercase tracking-[0.2em] text-supabase-muted">Included Features</p>
+                                <p class="mb-4 text-[9px] font-bold uppercase tracking-wider text-supabase-muted">Included Features</p>
                                 <div class="grid grid-cols-1 gap-3 md:grid-cols-2">
                                     @foreach($tenant->plan->features as $feature)
                                         <div class="flex items-center gap-3 text-xs font-bold text-slate-300">
@@ -161,8 +161,8 @@
 
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
-                                <h4 class="text-[10px] font-black uppercase tracking-widest text-white">Upgrade Options</h4>
-                                <a href="{{ route('public.pricing') }}" class="text-[9px] font-black uppercase tracking-widest text-supabase-accent hover:text-white">View public pricing</a>
+                                <h4 class="text-[10px] font-bold uppercase tracking-wider text-white">Upgrade Options</h4>
+                                <a href="{{ route('public.pricing') }}" class="text-[9px] font-bold uppercase tracking-wider text-supabase-accent hover:text-white">View public pricing</a>
                             </div>
 
                             @if($upgradePlans->isNotEmpty())
@@ -171,10 +171,10 @@
                                         <div class="rounded-xl border border-supabase-border bg-supabase-dark/40 p-5">
                                             <div class="flex items-start justify-between gap-4">
                                                 <div>
-                                                    <h5 class="text-sm font-black uppercase tracking-tight text-white">{{ $plan->name }}</h5>
+                                                    <h5 class="text-sm font-bold uppercase tracking-normal text-white">{{ $plan->name }}</h5>
                                                     <p class="mt-1 text-[10px] font-bold text-supabase-muted">{{ $plan->description }}</p>
                                                 </div>
-                                                <p class="whitespace-nowrap text-xs font-black text-supabase-accent">Rp {{ number_format($plan->price, 0, ',', '.') }}</p>
+                                                <p class="whitespace-nowrap text-xs font-bold text-supabase-accent">Rp {{ number_format($plan->price, 0, ',', '.') }}</p>
                                             </div>
                                             <p class="mt-4 text-[10px] font-bold uppercase tracking-wider text-supabase-muted">Up to {{ $plan->max_channels }} active nodes</p>
                                             <form method="POST" action="{{ route('tenant.settings.request-upgrade') }}" class="mt-5">
@@ -199,31 +199,31 @@
             <section id="business-profile" class="space-y-8">
                 <div class="bg-supabase-surface border border-supabase-border rounded-2xl overflow-hidden">
                     <div class="px-8 py-6 border-b border-supabase-border bg-supabase-dark/30">
-                        <h3 class="text-xs font-black text-white uppercase tracking-[0.2em]">Core Identity</h3>
+                        <h3 class="text-xs font-bold text-white uppercase tracking-wider">Core Identity</h3>
                     </div>
                     <form method="POST" action="{{ route('tenant.settings.update') }}" class="p-8 space-y-8">
                         @csrf
                         @method('PUT')
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div class="space-y-2">
-                                <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Merchant Name</label>
+                                <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Merchant Name</label>
                                 <input type="text" name="name" value="{{ old('name', $tenant->name) }}" required class="sb-input"/>
                             </div>
                             <div class="space-y-2">
-                                <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Business Email</label>
+                                <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Business Email</label>
                                 <input type="email" name="email" value="{{ old('email', $tenant->email) }}" required class="sb-input"/>
                             </div>
                             <div class="space-y-2">
-                                <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Phone / WhatsApp</label>
+                                <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Phone / WhatsApp</label>
                                 <input type="tel" name="phone" value="{{ old('phone', $tenant->phone) }}" class="sb-input"/>
                             </div>
                             <div class="space-y-2">
-                                <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Official Website</label>
+                                <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Official Website</label>
                                 <input type="url" name="website" value="{{ old('website', $tenant->website) }}" class="sb-input"/>
                             </div>
                         </div>
                         <div class="space-y-2">
-                            <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Merchant Description</label>
+                            <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Merchant Description</label>
                             <textarea name="description" rows="3" class="sb-input resize-none">{{ old('description', $tenant->description) }}</textarea>
                         </div>
 
@@ -231,12 +231,12 @@
                         <div class="pt-8 border-t border-supabase-border space-y-8">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div class="space-y-2">
-                                    <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Android Webhook URL</label>
+                                    <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Android Webhook URL</label>
                                     <input type="url" name="webhook_url" value="{{ old('webhook_url', $tenant->webhook_url) }}" class="sb-input" placeholder="https://yourdomain.com/hook"/>
                                     <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-wider">Sync destination for the Android app</p>
                                 </div>
                                 <div class="space-y-2">
-                                    <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Backend Callback URL</label>
+                                    <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Backend Callback URL</label>
                                     <input type="url" name="callback_url" value="{{ old('callback_url', $tenant->callback_url) }}" class="sb-input" placeholder="https://yourbackend.com/callback"/>
                                     <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-wider">Confirmed payment notification target</p>
                                 </div>
@@ -248,8 +248,8 @@
                                     <div class="absolute left-1 top-1 w-4 h-4 bg-supabase-muted rounded-full peer-checked:translate-x-5 peer-checked:bg-supabase-dark transition-transform"></div>
                                 </label>
                                 <div>
-                                    <p class="text-[10px] font-black text-white uppercase tracking-widest leading-none">Webhook Pipeline</p>
-                                    <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-tighter mt-1">Status: {{ $tenant->webhook_enabled ? 'Operational' : 'Paused' }}</p>
+                                    <p class="text-[10px] font-bold text-white uppercase tracking-wider leading-none">Webhook Pipeline</p>
+                                    <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-normal mt-1">Status: {{ $tenant->webhook_enabled ? 'Operational' : 'Paused' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -265,18 +265,18 @@
             <section id="api-keys" class="space-y-8">
                 <div class="bg-supabase-surface border border-supabase-border rounded-2xl overflow-hidden">
                     <div class="px-8 py-6 border-b border-supabase-border bg-supabase-dark/30">
-                        <h3 class="text-xs font-black text-white uppercase tracking-[0.2em]">Security Credentials</h3>
+                        <h3 class="text-xs font-bold text-white uppercase tracking-wider">Security Credentials</h3>
                     </div>
                     <div class="p-8 space-y-8">
                         <div class="space-y-6">
                             <!-- Production API Key -->
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between">
-                                    <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Production Master Key</label>
+                                    <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Production Master Key</label>
                                     <form method="POST" action="{{ route('tenant.settings.regenerate-api-key') }}" id="regenProdForm">
                                         @csrf
                                         <input type="hidden" name="mode" value="production">
-                                        <button type="button" onclick="confirmRegen('regenProdForm')" class="text-[8px] font-black text-red-500 uppercase tracking-widest hover:underline">Regenerate</button>
+                                        <button type="button" onclick="confirmRegen('regenProdForm')" class="text-[8px] font-bold text-red-500 uppercase tracking-wider hover:underline">Regenerate</button>
                                     </form>
                                 </div>
                                 <div class="flex space-x-2">
@@ -291,10 +291,10 @@
                             <!-- Webhook Secret -->
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between">
-                                    <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Webhook Signing Secret</label>
+                                    <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Webhook Signing Secret</label>
                                     <form method="POST" action="{{ route('tenant.settings.regenerate-webhook-secret') }}" id="regenSecretForm">
                                         @csrf
-                                        <button type="button" onclick="confirmRegen('regenSecretForm')" class="text-[8px] font-black text-red-500 uppercase tracking-widest hover:underline">Regenerate</button>
+                                        <button type="button" onclick="confirmRegen('regenSecretForm')" class="text-[8px] font-bold text-red-500 uppercase tracking-wider hover:underline">Regenerate</button>
                                     </form>
                                 </div>
                                 <div class="flex space-x-2">
@@ -308,7 +308,7 @@
                         <div class="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-6 flex items-start space-x-4">
                             <svg class="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                             <div>
-                                <p class="text-[10px] font-black text-white uppercase tracking-widest mb-1">Security Advisory</p>
+                                <p class="text-[10px] font-bold text-white uppercase tracking-wider mb-1">Security Advisory</p>
                                 <p class="text-[8px] text-supabase-muted uppercase font-bold leading-relaxed">Regenerating keys will cause an immediate outage for any systems using the current credentials. Act with caution.</p>
                             </div>
                         </div>
@@ -320,7 +320,7 @@
             <section id="two-factor-auth" class="space-y-8">
                 <div class="bg-supabase-surface border border-supabase-border rounded-2xl overflow-hidden">
                     <div class="px-8 py-6 border-b border-supabase-border bg-supabase-dark/30">
-                        <h3 class="text-xs font-black text-white uppercase tracking-[0.2em]">{{ __('Dua-Faktor Autentikasi (2FA)') }}</h3>
+                        <h3 class="text-xs font-bold text-white uppercase tracking-wider">{{ __('Dua-Faktor Autentikasi (2FA)') }}</h3>
                     </div>
                     <div class="p-8 space-y-8">
                         @php
@@ -341,17 +341,17 @@
                                     </svg>
                                 </div>
                                 <div class="space-y-1">
-                                    <h4 class="text-sm font-black text-white uppercase tracking-wider">{{ __('Dua-Faktor Autentikasi Aktif') }}</h4>
+                                    <h4 class="text-sm font-bold text-white uppercase tracking-wider">{{ __('Dua-Faktor Autentikasi Aktif') }}</h4>
                                     <p class="text-xs text-supabase-muted leading-relaxed">{{ __('Akun Anda terlindungi dengan keamanan tambahan menggunakan aplikasi autentikator (Google Authenticator, Microsoft Authenticator, dll.).') }}</p>
                                 </div>
                             </div>
 
                             <div class="border-t border-supabase-border/50 pt-8 space-y-6">
-                                <h4 class="text-[10px] font-black text-white uppercase tracking-widest text-red-500">{{ __('Nonaktifkan 2FA') }}</h4>
+                                <h4 class="text-[10px] font-bold text-white uppercase tracking-wider text-red-500">{{ __('Nonaktifkan 2FA') }}</h4>
                                 <form method="POST" action="{{ route('tenant.settings.2fa.disable') }}" class="space-y-4 max-w-md">
                                     @csrf
                                     <div class="space-y-2">
-                                        <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">{{ __('Masukkan Kata Sandi Konfirmasi') }}</label>
+                                        <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">{{ __('Masukkan Kata Sandi Konfirmasi') }}</label>
                                         <input type="password" name="password" required class="sb-input" placeholder="{{ __('Kata sandi akun Anda') }}"/>
                                     </div>
                                     <button type="submit" class="sb-button-secondary !bg-red-500/10 hover:!bg-red-500/20 !border-red-500/20 !text-red-500 !w-auto px-6 py-2.5 rounded-lg text-xs font-bold transition-all">
@@ -369,7 +369,7 @@
                                         </svg>
                                     </div>
                                     <div class="space-y-1">
-                                        <h4 class="text-xs font-black text-white uppercase tracking-widest">{{ __('Scan Barcode Authenticator') }}</h4>
+                                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">{{ __('Scan Barcode Authenticator') }}</h4>
                                         <p class="text-[10px] text-supabase-muted uppercase font-bold leading-relaxed">{{ __('Pindai QR Code di bawah menggunakan aplikasi autentikator seperti Google Authenticator atau Microsoft Authenticator.') }}</p>
                                     </div>
                                 </div>
@@ -380,7 +380,7 @@
                                     </div>
                                     <div class="flex-1 space-y-4">
                                         <div class="space-y-2">
-                                            <p class="text-[9px] font-black text-supabase-muted uppercase tracking-widest">{{ __('Kunci Rahasia 2FA (Manual Key)') }}</p>
+                                            <p class="text-[9px] font-bold text-supabase-muted uppercase tracking-wider">{{ __('Kunci Rahasia 2FA (Manual Key)') }}</p>
                                             <code class="block bg-supabase-dark text-supabase-accent px-4 py-2.5 rounded-xl border border-supabase-border font-mono text-xs select-all text-center md:text-left">{{ $user->two_factor_secret }}</code>
                                         </div>
                                         <p class="text-[9px] text-supabase-muted uppercase font-bold leading-relaxed">{{ __('Jika tidak bisa scan, masukkan kunci rahasia di atas secara manual pada aplikasi autentikator Anda.') }}</p>
@@ -388,18 +388,18 @@
                                 </div>
 
                                 <div class="border-t border-supabase-border/50 pt-8 space-y-6">
-                                    <h4 class="text-xs font-black text-white uppercase tracking-widest">{{ __('Masukkan Kode Verifikasi') }}</h4>
+                                    <h4 class="text-xs font-bold text-white uppercase tracking-wider">{{ __('Masukkan Kode Verifikasi') }}</h4>
                                     <form method="POST" action="{{ route('tenant.settings.2fa.confirm') }}" class="space-y-4 max-w-sm">
                                         @csrf
                                         <div class="space-y-2">
-                                            <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">{{ __('Kode Autentikator 6-Digit') }}</label>
+                                            <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">{{ __('Kode Autentikator 6-Digit') }}</label>
                                             <input type="text" name="code" required class="sb-input text-center font-mono tracking-[0.5em] text-lg max-w-[200px]" placeholder="000000" maxlength="6" autocomplete="off"/>
                                         </div>
                                         <div class="flex items-center space-x-4">
-                                            <button type="submit" class="sb-button-primary !w-auto px-8 py-2.5 text-xs font-black uppercase tracking-wider">
+                                            <button type="submit" class="sb-button-primary !w-auto px-8 py-2.5 text-xs font-bold uppercase tracking-wider">
                                                 {{ __('Verifikasi & Aktifkan') }}
                                             </button>
-                                            <button type="submit" form="regen2fa" class="text-[10px] font-black text-supabase-muted hover:text-white uppercase tracking-widest transition-colors">
+                                            <button type="submit" form="regen2fa" class="text-[10px] font-bold text-supabase-muted hover:text-white uppercase tracking-wider transition-colors">
                                                 {{ __('Generate Ulang QR') }}
                                             </button>
                                         </div>
@@ -418,7 +418,7 @@
                                     </svg>
                                 </div>
                                 <div class="space-y-1 flex-1">
-                                    <h4 class="text-sm font-black text-white uppercase tracking-wider">{{ __('Dua-Faktor Autentikasi Nonaktif') }}</h4>
+                                    <h4 class="text-sm font-bold text-white uppercase tracking-wider">{{ __('Dua-Faktor Autentikasi Nonaktif') }}</h4>
                                     <p class="text-xs text-supabase-muted leading-relaxed">{{ __('Tingkatkan keamanan akun Anda dengan mengaktifkan fitur 2FA. Setiap kali Anda masuk, Anda akan diminta memasukkan kode verifikasi dari aplikasi Authenticator.') }}</p>
                                 </div>
                             </div>
@@ -440,22 +440,22 @@
             <section id="mobile-sync" class="space-y-8">
                 <div class="bg-supabase-surface border border-supabase-border rounded-2xl overflow-hidden">
                     <div class="px-8 py-6 border-b border-supabase-border bg-supabase-dark/30">
-                        <h3 class="text-xs font-black text-white uppercase tracking-[0.2em]">Android Client Configuration</h3>
+                        <h3 class="text-xs font-bold text-white uppercase tracking-wider">Android Client Configuration</h3>
                     </div>
                     <div class="p-8 space-y-8">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div class="p-6 bg-supabase-input/30 border border-supabase-border rounded-2xl">
-                                <p class="text-[8px] font-black text-supabase-muted uppercase tracking-[0.2em] mb-2">Sync Identity (Email)</p>
-                                <p class="text-sm font-black text-white font-mono uppercase tracking-tighter">{{ $tenant->email }}</p>
+                                <p class="text-[8px] font-bold text-supabase-muted uppercase tracking-wider mb-2">Sync Identity (Email)</p>
+                                <p class="text-sm font-bold text-white font-mono uppercase tracking-normal">{{ $tenant->email }}</p>
                             </div>
                             <div class="p-6 bg-supabase-input/30 border border-supabase-border rounded-2xl">
-                                <p class="text-[8px] font-black text-supabase-muted uppercase tracking-[0.2em] mb-2">Sync Password</p>
-                                <p class="text-xs font-bold text-supabase-accent uppercase tracking-widest italic">Managed via Dashboard Password</p>
+                                <p class="text-[8px] font-bold text-supabase-muted uppercase tracking-wider mb-2">Sync Password</p>
+                                <p class="text-xs font-bold text-supabase-accent uppercase tracking-wider italic">Managed via Dashboard Password</p>
                             </div>
                         </div>
 
                         <div class="space-y-4">
-                            <h4 class="text-[10px] font-black text-white uppercase tracking-widest flex items-center">
+                            <h4 class="text-[10px] font-bold text-white uppercase tracking-wider flex items-center">
                                 <span class="w-1 h-1 bg-supabase-accent rounded-full mr-3"></span>
                                 Setup Protocol
                             </h4>

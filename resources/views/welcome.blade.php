@@ -28,23 +28,23 @@
                                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-supabase-accent opacity-75"></span>
                                 <span class="relative inline-flex rounded-full h-2 w-2 bg-supabase-accent"></span>
                             </span>
-                            <span class="text-[10px] font-black text-supabase-accent uppercase tracking-[0.2em]">{{ __('Gateway Pembayaran Instan Rp 0 Fee') }}</span>
+                            <span class="text-[10px] font-bold text-supabase-accent uppercase tracking-wider">{{ __('Gateway Pembayaran Instan Rp 0 Fee') }}</span>
                         </div>
 
-                        <h1 class="text-3xl md:text-5xl font-black text-white tracking-tighter leading-tight">
+                        <h1 class="text-3xl md:text-5xl font-bold text-white tracking-normal leading-tight">
                             {{ __('Konfirmasi Pembayaran') }} <br>
                             <span class="text-supabase-accent">{{ __('Otomatis dari HP Anda') }}</span>.
                         </h1>
                         
-                        <p class="max-w-xl text-base md:text-lg text-slate-400 font-medium tracking-tight leading-relaxed">
+                        <p class="max-w-xl text-base md:text-lg text-slate-400 font-medium tracking-normal leading-relaxed">
                             {{ __('Membaca notifikasi transfer masuk dari bank & e-wallet di HP Android Anda secara real-time, lalu meneruskannya sebagai JSON webhook langsung ke server Anda. Tanpa potongan biaya, tanpa perantara, 100% langsung masuk ke rekening pribadi Anda.') }}
                         </p>
 
                         <div class="flex flex-col sm:flex-row items-center gap-4 pt-4">
-                            <a href="{{ route('register') }}" class="w-full sm:w-auto text-center px-10 py-4 bg-supabase-accent text-supabase-dark font-black text-xs uppercase tracking-[0.2em] rounded-2xl hover:scale-105 transition-all shadow-xl shadow-supabase-accent/15">
+                            <a href="{{ route('register') }}" class="w-full sm:w-auto text-center px-10 py-4 bg-supabase-accent text-supabase-dark font-bold text-xs uppercase tracking-wider rounded-2xl hover:scale-105 transition-all shadow-xl shadow-supabase-accent/15">
                                 {{ __('Mulai Secara Gratis') }}
                             </a>
-                            <a href="#how-it-works" class="w-full sm:w-auto text-center px-10 py-4 border border-supabase-border rounded-2xl text-white font-black text-xs uppercase tracking-[0.2em] hover:bg-white/5 transition-all">
+                            <a href="#how-it-works" class="w-full sm:w-auto text-center px-10 py-4 border border-supabase-border rounded-2xl text-white font-bold text-xs uppercase tracking-wider hover:bg-white/5 transition-all">
                                 {{ __('Lihat Protokol') }}
                             </a>
                         </div>
@@ -58,8 +58,8 @@
                                 ['99.9%', 'Uptime Sinkronisasi']
                             ] as [$val, $label])
                                 <div>
-                                    <p class="text-2xl font-black text-white tracking-tighter mb-1">{{ __($val) }}</p>
-                                    <p class="text-[9px] font-black text-supabase-muted uppercase tracking-widest opacity-60">{{ __($label) }}</p>
+                                    <p class="text-2xl font-bold text-white tracking-normal mb-1">{{ __($val) }}</p>
+                                    <p class="text-[9px] font-bold text-supabase-muted uppercase tracking-wider opacity-60">{{ __($label) }}</p>
                                 </div>
                             @endforeach
                         </div>
@@ -73,16 +73,16 @@
                             {{-- Alert 1: BCA --}}
                             <div class="bg-supabase-dark border border-supabase-border rounded-[24px] p-4 flex items-center justify-between hover:border-supabase-accent/30 transition-colors">
                                 <div class="flex items-center space-x-4">
-                                    <div class="w-10 h-10 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center font-black text-xs">
+                                    <div class="w-10 h-10 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center font-bold text-xs">
                                         BCA
                                     </div>
                                     <div>
-                                        <h4 class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">{{ __('Uang Transfer Masuk') }}</h4>
-                                        <p class="text-sm font-black text-white">Rp 150.472</p>
+                                        <h4 class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">{{ __('Uang Transfer Masuk') }}</h4>
+                                        <p class="text-sm font-bold text-white">Rp 150.472</p>
                                         <p class="text-[9px] text-supabase-muted font-bold">Pengirim: DARMA RIDUAN</p>
                                     </div>
                                 </div>
-                                <span class="px-2.5 py-1 bg-green-500/10 text-green-400 text-[8px] font-black uppercase tracking-widest rounded-full">
+                                <span class="px-2.5 py-1 bg-green-500/10 text-green-400 text-[8px] font-bold uppercase tracking-wider rounded-full">
                                     {{ __('Berhasil') }}
                                 </span>
                             </div>
@@ -90,16 +90,16 @@
                             {{-- Alert 2: DANA --}}
                             <div class="bg-supabase-dark border border-supabase-border rounded-[24px] p-4 flex items-center justify-between hover:border-supabase-accent/30 transition-colors">
                                 <div class="flex items-center space-x-4">
-                                    <div class="w-10 h-10 bg-supabase-accent/10 text-supabase-accent rounded-xl flex items-center justify-center font-black text-xs">
+                                    <div class="w-10 h-10 bg-supabase-accent/10 text-supabase-accent rounded-xl flex items-center justify-center font-bold text-xs">
                                         DANA
                                     </div>
                                     <div>
-                                        <h4 class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">{{ __('Pembayaran QRIS') }}</h4>
-                                        <p class="text-sm font-black text-white">Rp 300.000</p>
+                                        <h4 class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">{{ __('Pembayaran QRIS') }}</h4>
+                                        <p class="text-sm font-bold text-white">Rp 300.000</p>
                                         <p class="text-[9px] text-supabase-muted font-bold">Pengirim: AMINAH</p>
                                     </div>
                                 </div>
-                                <span class="px-2.5 py-1 bg-green-500/10 text-green-400 text-[8px] font-black uppercase tracking-widest rounded-full">
+                                <span class="px-2.5 py-1 bg-green-500/10 text-green-400 text-[8px] font-bold uppercase tracking-wider rounded-full">
                                     {{ __('Berhasil') }}
                                 </span>
                             </div>
@@ -107,16 +107,16 @@
                             {{-- Alert 3: Webhook Relay --}}
                             <div class="bg-supabase-dark border border-supabase-border rounded-[24px] p-4 flex items-center justify-between hover:border-supabase-accent/30 transition-colors">
                                 <div class="flex items-center space-x-4">
-                                    <div class="w-10 h-10 bg-purple-500/10 text-purple-400 rounded-xl flex items-center justify-center font-black">
+                                    <div class="w-10 h-10 bg-purple-500/10 text-purple-400 rounded-xl flex items-center justify-center font-bold">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                                     </div>
                                     <div>
-                                        <h4 class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">{{ __('Callback Webhook') }}</h4>
+                                        <h4 class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">{{ __('Callback Webhook') }}</h4>
                                         <p class="text-[10px] font-mono text-purple-400">event: payment.confirmed</p>
                                         <p class="text-[9px] text-supabase-muted font-bold">{{ __('Latensi') }}: 42ms</p>
                                     </div>
                                 </div>
-                                <span class="px-2.5 py-1 bg-green-500/10 text-green-400 text-[8px] font-black uppercase tracking-widest rounded-full">
+                                <span class="px-2.5 py-1 bg-green-500/10 text-green-400 text-[8px] font-bold uppercase tracking-wider rounded-full">
                                     {{ __('HMAC OK') }}
                                 </span>
                             </div>
@@ -129,8 +129,8 @@
                 <section id="features" class="py-32 px-6 lg:px-12 bg-supabase-dark/50 relative border-t border-supabase-border/30">
                     <div class="max-w-7xl mx-auto">
                         <div class="mb-16 text-center">
-                            <h2 class="text-xs font-black text-supabase-accent uppercase tracking-[0.4em] mb-4">{{ __('Fitur Unggulan') }}</h2>
-                            <h3 class="text-3xl md:text-4xl font-black text-white tracking-tighter">{{ __('Dirancang untuk') }} <span class="text-supabase-accent">{{ __('Keandalan') }}</span>.</h3>
+                            <h2 class="text-xs font-bold text-supabase-accent uppercase tracking-[0.4em] mb-4">{{ __('Fitur Unggulan') }}</h2>
+                            <h3 class="text-3xl md:text-4xl font-bold text-white tracking-normal">{{ __('Dirancang untuk') }} <span class="text-supabase-accent">{{ __('Keandalan') }}</span>.</h3>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -170,7 +170,7 @@
                                 <div class="w-14 h-14 bg-supabase-accent/10 text-supabase-accent rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
                                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $feature['icon'] }}"></path></svg>
                                 </div>
-                                <h4 class="text-xl font-black text-white tracking-tight mb-4">{{ __($feature['title']) }}</h4>
+                                <h4 class="text-xl font-bold text-white tracking-normal mb-4">{{ __($feature['title']) }}</h4>
                                 <p class="text-sm text-slate-400 font-medium leading-relaxed">{{ __($feature['desc']) }}</p>
                             </div>
                             @endforeach
@@ -186,8 +186,8 @@
                             {{-- How Left --}}
                             <div class="space-y-12">
                                 <div>
-                                    <h2 class="text-xs font-black text-supabase-accent uppercase tracking-[0.4em] mb-4">{{ __('Protokol') }}</h2>
-                                    <h3 class="text-2xl md:text-4xl font-black text-white tracking-tighter leading-none">
+                                    <h2 class="text-xs font-bold text-supabase-accent uppercase tracking-[0.4em] mb-4">{{ __('Protokol') }}</h2>
+                                    <h3 class="text-2xl md:text-4xl font-bold text-white tracking-normal leading-none">
                                         {{ __('Tiga Langkah Mudah') }}.
                                     </h3>
                                 </div>
@@ -199,9 +199,9 @@
                                         ['03', 'Mulai Sinkronisasi', 'Setiap kali ada transfer masuk di HP Anda, Cekbayar akan mendeteksinya dan mengirim data JSON webhook langsung ke server Anda secara instan.']
                                     ] as [$step, $title, $desc])
                                     <div class="flex items-start space-x-6 group">
-                                        <span class="text-2xl font-black text-supabase-accent/30 font-mono group-hover:text-supabase-accent transition-colors">{{ $step }}</span>
+                                        <span class="text-2xl font-bold text-supabase-accent/30 font-mono group-hover:text-supabase-accent transition-colors">{{ $step }}</span>
                                         <div>
-                                            <h5 class="text-sm font-black text-white tracking-wide mb-1.5">{{ __($title) }}</h5>
+                                            <h5 class="text-sm font-bold text-white tracking-wide mb-1.5">{{ __($title) }}</h5>
                                             <p class="text-xs md:text-sm text-slate-400 font-medium leading-relaxed">{{ __($desc) }}</p>
                                         </div>
                                     </div>
@@ -218,7 +218,7 @@
                                             <div class="w-3 h-3 rounded-full bg-red-500/20"></div>
                                             <div class="w-3 h-3 rounded-full bg-amber-500/20"></div>
                                             <div class="w-3 h-3 rounded-full bg-green-500/20"></div>
-                                            <span class="ml-4 text-supabase-muted opacity-50 uppercase tracking-widest">webhook_payload.json</span>
+                                            <span class="ml-4 text-supabase-muted opacity-50 uppercase tracking-wider">webhook_payload.json</span>
                                         </div>
 <pre class="animate-pulse">
 {
@@ -246,17 +246,17 @@
                     <div class="max-w-5xl mx-auto bg-gradient-to-br from-supabase-accent to-amber-600 rounded-[48px] p-12 md:p-24 text-center relative overflow-hidden shadow-2xl shadow-supabase-accent/20">
                         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
                         <div class="relative z-10">
-                            <h2 class="text-2xl md:text-4xl font-black text-supabase-dark tracking-tighter leading-none mb-8">
+                            <h2 class="text-2xl md:text-4xl font-bold text-supabase-dark tracking-normal leading-none mb-8">
                                 {{ __('Siap Menghubungkan Pembayaran Anda?') }}
                             </h2>
-                            <p class="max-w-xl mx-auto text-supabase-dark/80 font-semibold tracking-tight mb-12">
+                            <p class="max-w-xl mx-auto text-supabase-dark/80 font-semibold tracking-normal mb-12">
                                 {{ __('Mulai otomatisasi pencocokan invoice pembayaran secara gratis sekarang juga tanpa biaya komisi.') }}
                             </p>
                             <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
-                                <a href="{{ route('register') }}" class="w-full sm:w-auto px-12 py-5 bg-supabase-dark text-white rounded-2xl font-black text-sm tracking-[0.3em] hover:scale-105 transition-transform shadow-2xl">
+                                <a href="{{ route('register') }}" class="w-full sm:w-auto px-12 py-5 bg-supabase-dark text-white rounded-2xl font-bold text-sm tracking-[0.3em] hover:scale-105 transition-transform shadow-2xl">
                                     {{ __('Mulai Gratis') }}
                                 </a>
-                                <a href="{{ localeRoute('public.pricing') }}" class="w-full sm:w-auto px-12 py-5 border-2 border-supabase-dark/20 text-supabase-dark rounded-2xl font-black text-sm tracking-[0.3em] hover:bg-supabase-dark/5 transition-colors">
+                                <a href="{{ localeRoute('public.pricing') }}" class="w-full sm:w-auto px-12 py-5 border-2 border-supabase-dark/20 text-supabase-dark rounded-2xl font-bold text-sm tracking-[0.3em] hover:bg-supabase-dark/5 transition-colors">
                                     {{ __('Lihat Harga') }}
                                 </a>
                             </div>
@@ -271,14 +271,14 @@
                     <div class="w-8 h-8 bg-supabase-accent rounded-lg flex items-center justify-center">
                         <svg class="w-5 h-5 text-supabase-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     </div>
-                    <span class="text-xl font-black text-white tracking-tighter">Cek<span class="text-supabase-accent">bayar</span></span>
+                    <span class="text-xl font-bold text-white tracking-normal">Cek<span class="text-supabase-accent">bayar</span></span>
                 </div>
-                <p class="text-[9px] font-black text-supabase-muted uppercase tracking-widest">
+                <p class="text-[9px] font-bold text-supabase-muted uppercase tracking-wider">
                     {{ __('© 2026 Cekbayar Infrastructure. Tanpa penahanan dana. Semua hak cipta dilindungi.') }}
                 </p>
                 <div class="flex space-x-8 mt-6 md:mt-0">
-                    <a href="{{ localeRoute('public.privacy') }}" class="text-[9px] font-black text-supabase-muted hover:text-white uppercase tracking-widest transition-colors">{{ __('Kebijakan Privasi') }}</a>
-                    <a href="{{ localeRoute('public.terms') }}" class="text-[9px] font-black text-supabase-muted hover:text-white uppercase tracking-widest transition-colors">{{ __('Syarat & Ketentuan') }}</a>
+                    <a href="{{ localeRoute('public.privacy') }}" class="text-[9px] font-bold text-supabase-muted hover:text-white uppercase tracking-wider transition-colors">{{ __('Kebijakan Privasi') }}</a>
+                    <a href="{{ localeRoute('public.terms') }}" class="text-[9px] font-bold text-supabase-muted hover:text-white uppercase tracking-wider transition-colors">{{ __('Syarat & Ketentuan') }}</a>
                 </div>
             </footer>
         </div>

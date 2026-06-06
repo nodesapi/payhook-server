@@ -18,7 +18,7 @@
         </div>
 
         <!-- Message -->
-        <h1 class="text-3xl font-black text-white mb-4 uppercase tracking-tight">SEDANG <span class="text-yellow-500">DIPROSES</span></h1>
+        <h1 class="text-3xl font-bold text-white mb-4 uppercase tracking-normal">SEDANG <span class="text-yellow-500">DIPROSES</span></h1>
         <p class="text-supabase-muted mb-8 leading-relaxed text-sm font-bold">
             @if(isset($tenant) && $tenant->payment_proof_path)
                 Terima kasih! Bukti pembayaran dan dokumen identitas Anda telah kami terima. Tim admin sedang melakukan verifikasi akhir untuk mengaktifkan akun Anda.
@@ -31,7 +31,7 @@
         <div class="space-y-4">
             @if(session('success'))
                 <div class="p-4 bg-green-500/10 border border-green-500/20 rounded-xl mb-4">
-                    <p class="text-xs font-bold text-green-500 uppercase tracking-widest">{{ session('success') }}</p>
+                    <p class="text-xs font-bold text-green-500 uppercase tracking-wider">{{ session('success') }}</p>
                 </div>
             @endif
 
@@ -39,14 +39,14 @@
                 <div class="p-4 bg-supabase-surface border border-supabase-border rounded-xl mb-4">
                     <div class="flex items-center justify-center space-x-2 text-green-500">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <span class="text-[10px] font-black uppercase tracking-widest">Bukti Terunggah</span>
+                        <span class="text-[10px] font-bold uppercase tracking-wider">Bukti Terunggah</span>
                     </div>
                 </div>
             @endif
 
             <form method="POST" action="{{ route('tenant.kyc.upload-payment') }}" enctype="multipart/form-data" class="bg-supabase-surface border border-supabase-border rounded-2xl p-6 mb-4">
                 @csrf
-                <label class="block text-xs font-black text-white uppercase tracking-widest mb-3 text-center">
+                <label class="block text-xs font-bold text-white uppercase tracking-wider mb-3 text-center">
                     {{ isset($tenant) && $tenant->payment_proof_path ? 'Ganti Bukti Pembayaran' : 'Upload Bukti Pembayaran' }}
                 </label>
                 
@@ -57,7 +57,7 @@
                         </svg>
                         <div class="flex text-sm text-slate-400 justify-center mt-2">
                             <label for="payment_proof" class="relative cursor-pointer rounded-md font-bold text-yellow-500 hover:text-white focus-within:outline-none transition-colors">
-                                <span id="payment-btn-text" class="uppercase text-[10px] tracking-widest">Pilih File Foto</span>
+                                <span id="payment-btn-text" class="uppercase text-[10px] tracking-wider">Pilih File Foto</span>
                                 <input id="payment_proof" name="payment_proof" type="file" class="sr-only" required accept="image/*"
                                     onchange="
                                         const file = this.files[0];
@@ -76,14 +76,14 @@
                 </div>
                 @error('payment_proof') <p class="text-[10px] text-red-400 mt-2 font-bold text-center uppercase">{{ $message }}</p> @enderror
 
-                <button type="submit" class="w-full mt-4 flex justify-center items-center py-3 px-6 rounded-xl shadow-lg shadow-yellow-500/20 text-xs font-bold transition-all active:scale-95 border border-transparent uppercase tracking-widest" style="background-color: #eab308; color: #000000;">
+                <button type="submit" class="w-full mt-4 flex justify-center items-center py-3 px-6 rounded-xl shadow-lg shadow-yellow-500/20 text-xs font-bold transition-all active:scale-95 border border-transparent uppercase tracking-wider" style="background-color: #eab308; color: #000000;">
                     Kirim Bukti
                 </button>
             </form>
             
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="block w-full text-xs font-black text-supabase-muted hover:text-white transition-colors uppercase tracking-[0.2em] py-4">
+                <button type="submit" class="block w-full text-xs font-bold text-supabase-muted hover:text-white transition-colors uppercase tracking-wider py-4">
                     Logout
                 </button>
             </form>

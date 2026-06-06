@@ -61,11 +61,11 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                             </svg>
                         </div>
-                        <h1 class="text-4xl font-black tracking-tighter text-white">Cek<span class="text-supabase-accent">bayar</span></h1>
+                        <h1 class="text-4xl font-bold tracking-normal text-white">Cek<span class="text-supabase-accent">bayar</span></h1>
                     </a>
 
                     <div class="space-y-8">
-                        <h2 class="text-5xl font-extrabold text-white leading-[1.1] tracking-tight">
+                        <h2 class="text-5xl font-extrabold text-white leading-[1.1] tracking-normal">
                             {!! __('Jembatan pembayaran <span class="text-supabase-accent">generasi baru</span> untuk developer.') !!}
                         </h2>
                         <p class="text-xl text-supabase-muted leading-relaxed">
@@ -90,7 +90,7 @@
                 </div>
 
                 <!-- Footer-like element for Branding Panel -->
-                <div class="absolute bottom-12 left-12 right-12 flex justify-between items-center text-[10px] text-supabase-muted uppercase tracking-[0.2em] font-bold">
+                <div class="absolute bottom-12 left-12 right-12 flex justify-between items-center text-[10px] text-supabase-muted uppercase tracking-wider font-bold">
                     <span>{{ __('Infrastruktur Terdistribusi') }}</span>
                     <div class="h-[1px] flex-1 mx-8 bg-supabase-border opacity-50"></div>
                     <span>v2.0.4</span>
@@ -106,7 +106,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                             </svg>
                         </div>
-                        <h1 class="text-2xl font-black text-white tracking-tighter">Cek<span class="text-supabase-accent">bayar</span></h1>
+                        <h1 class="text-2xl font-bold text-white tracking-normal">Cek<span class="text-supabase-accent">bayar</span></h1>
                     </a>
                     
                     {{ $slot }}

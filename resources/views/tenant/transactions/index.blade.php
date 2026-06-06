@@ -8,11 +8,11 @@
 <div class="mb-12">
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
-            <h1 class="text-4xl font-black text-white tracking-tight uppercase">Audit <span class="text-supabase-accent">Ledger</span></h1>
+            <h1 class="text-4xl font-bold text-white tracking-normal uppercase">Audit <span class="text-supabase-accent">Ledger</span></h1>
             <p class="text-supabase-muted mt-2">Comprehensive record of all incoming financial payloads and reconciliation status.</p>
         </div>
         <div class="flex items-center space-x-3">
-            <a href="{{ route('tenant.transactions.export') }}?{{ http_build_query(request()->except('page')) }}" class="sb-button-secondary !w-auto !py-3 !px-6 !text-[10px] uppercase font-black tracking-widest flex items-center">
+            <a href="{{ route('tenant.transactions.export') }}?{{ http_build_query(request()->except('page')) }}" class="sb-button-secondary !w-auto !py-3 !px-6 !text-[10px] uppercase font-bold tracking-wider flex items-center">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                 Export Matrix
             </a>
@@ -32,8 +32,8 @@
         ['Anomalies', number_format($stats['failed']), 'bg-red-500/20 text-red-500', 'M10 14l2-2']
     ] as [$label, $value, $color, $path])
     <div class="bg-supabase-surface border border-supabase-border rounded-2xl p-6 relative overflow-hidden group">
-        <p class="text-[8px] font-black text-supabase-muted uppercase tracking-[0.2em] mb-2">{{ $label }}</p>
-        <p class="text-2xl font-black text-white leading-none tracking-tighter">{{ $value }}</p>
+        <p class="text-[8px] font-bold text-supabase-muted uppercase tracking-wider mb-2">{{ $label }}</p>
+        <p class="text-2xl font-bold text-white leading-none tracking-normal">{{ $value }}</p>
         <div class="absolute -right-2 -bottom-2 opacity-5 group-hover:scale-125 transition-transform">
             <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $path }}"></path></svg>
         </div>
@@ -47,11 +47,11 @@
     <form method="GET" action="{{ route('tenant.transactions.index') }}" class="relative z-10 space-y-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="space-y-2">
-                <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Search Index</label>
+                <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Search Index</label>
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="ID, Identity, Email..." class="sb-input">
             </div>
             <div class="space-y-2">
-                <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Status Filter</label>
+                <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Status Filter</label>
                 <select name="status" class="sb-input bg-supabase-dark">
                     <option value="">All States</option>
                     @foreach(['pending' => 'Pending', 'success' => 'Success', 'failed' => 'Failed', 'expired' => 'Expired'] as $k => $v)
@@ -60,7 +60,7 @@
                 </select>
             </div>
             <div class="space-y-2">
-                <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Input Node</label>
+                <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Input Node</label>
                 <select name="channel" class="sb-input bg-supabase-dark">
                     <option value="">All Channels</option>
                     @foreach($channels as $channel)
@@ -69,7 +69,7 @@
                 </select>
             </div>
             <div class="space-y-2">
-                <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Temporal Range</label>
+                <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Temporal Range</label>
                 <input type="date" name="date_from" value="{{ request('date_from') }}" class="sb-input">
             </div>
         </div>
@@ -78,10 +78,10 @@
             <div class="flex items-center space-x-4">
                 <button type="submit" class="sb-button-primary !w-auto !py-3 !px-8">Query Database</button>
                 @if(request()->hasAny(['search', 'status', 'channel', 'date_from']))
-                    <a href="{{ route('tenant.transactions.index') }}" class="text-[10px] font-black text-supabase-muted uppercase tracking-widest hover:text-white transition-colors">Clear Parameters</a>
+                    <a href="{{ route('tenant.transactions.index') }}" class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider hover:text-white transition-colors">Clear Parameters</a>
                 @endif
             </div>
-            <p class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">
+            <p class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">
                 Retrieved <span class="text-white">{{ $transactions->total() }}</span> entries
             </p>
         </div>
@@ -94,39 +94,39 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-supabase-dark/50 border-b border-supabase-border">
-                    <th class="px-8 py-6 text-xs font-black text-supabase-muted uppercase tracking-widest">Node ID</th>
-                    <th class="px-8 py-6 text-xs font-black text-supabase-muted uppercase tracking-widest">Entity</th>
-                    <th class="px-8 py-6 text-xs font-black text-supabase-muted uppercase tracking-widest">Source</th>
-                    <th class="px-8 py-6 text-xs font-black text-supabase-muted uppercase tracking-widest text-right">Magnitude</th>
-                    <th class="px-8 py-6 text-xs font-black text-supabase-muted uppercase tracking-widest text-center">Status</th>
-                    <th class="px-8 py-6 text-xs font-black text-supabase-muted uppercase tracking-widest">Timestamp</th>
-                    <th class="px-8 py-6 text-xs font-black text-supabase-muted uppercase tracking-widest text-right">Actions</th>
+                    <th class="px-8 py-6 text-xs font-bold text-supabase-muted uppercase tracking-wider">Node ID</th>
+                    <th class="px-8 py-6 text-xs font-bold text-supabase-muted uppercase tracking-wider">Entity</th>
+                    <th class="px-8 py-6 text-xs font-bold text-supabase-muted uppercase tracking-wider">Source</th>
+                    <th class="px-8 py-6 text-xs font-bold text-supabase-muted uppercase tracking-wider text-right">Magnitude</th>
+                    <th class="px-8 py-6 text-xs font-bold text-supabase-muted uppercase tracking-wider text-center">Status</th>
+                    <th class="px-8 py-6 text-xs font-bold text-supabase-muted uppercase tracking-wider">Timestamp</th>
+                    <th class="px-8 py-6 text-xs font-bold text-supabase-muted uppercase tracking-wider text-right">Actions</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-supabase-border/30">
                 @forelse($transactions as $transaction)
                     <tr class="hover:bg-white/[0.02] transition-colors group">
                         <td class="px-8 py-6">
-                            <span class="font-mono text-sm font-black text-white group-hover:text-supabase-accent transition-colors tracking-tighter">{{ $transaction->transaction_id }}</span>
+                            <span class="font-mono text-sm font-bold text-white group-hover:text-supabase-accent transition-colors tracking-normal">{{ $transaction->transaction_id }}</span>
                         </td>
                         <td class="px-8 py-6">
-                            <p class="text-xs font-black text-white uppercase tracking-tight">{{ $transaction->customer_name ?? 'Anonymous' }}</p>
+                            <p class="text-xs font-bold text-white uppercase tracking-normal">{{ $transaction->customer_name ?? 'Anonymous' }}</p>
                             <p class="text-[10px] text-supabase-muted font-bold uppercase mt-0.5">{{ $transaction->customer_email ?? 'no-email@identity.net' }}</p>
                         </td>
                         <td class="px-8 py-6">
                             @if($transaction->paymentChannel)
                                 <div class="flex items-center space-x-3">
-                                    <div class="w-8 h-8 rounded-lg bg-supabase-input border border-supabase-border flex items-center justify-center text-[10px] font-black text-supabase-accent">
+                                    <div class="w-8 h-8 rounded-lg bg-supabase-input border border-supabase-border flex items-center justify-center text-[10px] font-bold text-supabase-accent">
                                         {{ substr($transaction->paymentChannel->channel_type, 0, 1) }}
                                     </div>
-                                    <p class="text-xs font-black text-white uppercase tracking-tight">{{ $transaction->paymentChannel->channel_name }}</p>
+                                    <p class="text-xs font-bold text-white uppercase tracking-normal">{{ $transaction->paymentChannel->channel_name }}</p>
                                 </div>
                             @else
-                                <span class="text-supabase-muted text-xs font-black">LEGACY</span>
+                                <span class="text-supabase-muted text-xs font-bold">LEGACY</span>
                             @endif
                         </td>
                         <td class="px-8 py-6 text-right">
-                            <p class="text-sm font-black text-white">Rp {{ number_format($transaction->amount, 0, ',', '.') }}</p>
+                            <p class="text-sm font-bold text-white">Rp {{ number_format($transaction->amount, 0, ',', '.') }}</p>
                             <p class="text-[10px] text-supabase-muted font-bold uppercase mt-0.5">NET: Rp {{ number_format($transaction->amount - $transaction->fee_amount, 0, ',', '.') }}</p>
                         </td>
                         <td class="px-8 py-6 text-center">
@@ -139,12 +139,12 @@
                                 ];
                                 $color = $statusColors[$transaction->status] ?? $statusColors['pending'];
                             @endphp
-                            <span class="inline-flex px-3 py-1 rounded-full border text-[10px] font-black uppercase tracking-widest {{ $color }}">
+                            <span class="inline-flex px-3 py-1 rounded-full border text-[10px] font-bold uppercase tracking-wider {{ $color }}">
                                 {{ $transaction->status }}
                             </span>
                         </td>
                         <td class="px-8 py-6">
-                            <p class="text-xs font-black text-white uppercase tracking-tight">{{ $transaction->created_at->setTimezone('Asia/Jakarta')->translatedFormat('d F Y') }}</p>
+                            <p class="text-xs font-bold text-white uppercase tracking-normal">{{ $transaction->created_at->setTimezone('Asia/Jakarta')->translatedFormat('d F Y') }}</p>
                             <p class="text-[10px] text-supabase-muted font-bold uppercase mt-0.5">{{ $transaction->created_at->setTimezone('Asia/Jakarta')->format('H:i:s') }} WIB</p>
                         </td>
                         <td class="px-8 py-6 text-right">
@@ -170,8 +170,8 @@
                                 <div class="w-16 h-16 bg-supabase-input border border-supabase-border rounded-2xl flex items-center justify-center mx-auto text-supabase-muted">
                                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                                 </div>
-                                <h3 class="text-xs font-black text-white uppercase tracking-widest">Null Set Returned</h3>
-                                <p class="text-[10px] text-supabase-muted font-bold uppercase tracking-tighter">No transaction data found matching your query parameters.</p>
+                                <h3 class="text-xs font-bold text-white uppercase tracking-wider">Null Set Returned</h3>
+                                <p class="text-[10px] text-supabase-muted font-bold uppercase tracking-normal">No transaction data found matching your query parameters.</p>
                             </div>
                         </td>
                     </tr>

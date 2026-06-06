@@ -51,21 +51,21 @@
             <div class="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
                 <div class="flex-1 w-full">
                     <div class="bg-supabase-surface p-5 rounded-xl border border-supabase-border mb-3 font-mono text-xs shadow-xl">Financial Apps<br><span class="text-supabase-muted">(BCA, Dana, etc)</span></div>
-                    <p class="text-xs text-supabase-muted font-bold uppercase tracking-widest">Triggers Notification</p>
+                    <p class="text-xs text-supabase-muted font-bold uppercase tracking-wider">Triggers Notification</p>
                 </div>
                 <div class="text-supabase-accent animate-pulse">
                     <svg class="w-6 h-6 rotate-90 md:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </div>
                 <div class="flex-1 w-full">
                     <div class="bg-supabase-accent text-supabase-dark p-5 rounded-xl font-bold mb-3 text-xs shadow-xl shadow-supabase-accent/10">Cekbayar Android App</div>
-                    <p class="text-xs text-supabase-muted font-bold uppercase tracking-widest">Captures & Forwards</p>
+                    <p class="text-xs text-supabase-muted font-bold uppercase tracking-wider">Captures & Forwards</p>
                 </div>
                 <div class="text-supabase-accent animate-pulse">
                     <svg class="w-6 h-6 rotate-90 md:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </div>
                 <div class="flex-1 w-full">
                     <div class="bg-supabase-surface p-5 rounded-xl border border-supabase-border mb-3 font-mono text-xs shadow-xl">Your Webhook</div>
-                    <p class="text-xs text-supabase-muted font-bold uppercase tracking-widest">Confirm Order</p>
+                    <p class="text-xs text-supabase-muted font-bold uppercase tracking-wider">Confirm Order</p>
                 </div>
             </div>
         </div>

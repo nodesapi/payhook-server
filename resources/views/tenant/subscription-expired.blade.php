@@ -17,14 +17,14 @@
             </div>
         </div>
 
-        <h1 class="text-3xl font-black text-white mb-4 uppercase tracking-tight">Masa Berlaku <span class="text-supabase-accent">Habis</span></h1>
+        <h1 class="text-3xl font-bold text-white mb-4 uppercase tracking-normal">Masa Berlaku <span class="text-supabase-accent">Habis</span></h1>
         <p class="text-supabase-muted mb-8 leading-relaxed">
             Maaf bro, masa aktif akun <strong>{{ $tenant->name }}</strong> sudah berakhir. Silakan lakukan perpanjangan untuk terus menggunakan layanan Cekbayar.
         </p>
 
         <div class="bg-supabase-surface border border-supabase-border rounded-2xl p-6 mb-8 text-left">
             <div class="flex items-center justify-between mb-4">
-                <span class="text-xs font-bold text-supabase-muted uppercase tracking-widest">Status Akun</span>
+                <span class="text-xs font-bold text-supabase-muted uppercase tracking-wider">Status Akun</span>
                 <span class="px-2 py-0.5 bg-red-500/10 text-red-500 text-[10px] font-bold rounded uppercase">Expired</span>
             </div>
             <div class="space-y-3">
@@ -43,13 +43,13 @@
             <a href="#" class="sb-button-primary">Perpanjang Sekarang</a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="text-xs font-bold text-supabase-muted hover:text-white transition-colors uppercase tracking-widest">
+                <button type="submit" class="text-xs font-bold text-supabase-muted hover:text-white transition-colors uppercase tracking-wider">
                     Keluar dari Akun
                 </button>
             </form>
         </div>
 
-        <p class="mt-12 text-[10px] text-supabase-muted uppercase tracking-[0.2em]">Cekbayar Billing System v1.0</p>
+        <p class="mt-12 text-[10px] text-supabase-muted uppercase tracking-wider">Cekbayar Billing System v1.0</p>
     </div>
 
 </body>

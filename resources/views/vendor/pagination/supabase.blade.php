@@ -33,7 +33,7 @@
                     @endif
 
                     @if ($page === $currentPage)
-                        <span aria-current="page" class="inline-flex h-9 min-w-9 items-center justify-center rounded-lg border border-supabase-accent bg-supabase-accent px-3 text-xs font-black text-supabase-dark shadow-lg shadow-supabase-accent/10">{{ $page }}</span>
+                        <span aria-current="page" class="inline-flex h-9 min-w-9 items-center justify-center rounded-lg border border-supabase-accent bg-supabase-accent px-3 text-xs font-bold text-supabase-dark shadow-lg shadow-supabase-accent/10">{{ $page }}</span>
                     @else
                         <a href="{{ $paginator->url($page) }}" class="inline-flex h-9 min-w-9 items-center justify-center rounded-lg border border-supabase-border bg-supabase-dark px-3 text-xs font-bold text-slate-300 transition-colors hover:border-supabase-accent/60 hover:text-supabase-accent">{{ $page }}</a>
                     @endif

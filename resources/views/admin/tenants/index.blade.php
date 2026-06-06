@@ -7,7 +7,7 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
-            <h1 class="text-4xl font-black text-white tracking-tight uppercase">Tenants</h1>
+            <h1 class="text-4xl font-bold text-white tracking-normal uppercase">Tenants</h1>
             <p class="text-supabase-muted mt-2">Manage your merchant tenants and their system access.</p>
         </div>
         <a href="{{ route('admin.tenants.create') }}" class="sb-button-primary !w-auto">
@@ -22,7 +22,7 @@
     <div class="bg-supabase-surface border border-supabase-border rounded-2xl overflow-hidden shadow-2xl">
         <div class="overflow-x-auto">
             <table class="w-full">
-                <thead class="bg-supabase-dark/50 text-[10px] uppercase tracking-widest font-black text-supabase-muted">
+                <thead class="bg-supabase-dark/50 text-[10px] uppercase tracking-wider font-bold text-supabase-muted">
                     <tr>
                         <th class="px-8 py-5 text-left">Tenant Info</th>
                         <th class="px-8 py-5 text-left">System Status</th>
@@ -36,11 +36,11 @@
                         <tr class="group hover:bg-white/[0.02] transition-all duration-200">
                             <td class="px-8 py-6">
                                 <div class="flex items-center space-x-4">
-                                    <div class="w-10 h-10 rounded-xl bg-supabase-input border border-supabase-border flex items-center justify-center text-supabase-accent font-black group-hover:scale-110 transition-transform">
+                                    <div class="w-10 h-10 rounded-xl bg-supabase-input border border-supabase-border flex items-center justify-center text-supabase-accent font-bold group-hover:scale-110 transition-transform">
                                         {{ strtoupper(substr($tenant->name, 0, 1)) }}
                                     </div>
                                     <div>
-                                        <p class="text-sm font-black text-white leading-tight mb-1">{{ $tenant->name }}</p>
+                                        <p class="text-sm font-bold text-white leading-tight mb-1">{{ $tenant->name }}</p>
                                         <p class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">{{ $tenant->email }}</p>
                                     </div>
                                 </div>
@@ -48,17 +48,17 @@
                             <td class="px-8 py-6">
                                 <div class="flex flex-col space-y-2">
                                     @if($tenant->is_active)
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded bg-green-500/10 text-green-500 text-[10px] font-black uppercase tracking-widest w-fit">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded bg-green-500/10 text-green-500 text-[10px] font-bold uppercase tracking-wider w-fit">
                                             <span class="w-1.5 h-1.5 bg-green-500 rounded-full mr-2 animate-pulse"></span>
                                             Active
                                         </span>
                                     @else
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded bg-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-widest w-fit">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded bg-red-500/10 text-red-500 text-[10px] font-bold uppercase tracking-wider w-fit">
                                             <span class="w-1.5 h-1.5 bg-red-500 rounded-full mr-2"></span>
                                             Suspended
                                         </span>
                                     @endif
-                                    <span class="px-2 py-0.5 bg-supabase-input border border-supabase-border text-supabase-muted text-[8px] font-black uppercase tracking-widest rounded w-fit">
+                                    <span class="px-2 py-0.5 bg-supabase-input border border-supabase-border text-supabase-muted text-[8px] font-bold uppercase tracking-wider rounded w-fit">
                                         {{ $tenant->mode }}
                                     </span>
                                 </div>
@@ -68,19 +68,19 @@
                                     $isExpired = $tenant->expired_at && $tenant->expired_at->isPast();
                                 @endphp
                                 <div class="space-y-1">
-                                    <p class="text-[10px] font-black uppercase tracking-widest {{ $isExpired ? 'text-red-500' : 'text-white' }}">
+                                    <p class="text-[10px] font-bold uppercase tracking-wider {{ $isExpired ? 'text-red-500' : 'text-white' }}">
                                         {{ $tenant->expired_at ? $tenant->expired_at->format('d M Y') : 'Life-time' }}
                                     </p>
                                     @if($isExpired)
-                                        <p class="text-[8px] text-red-500/70 font-black uppercase tracking-tighter">Subscription Terminated</p>
+                                        <p class="text-[8px] text-red-500/70 font-bold uppercase tracking-normal">Subscription Terminated</p>
                                     @else
-                                        <p class="text-[8px] text-supabase-muted font-bold uppercase tracking-tighter">Valid Access Node</p>
+                                        <p class="text-[8px] text-supabase-muted font-bold uppercase tracking-normal">Valid Access Node</p>
                                     @endif
                                 </div>
                             </td>
                             <td class="px-8 py-6 text-xs">
                                 <div class="space-y-1">
-                                    <p class="text-white font-black leading-none">{{ $tenant->invoices_count }} <span class="text-[10px] text-supabase-muted uppercase font-bold ml-1">Invoices</span></p>
+                                    <p class="text-white font-bold leading-none">{{ $tenant->invoices_count }} <span class="text-[10px] text-supabase-muted uppercase font-bold ml-1">Invoices</span></p>
                                     <p class="text-supabase-muted font-bold text-[10px] uppercase tracking-wider">{{ $tenant->payment_channels_count ?? $tenant->qris_templates_count }} <span class="ml-1">Channels</span></p>
                                 </div>
                             </td>
@@ -134,7 +134,7 @@
                     @empty
                         <tr>
                             <td colspan="5" class="px-8 py-24 text-center">
-                                <h3 class="text-xl font-black text-white uppercase tracking-tight mb-2">No Tenants Registered</h3>
+                                <h3 class="text-xl font-bold text-white uppercase tracking-normal mb-2">No Tenants Registered</h3>
                                 <a href="{{ route('admin.tenants.create') }}" class="sb-button-primary !w-auto">Onboard Merchant</a>
                             </td>
                         </tr>
@@ -155,13 +155,13 @@
 <!-- Extend Modal -->
 <div id="extend-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-6">
     <div class="bg-supabase-surface border border-supabase-border rounded-3xl p-8 max-w-md w-full shadow-2xl">
-        <h3 class="text-xl font-black text-white uppercase tracking-tight mb-2">Extend <span class="text-supabase-accent">Subscription</span></h3>
+        <h3 class="text-xl font-bold text-white uppercase tracking-normal mb-2">Extend <span class="text-supabase-accent">Subscription</span></h3>
         <p class="text-supabase-muted text-[10px] font-bold uppercase mb-6" id="extend-tenant-name"></p>
         
         <form id="extend-form" method="POST" action="" class="space-y-6">
             @csrf
             <div class="space-y-2">
-                <label class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Extension Period</label>
+                <label class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Extension Period</label>
                 <select name="months" class="sb-input bg-supabase-dark" required>
                     <option value="1">1 Month</option>
                     <option value="3">3 Months</option>
@@ -170,7 +170,7 @@
                 </select>
             </div>
             <div class="flex items-center justify-end space-x-4 pt-4">
-                <button type="button" onclick="hideExtendModal()" class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">Abort</button>
+                <button type="button" onclick="hideExtendModal()" class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Abort</button>
                 <button type="submit" class="sb-button-primary !w-auto !py-2.5 !px-8">Update Registry</button>
             </div>
         </form>

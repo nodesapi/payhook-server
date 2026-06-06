@@ -18,10 +18,10 @@
         </div>
 
         <!-- Message -->
-        <h1 class="text-3xl font-black text-white mb-4 uppercase tracking-tight">DATA <span class="text-red-500">DITOLAK</span></h1>
+        <h1 class="text-3xl font-bold text-white mb-4 uppercase tracking-normal">DATA <span class="text-red-500">DITOLAK</span></h1>
         
         <div class="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-left mb-8">
-            <p class="text-xs font-black text-red-400 uppercase tracking-widest mb-1">Alasan Penolakan:</p>
+            <p class="text-xs font-bold text-red-400 uppercase tracking-wider mb-1">Alasan Penolakan:</p>
             <p class="text-sm text-slate-300">{{ \App\Models\Tenant::where('email', auth()->user()->email)->first()->kyc_reject_reason ?? 'Dokumen KTP tidak valid atau buram.' }}</p>
         </div>
 
@@ -33,7 +33,7 @@
             
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="block w-full text-xs font-black text-supabase-muted hover:text-white transition-colors uppercase tracking-[0.2em] py-4">
+                <button type="submit" class="block w-full text-xs font-bold text-supabase-muted hover:text-white transition-colors uppercase tracking-wider py-4">
                     Logout
                 </button>
             </form>

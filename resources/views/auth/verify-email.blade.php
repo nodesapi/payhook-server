@@ -14,7 +14,7 @@
 
         <!-- Title & Description -->
         <div class="text-center mb-8">
-            <h2 class="text-2xl font-bold text-white mb-3 tracking-tight">Cek Email Anda</h2>
+            <h2 class="text-2xl font-bold text-white mb-3 tracking-normal">Cek Email Anda</h2>
             <p class="text-gray-400 text-sm leading-relaxed">
                 {{ __('Terima kasih telah mendaftar! Kami telah mengirimkan link verifikasi ke alamat email Anda. Silakan klik link tersebut untuk mulai menggunakan layanan kami.') }}
             </p>

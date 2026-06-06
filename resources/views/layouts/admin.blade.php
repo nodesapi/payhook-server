@@ -41,8 +41,8 @@
                     </svg>
                 </div>
                 <div>
-                    <div class="text-white font-black text-xl uppercase tracking-tighter leading-none">Cek<span class="text-supabase-accent">bayar</span></div>
-                    <div class="mt-1 inline-flex px-1.5 py-0.5 bg-supabase-accent text-supabase-dark text-[8px] font-black uppercase tracking-widest rounded">Admin Central</div>
+                    <div class="text-white font-bold text-xl uppercase tracking-normal leading-none">Cek<span class="text-supabase-accent">bayar</span></div>
+                    <div class="mt-1 inline-flex px-1.5 py-0.5 bg-supabase-accent text-supabase-dark text-[8px] font-bold uppercase tracking-wider rounded">Admin Central</div>
                 </div>
             </div>
         </div>
@@ -50,7 +50,7 @@
         <!-- Navigation -->
         <nav class="flex-1 px-4 py-8 overflow-y-auto sidebar-scrollbar space-y-8">
             <div>
-                <h3 class="px-4 text-[10px] font-bold text-supabase-muted uppercase tracking-[0.2em] mb-4">Core Management</h3>
+                <h3 class="px-4 text-[10px] font-bold text-supabase-muted uppercase tracking-wider mb-4">Core Management</h3>
                 <div class="space-y-1">
                     <x-nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')" icon="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
                         System Overview
@@ -79,7 +79,7 @@
             </div>
 
             <div>
-                <h3 class="px-4 text-[10px] font-bold text-supabase-muted uppercase tracking-[0.2em] mb-4">Switch Panel</h3>
+                <h3 class="px-4 text-[10px] font-bold text-supabase-muted uppercase tracking-wider mb-4">Switch Panel</h3>
                 <div class="space-y-1">
                     <x-nav-link href="{{ route('profile.edit') }}" :active="request()->routeIs('profile.*')" icon="M5.121 17.804A9 9 0 1118.88 6.196M15 11a3 3 0 11-6 0 3 3 0 016 0zm-6.5 6.5a5 5 0 017 0">
                         Account Profile
@@ -126,7 +126,7 @@
                     </svg>
                 </button>
 
-                <div class="text-xs lg:text-sm font-bold text-white uppercase tracking-wider lg:tracking-[0.2em] whitespace-nowrap">
+                <div class="text-xs lg:text-sm font-bold text-white uppercase tracking-wider lg:tracking-wider whitespace-nowrap">
                     @yield('page-title', 'Dashboard')
                 </div>
             </div>
@@ -146,7 +146,7 @@
 
                 <div class="flex items-center px-2 py-0.5 lg:px-3 lg:py-1 bg-supabase-surface border border-supabase-border rounded-full whitespace-nowrap">
                     <div class="w-1 h-1 lg:w-2 lg:h-2 rounded-full bg-supabase-accent mr-1 lg:mr-2 animate-pulse"></div>
-                    <span class="text-[8px] lg:text-[10px] font-bold uppercase tracking-wider lg:tracking-widest text-slate-300">Admin Control Online</span>
+                    <span class="text-[8px] lg:text-[10px] font-bold uppercase tracking-wider lg:tracking-wider text-slate-300">Admin Control Online</span>
                 </div>
             </div>
         </header>

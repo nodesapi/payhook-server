@@ -8,7 +8,7 @@
 <div class="mb-12">
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
-            <h1 class="text-4xl font-black text-white tracking-tight uppercase">System <span class="text-supabase-accent">Config</span></h1>
+            <h1 class="text-4xl font-bold text-white tracking-normal uppercase">System <span class="text-supabase-accent">Config</span></h1>
             <p class="text-supabase-muted mt-2">Manage SMTP email and platform master billing channels.</p>
         </div>
     </div>
@@ -20,7 +20,7 @@
         <div class="bg-supabase-surface border border-supabase-border rounded-3xl p-4 shadow-2xl sticky top-24">
             <ul class="space-y-2">
                 <li>
-                    <button onclick="switchTab('billing')" id="tab-btn-billing" class="w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all bg-supabase-accent text-supabase-dark shadow-lg shadow-supabase-accent/20">
+                    <button onclick="switchTab('billing')" id="tab-btn-billing" class="w-full text-left px-6 py-4 rounded-2xl text-[10px] font-bold uppercase tracking-wider transition-all bg-supabase-accent text-supabase-dark shadow-lg shadow-supabase-accent/20">
                         <div class="flex items-center">
                             <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             Master Billing
@@ -28,7 +28,7 @@
                     </button>
                 </li>
                 <li>
-                    <button onclick="switchTab('email')" id="tab-btn-email" class="w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all text-supabase-muted hover:bg-supabase-dark hover:text-white">
+                    <button onclick="switchTab('email')" id="tab-btn-email" class="w-full text-left px-6 py-4 rounded-2xl text-[10px] font-bold uppercase tracking-wider transition-all text-supabase-muted hover:bg-supabase-dark hover:text-white">
                         <div class="flex items-center">
                             <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                             SMTP Email
@@ -48,22 +48,22 @@
             <div class="bg-supabase-surface border border-supabase-border rounded-3xl p-8 shadow-2xl relative overflow-hidden">
                 <div class="absolute inset-0 opacity-5 bg-[radial-gradient(#fbbf24_1px,transparent_1px)] [background-size:24px_24px]"></div>
                 <div class="relative z-10">
-                    <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-2 flex items-center">
+                    <h3 class="text-xs font-bold text-white uppercase tracking-wider mb-2 flex items-center">
                         <span class="w-2 h-2 bg-supabase-accent rounded-full mr-3 animate-pulse"></span>
                         Initialize Master Billing
                     </h3>
-                    <p class="text-xs font-bold text-supabase-muted uppercase tracking-widest mb-8">You don't have a Master Tenant. Provide a password to auto-generate the finance@cekbayar.com account.</p>
+                    <p class="text-xs font-bold text-supabase-muted uppercase tracking-wider mb-8">You don't have a Master Tenant. Provide a password to auto-generate the finance@cekbayar.com account.</p>
 
                     <form action="{{ route('admin.system-config.initialize') }}" method="POST" class="space-y-6 max-w-md">
                         @csrf
                         <div class="space-y-2">
-                            <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Master Email</label>
+                            <label class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Master Email</label>
                             <input type="text" value="finance@cekbayar.com" class="sb-input bg-supabase-dark/50 cursor-not-allowed text-supabase-muted" readonly>
                         </div>
                         <div class="space-y-2">
-                            <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Mobile App Password</label>
+                            <label class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Mobile App Password</label>
                             <input type="password" name="password" class="sb-input" placeholder="Min 8 characters" required>
-                            <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-tighter">You will use this to login to the Android Relay App.</p>
+                            <p class="text-[8px] text-supabase-muted uppercase font-bold tracking-normal">You will use this to login to the Android Relay App.</p>
                         </div>
                         <button type="submit" class="sb-button-primary !w-full">Initialize Account</button>
                     </form>
@@ -75,11 +75,11 @@
             <div class="bg-supabase-surface border border-supabase-border rounded-3xl overflow-hidden shadow-2xl">
                 <div class="p-6 border-b border-supabase-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                        <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] flex items-center">
+                        <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center">
                             <span class="w-1.5 h-1.5 bg-supabase-accent rounded-full mr-3 shadow-[0_0_10px_rgba(251,191,36,0.5)]"></span>
                             Platform QRIS
                         </h3>
-                        <p class="text-[10px] text-supabase-muted uppercase font-bold tracking-tighter mt-1">QRIS used for subscription automated billing.</p>
+                        <p class="text-[10px] text-supabase-muted uppercase font-bold tracking-normal mt-1">QRIS used for subscription automated billing.</p>
                     </div>
                     <button onclick="toggleModal('modalAddQris')" class="sb-button-primary !w-auto !py-3 !px-6 !text-[10px]">
                         + Add QRIS
@@ -89,15 +89,15 @@
                     <table class="w-full text-left border-collapse">
                         <thead class="bg-supabase-dark border-b border-supabase-border">
                             <tr>
-                                <th class="px-6 py-4 text-[10px] font-black text-supabase-muted uppercase tracking-widest">QRIS Name</th>
-                                <th class="px-6 py-4 text-[10px] font-black text-supabase-muted uppercase tracking-widest">Image</th>
-                                <th class="px-6 py-4 text-[10px] font-black text-supabase-muted uppercase tracking-widest text-right">Action</th>
+                                <th class="px-6 py-4 text-[10px] font-bold text-supabase-muted uppercase tracking-wider">QRIS Name</th>
+                                <th class="px-6 py-4 text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Image</th>
+                                <th class="px-6 py-4 text-[10px] font-bold text-supabase-muted uppercase tracking-wider text-right">Action</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-supabase-border/50">
                             @forelse($masterTenant->qrisTemplates as $qris)
                             <tr class="hover:bg-supabase-dark/50 transition-colors">
-                                <td class="px-6 py-4"><span class="text-sm font-black text-white uppercase tracking-tight">{{ $qris->name }}</span></td>
+                                <td class="px-6 py-4"><span class="text-sm font-bold text-white uppercase tracking-normal">{{ $qris->name }}</span></td>
                                 <td class="px-6 py-4">
                                     <div class="w-16 h-16 bg-white p-1 rounded-xl">
                                         <img src="{{ Storage::url($qris->image_path) }}" class="w-full h-full object-contain rounded-lg">
@@ -106,14 +106,14 @@
                                 <td class="px-6 py-4 text-right">
                                     <form action="{{ route('admin.system-config.qris.destroy', $qris->id) }}" method="POST" onsubmit="return confirm('Delete this QRIS?')">
                                         @csrf @method('DELETE')
-                                        <button type="submit" class="text-[10px] font-black text-red-500 hover:text-white uppercase tracking-widest transition-colors">Delete</button>
+                                        <button type="submit" class="text-[10px] font-bold text-red-500 hover:text-white uppercase tracking-wider transition-colors">Delete</button>
                                     </form>
                                 </td>
                             </tr>
                             @empty
                             <tr>
                                 <td colspan="3" class="px-6 py-12 text-center">
-                                    <p class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">No QRIS templates found.</p>
+                                    <p class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">No QRIS templates found.</p>
                                 </td>
                             </tr>
                             @endforelse
@@ -126,11 +126,11 @@
             <div class="bg-supabase-surface border border-supabase-border rounded-3xl overflow-hidden shadow-2xl">
                 <div class="p-6 border-b border-supabase-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                        <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] flex items-center">
+                        <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center">
                             <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
                             Platform Bank Accounts
                         </h3>
-                        <p class="text-[10px] text-supabase-muted uppercase font-bold tracking-tighter mt-1">Manual bank transfer options.</p>
+                        <p class="text-[10px] text-supabase-muted uppercase font-bold tracking-normal mt-1">Manual bank transfer options.</p>
                     </div>
                     <button onclick="toggleModal('modalAddBank')" class="sb-button-primary !w-auto !py-3 !px-6 !text-[10px] !bg-blue-500 !text-white !shadow-blue-500/20">
                         + Add Bank
@@ -140,30 +140,30 @@
                     <table class="w-full text-left border-collapse">
                         <thead class="bg-supabase-dark border-b border-supabase-border">
                             <tr>
-                                <th class="px-6 py-4 text-[10px] font-black text-supabase-muted uppercase tracking-widest">Bank Name</th>
-                                <th class="px-6 py-4 text-[10px] font-black text-supabase-muted uppercase tracking-widest">Account Number</th>
-                                <th class="px-6 py-4 text-[10px] font-black text-supabase-muted uppercase tracking-widest">Account Name</th>
-                                <th class="px-6 py-4 text-[10px] font-black text-supabase-muted uppercase tracking-widest text-right">Action</th>
+                                <th class="px-6 py-4 text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Bank Name</th>
+                                <th class="px-6 py-4 text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Account Number</th>
+                                <th class="px-6 py-4 text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Account Name</th>
+                                <th class="px-6 py-4 text-[10px] font-bold text-supabase-muted uppercase tracking-wider text-right">Action</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-supabase-border/50">
                             @php $bankAccounts = \App\Models\BankAccount::where('tenant_id', $masterTenant->id)->get(); @endphp
                             @forelse($bankAccounts as $bank)
                             <tr class="hover:bg-supabase-dark/50 transition-colors">
-                                <td class="px-6 py-4"><span class="text-sm font-black text-white uppercase tracking-tight">{{ $bank->bank_name }}</span></td>
+                                <td class="px-6 py-4"><span class="text-sm font-bold text-white uppercase tracking-normal">{{ $bank->bank_name }}</span></td>
                                 <td class="px-6 py-4"><span class="text-xs font-bold text-supabase-muted">{{ $bank->account_number }}</span></td>
                                 <td class="px-6 py-4"><span class="text-xs font-bold text-supabase-muted">{{ $bank->account_name }}</span></td>
                                 <td class="px-6 py-4 text-right">
                                     <form action="{{ route('admin.system-config.bank.destroy', $bank->id) }}" method="POST" onsubmit="return confirm('Delete this Bank Account?')">
                                         @csrf @method('DELETE')
-                                        <button type="submit" class="text-[10px] font-black text-red-500 hover:text-white uppercase tracking-widest transition-colors">Delete</button>
+                                        <button type="submit" class="text-[10px] font-bold text-red-500 hover:text-white uppercase tracking-wider transition-colors">Delete</button>
                                     </form>
                                 </td>
                             </tr>
                             @empty
                             <tr>
                                 <td colspan="4" class="px-6 py-12 text-center">
-                                    <p class="text-[10px] font-black text-supabase-muted uppercase tracking-widest">No Bank accounts found.</p>
+                                    <p class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">No Bank accounts found.</p>
                                 </td>
                             </tr>
                             @endforelse
@@ -178,42 +178,42 @@
         <!-- TAB 2: EMAIL SMTP -->
         <div id="tab-content-email" class="hidden">
             <div class="bg-supabase-surface border border-supabase-border rounded-3xl p-8 shadow-2xl">
-                <h3 class="text-xs font-black text-white uppercase tracking-[0.2em] mb-2 flex items-center">
+                <h3 class="text-xs font-bold text-white uppercase tracking-wider mb-2 flex items-center">
                     <span class="w-1.5 h-1.5 bg-supabase-accent rounded-full mr-3 shadow-[0_0_10px_rgba(251,191,36,0.5)]"></span>
                     SMTP Configuration
                 </h3>
-                <p class="text-[10px] text-supabase-muted uppercase font-bold tracking-widest mb-8">This writes directly to the .env file.</p>
+                <p class="text-[10px] text-supabase-muted uppercase font-bold tracking-wider mb-8">This writes directly to the .env file.</p>
 
                 <form action="{{ route('admin.system-config.smtp') }}" method="POST" class="space-y-6">
                     @csrf
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="space-y-2 md:col-span-2">
-                            <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">MAIL_HOST</label>
+                            <label class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">MAIL_HOST</label>
                             <input type="text" name="MAIL_HOST" class="sb-input" value="{{ $mailConfig['MAIL_HOST'] }}" required>
                         </div>
                         <div class="space-y-2">
-                            <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">MAIL_PORT</label>
+                            <label class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">MAIL_PORT</label>
                             <input type="text" name="MAIL_PORT" class="sb-input" value="{{ $mailConfig['MAIL_PORT'] }}" required>
                         </div>
                     </div>
                     
                     <div class="space-y-2">
-                        <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">MAIL_USERNAME</label>
+                        <label class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">MAIL_USERNAME</label>
                         <input type="text" name="MAIL_USERNAME" class="sb-input" value="{{ $mailConfig['MAIL_USERNAME'] }}" required>
                     </div>
 
                     <div class="space-y-2">
-                        <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">MAIL_PASSWORD</label>
+                        <label class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">MAIL_PASSWORD</label>
                         <input type="password" name="MAIL_PASSWORD" class="sb-input" placeholder="Leave blank to keep unchanged">
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">MAIL_ENCRYPTION</label>
+                            <label class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">MAIL_ENCRYPTION</label>
                             <input type="text" name="MAIL_ENCRYPTION" class="sb-input" value="{{ $mailConfig['MAIL_ENCRYPTION'] }}" placeholder="ssl / tls">
                         </div>
                         <div class="space-y-2">
-                            <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">MAIL_FROM_ADDRESS</label>
+                            <label class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">MAIL_FROM_ADDRESS</label>
                             <input type="email" name="MAIL_FROM_ADDRESS" class="sb-input" value="{{ $mailConfig['MAIL_FROM_ADDRESS'] }}" required>
                         </div>
                     </div>
@@ -238,7 +238,7 @@
                     <div class="w-8 h-8 rounded-full bg-supabase-accent/10 flex items-center justify-center border border-supabase-accent/20">
                         <svg class="w-4 h-4 text-supabase-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     </div>
-                    <h3 class="text-sm font-black text-white uppercase tracking-[0.2em]">Add Platform QRIS</h3>
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wider">Add Platform QRIS</h3>
                 </div>
                 <button type="button" onclick="toggleModal('modalAddQris')" class="p-2 rounded-xl bg-supabase-dark border border-supabase-border text-supabase-muted hover:text-white hover:border-white/20 transition-all">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -246,7 +246,7 @@
             </div>
             <div class="p-8 space-y-8 bg-gradient-to-b from-supabase-surface to-supabase-dark/30">
                 <div class="space-y-4">
-                    <label class="block text-[10px] font-black text-supabase-accent uppercase tracking-[0.2em]">1. Select QRIS Provider</label>
+                    <label class="block text-[10px] font-bold text-supabase-accent uppercase tracking-wider">1. Select QRIS Provider</label>
                     @if($qrisChannels->count() > 0)
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             @foreach($qrisChannels as $channel)
@@ -260,10 +260,10 @@
                                             </div>
                                         @else
                                             <div class="w-12 h-12 bg-supabase-surface rounded-xl flex items-center justify-center border border-supabase-border relative z-10">
-                                                <span class="text-xs font-black text-white">{{ substr($channel->name, 0, 2) }}</span>
+                                                <span class="text-xs font-bold text-white">{{ substr($channel->name, 0, 2) }}</span>
                                             </div>
                                         @endif
-                                        <span class="text-[9px] font-black text-supabase-muted uppercase tracking-widest relative z-10 group-hover:text-white transition-colors peer-checked:text-white">{{ $channel->name }}</span>
+                                        <span class="text-[9px] font-bold text-supabase-muted uppercase tracking-wider relative z-10 group-hover:text-white transition-colors peer-checked:text-white">{{ $channel->name }}</span>
                                     </div>
                                     <div class="absolute -top-2 -right-2 w-6 h-6 bg-supabase-accent rounded-full text-supabase-dark flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-all shadow-[0_0_15px_rgba(251,191,36,0.4)] scale-50 peer-checked:scale-100">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
@@ -276,13 +276,13 @@
                             <div class="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mb-3">
                                 <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                             </div>
-                            <p class="text-xs font-black text-white uppercase tracking-widest">No QRIS Master Channels</p>
-                            <p class="text-[10px] text-supabase-muted mt-2 font-bold uppercase tracking-widest">Please add them in Master Channels first.</p>
+                            <p class="text-xs font-bold text-white uppercase tracking-wider">No QRIS Master Channels</p>
+                            <p class="text-[10px] text-supabase-muted mt-2 font-bold uppercase tracking-wider">Please add them in Master Channels first.</p>
                         </div>
                     @endif
                 </div>
                 <div class="space-y-4 pt-6 border-t border-supabase-border/50">
-                    <label class="block text-[10px] font-black text-supabase-accent uppercase tracking-[0.2em]">2. Upload QRIS Image</label>
+                    <label class="block text-[10px] font-bold text-supabase-accent uppercase tracking-wider">2. Upload QRIS Image</label>
                     <div class="relative border-2 border-dashed border-supabase-border hover:border-supabase-accent/50 rounded-2xl bg-supabase-dark/50 p-8 text-center transition-colors group cursor-pointer overflow-hidden">
                         <input type="file" name="qris_image" id="qrisFileInput" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/*" required>
                         <div id="qrisUploadState" class="flex flex-col items-center justify-center space-y-3 relative z-0">
@@ -290,8 +290,8 @@
                                 <svg class="w-6 h-6 text-supabase-muted group-hover:text-supabase-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             </div>
                             <div>
-                                <p class="text-xs font-black text-white uppercase tracking-widest">Click to browse or drag image here</p>
-                                <p class="text-[10px] text-supabase-muted mt-1 font-bold uppercase tracking-widest">PNG, JPG up to 2MB</p>
+                                <p class="text-xs font-bold text-white uppercase tracking-wider">Click to browse or drag image here</p>
+                                <p class="text-[10px] text-supabase-muted mt-1 font-bold uppercase tracking-wider">PNG, JPG up to 2MB</p>
                             </div>
                         </div>
                         <img id="qrisImagePreview" src="" class="hidden absolute inset-0 w-full h-full object-contain p-2 bg-supabase-dark z-20 pointer-events-none">
@@ -299,7 +299,7 @@
                 </div>
             </div>
             <div class="p-6 border-t border-supabase-border bg-supabase-dark flex justify-end items-center space-x-6">
-                <button type="button" onclick="toggleModal('modalAddQris')" class="text-[10px] font-black text-supabase-muted uppercase tracking-[0.2em] hover:text-white transition-colors">Cancel</button>
+                <button type="button" onclick="toggleModal('modalAddQris')" class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider hover:text-white transition-colors">Cancel</button>
                 <button type="submit" class="sb-button-primary !w-auto !py-3 !px-10 !text-[10px]">
                     Save QRIS Template
                 </button>
@@ -318,7 +318,7 @@
                     <div class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
                         <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     </div>
-                    <h3 class="text-sm font-black text-white uppercase tracking-[0.2em]">Add Platform Bank</h3>
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wider">Add Platform Bank</h3>
                 </div>
                 <button type="button" onclick="toggleModal('modalAddBank')" class="p-2 rounded-xl bg-supabase-dark border border-supabase-border text-supabase-muted hover:text-white hover:border-white/20 transition-all">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -326,7 +326,7 @@
             </div>
             <div class="p-8 space-y-8 bg-gradient-to-b from-supabase-surface to-supabase-dark/30">
                 <div class="space-y-4">
-                    <label class="block text-[10px] font-black text-blue-500 uppercase tracking-[0.2em]">1. Select Bank Provider</label>
+                    <label class="block text-[10px] font-bold text-blue-500 uppercase tracking-wider">1. Select Bank Provider</label>
                     @if($bankChannels->count() > 0)
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             @foreach($bankChannels as $channel)
@@ -340,10 +340,10 @@
                                             </div>
                                         @else
                                             <div class="w-12 h-12 bg-supabase-surface rounded-xl flex items-center justify-center border border-supabase-border relative z-10">
-                                                <span class="text-xs font-black text-white uppercase">{{ substr($channel->name, 0, 3) }}</span>
+                                                <span class="text-xs font-bold text-white uppercase">{{ substr($channel->name, 0, 3) }}</span>
                                             </div>
                                         @endif
-                                        <span class="text-[9px] font-black text-supabase-muted uppercase tracking-widest relative z-10 group-hover:text-white transition-colors peer-checked:text-white">{{ $channel->name }}</span>
+                                        <span class="text-[9px] font-bold text-supabase-muted uppercase tracking-wider relative z-10 group-hover:text-white transition-colors peer-checked:text-white">{{ $channel->name }}</span>
                                     </div>
                                     <div class="absolute -top-2 -right-2 w-6 h-6 bg-blue-500 rounded-full text-white flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-all shadow-[0_0_15px_rgba(59,130,246,0.4)] scale-50 peer-checked:scale-100">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
@@ -356,27 +356,27 @@
                             <div class="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mb-3">
                                 <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                             </div>
-                            <p class="text-xs font-black text-white uppercase tracking-widest">No Bank Master Channels</p>
-                            <p class="text-[10px] text-supabase-muted mt-2 font-bold uppercase tracking-widest">Please add them in Master Channels first.</p>
+                            <p class="text-xs font-bold text-white uppercase tracking-wider">No Bank Master Channels</p>
+                            <p class="text-[10px] text-supabase-muted mt-2 font-bold uppercase tracking-wider">Please add them in Master Channels first.</p>
                         </div>
                     @endif
                 </div>
                 <div class="space-y-4 pt-6 border-t border-supabase-border/50">
-                    <label class="block text-[10px] font-black text-blue-500 uppercase tracking-[0.2em]">2. Account Details</label>
+                    <label class="block text-[10px] font-bold text-blue-500 uppercase tracking-wider">2. Account Details</label>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Account Number</label>
+                            <label class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Account Number</label>
                             <input type="text" name="account_number" class="sb-input" placeholder="e.g. 1234567890" required>
                         </div>
                         <div class="space-y-2">
-                            <label class="block text-[10px] font-black text-supabase-muted uppercase tracking-widest">Account Name</label>
+                            <label class="block text-[10px] font-bold text-supabase-muted uppercase tracking-wider">Account Name</label>
                             <input type="text" name="account_name" class="sb-input" placeholder="e.g. PT Cekbayar Teknologi" required>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="p-6 border-t border-supabase-border bg-supabase-dark flex justify-end items-center space-x-6">
-                <button type="button" onclick="toggleModal('modalAddBank')" class="text-[10px] font-black text-supabase-muted uppercase tracking-[0.2em] hover:text-white transition-colors">Cancel</button>
+                <button type="button" onclick="toggleModal('modalAddBank')" class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider hover:text-white transition-colors">Cancel</button>
                 <button type="submit" class="sb-button-primary !w-auto !py-3 !px-10 !text-[10px] !bg-blue-500 !text-white !shadow-blue-500/20">
                     Save Bank Account
                 </button>
@@ -395,11 +395,11 @@
             const content = document.getElementById('tab-content-' + t);
             
             if (t === tabName) {
-                btn.className = 'w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all bg-supabase-accent text-supabase-dark shadow-lg shadow-supabase-accent/20';
+                btn.className = 'w-full text-left px-6 py-4 rounded-2xl text-[10px] font-bold uppercase tracking-wider transition-all bg-supabase-accent text-supabase-dark shadow-lg shadow-supabase-accent/20';
                 content.classList.remove('hidden');
                 content.classList.add('block', 'animate-fade-in');
             } else {
-                btn.className = 'w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all text-supabase-muted hover:bg-supabase-dark hover:text-white';
+                btn.className = 'w-full text-left px-6 py-4 rounded-2xl text-[10px] font-bold uppercase tracking-wider transition-all text-supabase-muted hover:bg-supabase-dark hover:text-white';
                 content.classList.add('hidden');
                 content.classList.remove('block', 'animate-fade-in');
             }
