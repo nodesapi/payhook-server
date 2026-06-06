@@ -24,16 +24,16 @@
         </div>
 
         <div class="bg-supabase-surface border border-supabase-border rounded-3xl p-6 md:p-10 shadow-2xl">
-            <form method="POST" action="{{ route('tenant.setup.store') }}" enctype="multipart/form-data" class="space-y-10">
+            <form method="POST" action="{{ route('tenant.setup.store') }}" enctype="multipart/form-data" class="space-y-16">
                 @csrf
 
                 <!-- Section 1: Merchant Profile -->
                 <div>
-                    <h2 class="text-xl font-bold text-white mb-5 flex items-center">
+                    <h2 class="text-xl font-bold text-white mb-6 flex items-center">
                         <span class="w-8 h-8 rounded-full bg-supabase-accent text-supabase-dark flex items-center justify-center text-sm mr-3 shadow-lg shadow-supabase-accent/20">1</span>
                         Profil Merchant
                     </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-supabase-darker/50 p-6 rounded-2xl border border-supabase-border">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-supabase-darker/50 p-8 md:p-10 rounded-2xl border border-supabase-border">
                         <div class="space-y-2">
                             <label for="name" class="block text-sm font-medium text-slate-300">Nama Toko/Bisnis <span class="text-red-500">*</span></label>
                             <input id="name" type="text" name="name" value="{{ old('name') }}" required class="sb-input w-full bg-supabase-dark" placeholder="Cekbayar Store">
@@ -54,7 +54,7 @@
 
                 <!-- Section 2: Pilih Paket -->
                 <div>
-                    <h2 class="text-xl font-bold text-white mb-5 flex items-center">
+                    <h2 class="text-xl font-bold text-white mb-6 flex items-center">
                         <span class="w-8 h-8 rounded-full bg-supabase-accent text-supabase-dark flex items-center justify-center text-sm mr-3 shadow-lg shadow-supabase-accent/20">2</span>
                         Pilih Paket Langganan <span class="text-red-500 ml-1">*</span>
                     </h2>
@@ -84,11 +84,11 @@
 
                 <!-- Section 3: KYC Data -->
                 <div>
-                    <h2 class="text-xl font-bold text-white mb-5 flex items-center">
+                    <h2 class="text-xl font-bold text-white mb-6 flex items-center">
                         <span class="w-8 h-8 rounded-full bg-supabase-accent text-supabase-dark flex items-center justify-center text-sm mr-3 shadow-lg shadow-supabase-accent/20">3</span>
                         Verifikasi Identitas (KYC)
                     </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-supabase-darker/50 p-6 rounded-2xl border border-supabase-border">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-supabase-darker/50 p-8 md:p-10 rounded-2xl border border-supabase-border">
                         <div class="space-y-2">
                             <label for="ktp_name" class="block text-sm font-medium text-slate-300">Nama Sesuai KTP <span class="text-red-500">*</span></label>
                             <input id="ktp_name" type="text" name="ktp_name" value="{{ old('ktp_name') }}" required class="sb-input w-full bg-supabase-dark" placeholder="NAMA LENGKAP KTP">
