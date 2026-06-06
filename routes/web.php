@@ -93,6 +93,15 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Master Payment Channels
     Route::resource('master-channels', \App\Http\Controllers\Admin\MasterPaymentChannelController::class);
+
+    // System Config & Platform Billing
+    Route::get('system-config', [\App\Http\Controllers\Admin\SystemConfigController::class, 'index'])->name('system-config.index');
+    Route::post('system-config/initialize', [\App\Http\Controllers\Admin\SystemConfigController::class, 'initializeBilling'])->name('system-config.initialize');
+    Route::post('system-config/smtp', [\App\Http\Controllers\Admin\SystemConfigController::class, 'updateSmtp'])->name('system-config.smtp');
+    Route::post('system-config/qris', [\App\Http\Controllers\Admin\SystemConfigController::class, 'storeQris'])->name('system-config.qris');
+    Route::delete('system-config/qris/{id}', [\App\Http\Controllers\Admin\SystemConfigController::class, 'deleteQris'])->name('system-config.qris.destroy');
+    Route::post('system-config/bank', [\App\Http\Controllers\Admin\SystemConfigController::class, 'storeBank'])->name('system-config.bank');
+    Route::delete('system-config/bank/{id}', [\App\Http\Controllers\Admin\SystemConfigController::class, 'deleteBank'])->name('system-config.bank.destroy');
 });
 
 // Tenant Setup Routes (Auth only, no KYC/Subscription check)
