@@ -33,7 +33,9 @@
                 </thead>
                 <tbody class="divide-y divide-supabase-border">
                     @forelse($tenants as $tenant)
-                        @php($pendingUpgradeRequest = $tenant->getUpgradeRequestDetails())
+                        @php
+                            $pendingUpgradeRequest = $tenant->getUpgradeRequestDetails();
+                        @endphp
                         <tr class="group hover:bg-white/[0.02] transition-all duration-200">
                             <td class="px-8 py-6">
                                 <div class="flex items-center space-x-4">

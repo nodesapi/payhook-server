@@ -100,7 +100,9 @@
         </div>
         <div class="divide-y divide-supabase-border">
             @forelse($pending_upgrade_requests as $tenant)
-                @php($upgrade = $tenant->upgrade_request_details)
+                @php
+                    $upgrade = $tenant->upgrade_request_details;
+                @endphp
                 <div class="p-6 hover:bg-white/[0.02] transition-colors">
                     <div class="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
                         <div class="space-y-2">
