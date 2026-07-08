@@ -18,7 +18,7 @@
     </div>
 
     <!-- Stats Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
         <div class="bg-supabase-surface border border-supabase-border rounded-2xl p-6 relative overflow-hidden group shadow-2xl">
             <div class="absolute top-0 right-0 w-32 h-32 bg-supabase-accent/5 blur-3xl rounded-full"></div>
             <div class="relative z-10 flex items-center justify-between">
@@ -73,6 +73,81 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
             </div>
+        </div>
+
+        <div class="bg-supabase-surface border border-supabase-border rounded-2xl p-6 relative overflow-hidden group shadow-2xl">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 blur-3xl rounded-full"></div>
+            <div class="relative z-10 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-bold text-supabase-muted uppercase tracking-wider mb-2">Upgrade Requests</p>
+                    <h3 class="text-3xl font-bold text-white leading-none">{{ $stats['pending_upgrade_requests'] }}</h3>
+                    <p class="mt-2 text-[10px] font-bold text-orange-400 uppercase tracking-wider">Awaiting Review</p>
+                </div>
+                <div class="w-12 h-12 bg-orange-500/10 border border-orange-500/20 rounded-xl flex items-center justify-center text-orange-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-supabase-surface border border-supabase-border rounded-2xl overflow-hidden shadow-2xl">
+        <div class="px-8 py-6 border-b border-supabase-border flex items-center justify-between bg-supabase-surface/50">
+            <div>
+                <h3 class="text-lg font-bold text-white uppercase tracking-normal">Pending Upgrade Requests</h3>
+                <p class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider mt-1">Prorated top-up or full-cycle charge snapshot from merchant submissions</p>
+            </div>
+            <a href="{{ route('admin.tenants.index') }}" class="text-[10px] font-bold text-supabase-accent hover:text-white transition-colors uppercase tracking-wider underline">Open Tenant Registry</a>
+        </div>
+        <div class="divide-y divide-supabase-border">
+            @forelse($pending_upgrade_requests as $tenant)
+                @php($upgrade = $tenant->upgrade_request_details)
+                <div class="p-6 hover:bg-white/[0.02] transition-colors">
+                    <div class="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3">
+                                <p class="text-sm font-bold text-white">{{ $tenant->name }}</p>
+                                <span class="inline-flex items-center rounded-lg border border-orange-500/20 bg-orange-500/10 px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-orange-300">
+                                    {{ data_get($upgrade, 'billing_rule') === 'prorated_top_up' ? 'Prorated' : 'Full Cycle' }}
+                                </span>
+                            </div>
+                            <p class="text-[10px] font-bold uppercase tracking-wider text-supabase-muted">{{ $tenant->email }}</p>
+                            <p class="text-xs font-bold uppercase tracking-wider text-white">
+                                {{ data_get($upgrade, 'current_plan_name') ?? ($tenant->plan?->name ?? 'No Plan') }}
+                                <span class="text-orange-400 mx-2">&rarr;</span>
+                                {{ data_get($upgrade, 'plan_name', 'Unknown Plan') }}
+                            </p>
+                            <p class="text-[10px] font-bold uppercase tracking-wider text-supabase-muted">
+                                Requested {{ \Illuminate\Support\Carbon::parse(data_get($upgrade, 'requested_at'))->format('d M Y H:i') }}
+                                @if(data_get($upgrade, 'billing_rule') === 'prorated_top_up')
+                                    • {{ data_get($upgrade, 'remaining_days', 0) }} day(s) remaining
+                                @endif
+                            </p>
+                        </div>
+                        <div class="flex flex-col gap-3 xl:items-end">
+                            <div class="rounded-xl border border-supabase-border bg-supabase-dark/40 px-5 py-4 text-right">
+                                <p class="text-[9px] font-bold uppercase tracking-wider text-supabase-muted">Amount Due</p>
+                                <p class="mt-2 text-2xl font-bold text-white">Rp {{ number_format((int) data_get($upgrade, 'amount_due', 0), 0, ',', '.') }}</p>
+                                <p class="mt-1 text-[10px] font-bold uppercase tracking-wider text-supabase-muted">{{ data_get($upgrade, 'billing_label', 'Calculated charge') }}</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <form method="POST" action="{{ route('admin.tenants.approve-upgrade', $tenant) }}">
+                                    @csrf
+                                    <button type="submit" class="sb-button-primary !w-auto !py-2.5 !px-5">Approve Upgrade</button>
+                                </form>
+                                <form method="POST" action="{{ route('admin.tenants.reject-upgrade', $tenant) }}">
+                                    @csrf
+                                    <button type="submit" class="px-5 py-2.5 rounded-lg border border-red-500/20 bg-red-500/10 text-[10px] font-bold uppercase tracking-wider text-red-400 hover:bg-red-500 hover:text-white transition-colors">Reject</button>
+                                </form>
+                                <a href="{{ route('admin.tenants.edit', $tenant) }}" class="px-5 py-2.5 rounded-lg border border-supabase-border bg-supabase-input text-[10px] font-bold uppercase tracking-wider text-supabase-muted hover:text-white hover:border-white/30 transition-colors">Inspect Tenant</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="p-16 text-center text-supabase-muted italic">
+                    No pending upgrade requests
+                </div>
+            @endforelse
         </div>
     </div>
 

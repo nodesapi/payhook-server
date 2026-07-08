@@ -33,6 +33,7 @@
                 </thead>
                 <tbody class="divide-y divide-supabase-border">
                     @forelse($tenants as $tenant)
+                        @php($pendingUpgradeRequest = $tenant->getUpgradeRequestDetails())
                         <tr class="group hover:bg-white/[0.02] transition-all duration-200">
                             <td class="px-8 py-6">
                                 <div class="flex items-center space-x-4">
@@ -42,6 +43,11 @@
                                     <div>
                                         <p class="text-sm font-bold text-white leading-tight mb-1">{{ $tenant->name }}</p>
                                         <p class="text-[10px] font-bold text-supabase-muted uppercase tracking-wider">{{ $tenant->email }}</p>
+                                        @if(data_get($pendingUpgradeRequest, 'status') === 'pending')
+                                            <p class="mt-2 inline-flex items-center rounded bg-amber-500/10 px-2 py-1 text-[8px] font-bold uppercase tracking-wider text-amber-400">
+                                                Upgrade Request • Rp {{ number_format((int) data_get($pendingUpgradeRequest, 'amount_due', 0), 0, ',', '.') }}
+                                            </p>
+                                        @endif
                                     </div>
                                 </div>
                             </td>

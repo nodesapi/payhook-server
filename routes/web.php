@@ -83,6 +83,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('tenants/{tenant}/extend', [TenantController::class, 'extend'])->name('tenants.extend');
     Route::post('tenants/{tenant}/approve-kyc', [TenantController::class, 'approveKyc'])->name('tenants.approve-kyc');
     Route::post('tenants/{tenant}/reject-kyc', [TenantController::class, 'rejectKyc'])->name('tenants.reject-kyc');
+    Route::post('tenants/{tenant}/approve-upgrade', [TenantController::class, 'approveUpgrade'])->name('tenants.approve-upgrade');
+    Route::post('tenants/{tenant}/reject-upgrade', [TenantController::class, 'rejectUpgrade'])->name('tenants.reject-upgrade');
     
     // Webhook Logs
     Route::get('webhook-logs', [WebhookLogController::class, 'index'])->name('webhook-logs.index');

@@ -17,7 +17,8 @@ class TenantController extends Controller
      */
     public function index()
     {
-        $tenants = Tenant::withCount(['invoices', 'qrisTemplates'])
+        $tenants = Tenant::with('plan')
+            ->withCount(['invoices', 'qrisTemplates'])
             ->latest()
             ->paginate(20);
 
@@ -96,7 +97,10 @@ class TenantController extends Controller
     public function edit(Tenant $tenant)
     {
         $plans = Plan::where('is_active', true)->get();
-        return view('admin.tenants.edit', compact('tenant', 'plans'));
+        $tenant->load('plan');
+        $pendingUpgradeRequest = $tenant->getUpgradeRequestDetails();
+
+        return view('admin.tenants.edit', compact('tenant', 'plans', 'pendingUpgradeRequest'));
     }
 
     /**
@@ -238,5 +242,66 @@ class TenantController extends Controller
         ]);
 
         return back()->with('success', "KYC for {$tenant->name} rejected.");
+    }
+
+    public function approveUpgrade(Tenant $tenant)
+    {
+        $upgradeRequest = $tenant->getUpgradeRequestDetails();
+
+        if (!$upgradeRequest || data_get($upgradeRequest, 'status') !== 'pending') {
+            return back()->with('error', 'No pending upgrade request found for this tenant.');
+        }
+
+        $targetPlan = Plan::find(data_get($upgradeRequest, 'plan_id'));
+
+        if (!$targetPlan) {
+            return back()->with('error', 'Requested upgrade plan is no longer available.');
+        }
+
+        $settings = $tenant->settings ?? [];
+        $settings['upgrade_request'] = array_merge($upgradeRequest, [
+            'status' => 'approved',
+            'approved_at' => now()->toDateTimeString(),
+            'approved_by' => auth()->id(),
+        ]);
+
+        $updates = [
+            'plan_id' => $targetPlan->id,
+            'settings' => $settings,
+        ];
+
+        if (!$tenant->expired_at || $tenant->expired_at->isPast()) {
+            $updates['expired_at'] = now()->addDays($targetPlan->duration_days);
+        }
+
+        if ($tenant->kyc_status === 'VERIFIED') {
+            $updates['is_active'] = true;
+        }
+
+        $tenant->update($updates);
+
+        return back()->with('success', "Upgrade to {$targetPlan->name} approved for {$tenant->name}.");
+    }
+
+    public function rejectUpgrade(Tenant $tenant)
+    {
+        $upgradeRequest = $tenant->getUpgradeRequestDetails();
+
+        if (!$upgradeRequest || data_get($upgradeRequest, 'status') !== 'pending') {
+            return back()->with('error', 'No pending upgrade request found for this tenant.');
+        }
+
+        $settings = $tenant->settings ?? [];
+        $settings['upgrade_request'] = array_merge($upgradeRequest, [
+            'status' => 'rejected',
+            'rejected_at' => now()->toDateTimeString(),
+            'rejected_by' => auth()->id(),
+        ]);
+
+        $tenant->update([
+            'settings' => $settings,
+        ]);
+
+        return back()->with('success', "Upgrade request for {$tenant->name} has been rejected.");
     }
 }

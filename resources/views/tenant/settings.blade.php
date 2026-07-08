@@ -96,7 +96,7 @@
                             <h3 class="text-xs font-bold text-white uppercase tracking-wider">Subscription Plan</h3>
                             <p class="mt-1 text-[10px] font-bold uppercase tracking-wider text-supabase-muted">Current package capacity and upgrade path</p>
                         </div>
-                        @if(data_get($tenant->settings, 'upgrade_request.status') === 'pending')
+                        @if(data_get($pendingUpgradeRequest, 'status') === 'pending')
                             <span class="inline-flex items-center rounded-lg border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-[9px] font-bold uppercase tracking-wider text-amber-400">
                                 Upgrade Pending
                             </span>
@@ -142,6 +142,34 @@
                                 @endif
                             </div>
                         </div>
+
+                        @if(data_get($pendingUpgradeRequest, 'status') === 'pending')
+                            <div class="rounded-xl border border-amber-500/20 bg-amber-500/10 p-5">
+                                <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                                    <div>
+                                        <p class="text-[9px] font-bold uppercase tracking-wider text-amber-300">Pending Upgrade Request</p>
+                                        <h4 class="mt-2 text-lg font-bold uppercase tracking-normal text-white">
+                                            {{ data_get($pendingUpgradeRequest, 'current_plan_name') ?? ($tenant->plan?->name ?? 'Current Plan') }}
+                                            <span class="text-amber-400">&rarr;</span>
+                                            {{ data_get($pendingUpgradeRequest, 'plan_name') }}
+                                        </h4>
+                                        <p class="mt-2 text-[10px] font-bold uppercase tracking-wider text-amber-100/80">
+                                            {{ data_get($pendingUpgradeRequest, 'billing_label') }}
+                                            @if(data_get($pendingUpgradeRequest, 'billing_rule') === 'prorated_top_up')
+                                                • based on {{ data_get($pendingUpgradeRequest, 'remaining_days', 0) }} remaining day(s)
+                                            @endif
+                                        </p>
+                                    </div>
+                                    <div class="min-w-[180px] rounded-xl border border-amber-500/20 bg-supabase-dark/40 p-4 text-right">
+                                        <p class="text-[9px] font-bold uppercase tracking-wider text-amber-200">Estimated Amount Due</p>
+                                        <p class="mt-2 text-2xl font-bold text-white">Rp {{ number_format((int) data_get($pendingUpgradeRequest, 'amount_due', 0), 0, ',', '.') }}</p>
+                                        <p class="mt-2 text-[10px] font-bold uppercase tracking-wider text-amber-100/70">
+                                            Requested {{ \Illuminate\Support\Carbon::parse(data_get($pendingUpgradeRequest, 'requested_at'))->format('d M Y H:i') }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
 
                         @if(($tenant->plan?->features))
                             <div class="rounded-xl border border-supabase-border bg-supabase-dark/40 p-5">

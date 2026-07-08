@@ -24,8 +24,9 @@ class SettingsController extends Controller
             ->when($tenant->plan_id, fn ($query) => $query->where('price', '>', $currentPrice))
             ->orderBy('price')
             ->get();
+        $pendingUpgradeRequest = $tenant->getUpgradeRequestDetails();
 
-        return view('tenant.settings', compact('tenant', 'upgradePlans'));
+        return view('tenant.settings', compact('tenant', 'upgradePlans', 'pendingUpgradeRequest'));
     }
 
     public function update(Request $request)
@@ -89,12 +90,12 @@ class SettingsController extends Controller
         }
 
         $settings = $tenant->settings ?? [];
-        $settings['upgrade_request'] = [
+        $settings['upgrade_request'] = array_merge($tenant->getUpgradeQuoteForPlan($plan), [
             'plan_id' => $plan->id,
             'plan_name' => $plan->name,
             'requested_at' => now()->toDateTimeString(),
             'status' => 'pending',
-        ];
+        ]);
 
         $tenant->forceFill(['settings' => $settings])->save();
 

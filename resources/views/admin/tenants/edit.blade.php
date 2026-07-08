@@ -17,6 +17,47 @@
         <p class="text-supabase-muted mt-2">Modify environment settings and access credentials for this merchant node.</p>
     </div>
 
+    @if(data_get($pendingUpgradeRequest, 'status') === 'pending')
+    <div class="mb-8 rounded-2xl border border-amber-500/20 bg-amber-500/10 p-6">
+        <div class="flex flex-col gap-6 xl:flex-row xl:items-center xl:justify-between">
+            <div>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-amber-300">Pending Upgrade Request</p>
+                <h2 class="mt-2 text-2xl font-bold uppercase tracking-normal text-white">
+                    {{ data_get($pendingUpgradeRequest, 'current_plan_name') ?? ($tenant->plan?->name ?? 'No Active Plan') }}
+                    <span class="text-amber-400">&rarr;</span>
+                    {{ data_get($pendingUpgradeRequest, 'plan_name') }}
+                </h2>
+                <p class="mt-2 text-[10px] font-bold uppercase tracking-wider text-amber-100/80">
+                    {{ data_get($pendingUpgradeRequest, 'billing_label') }}
+                    @if(data_get($pendingUpgradeRequest, 'billing_rule') === 'prorated_top_up')
+                        • {{ data_get($pendingUpgradeRequest, 'remaining_days', 0) }} remaining day(s)
+                    @endif
+                </p>
+                <p class="mt-2 text-[10px] font-bold uppercase tracking-wider text-amber-100/60">
+                    Submitted {{ \Illuminate\Support\Carbon::parse(data_get($pendingUpgradeRequest, 'requested_at'))->format('d M Y H:i') }}
+                </p>
+            </div>
+            <div class="flex flex-col gap-3 xl:items-end">
+                <div class="rounded-xl border border-amber-500/20 bg-supabase-dark/40 px-5 py-4 text-right">
+                    <p class="text-[9px] font-bold uppercase tracking-wider text-amber-200">Amount Due</p>
+                    <p class="mt-2 text-3xl font-bold text-white">Rp {{ number_format((int) data_get($pendingUpgradeRequest, 'amount_due', 0), 0, ',', '.') }}</p>
+                    <p class="mt-1 text-[10px] font-bold uppercase tracking-wider text-amber-100/70">Current plan credit is already deducted</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <form method="POST" action="{{ route('admin.tenants.approve-upgrade', $tenant) }}">
+                        @csrf
+                        <button type="submit" class="sb-button-primary !w-auto !py-2.5 !px-6">Approve Upgrade</button>
+                    </form>
+                    <form method="POST" action="{{ route('admin.tenants.reject-upgrade', $tenant) }}">
+                        @csrf
+                        <button type="submit" class="px-6 py-2.5 rounded-lg border border-red-500/20 bg-red-500/10 text-[10px] font-bold uppercase tracking-wider text-red-400 hover:bg-red-500 hover:text-white transition-colors">Reject</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <form method="POST" action="{{ route('admin.tenants.update', $tenant) }}" class="space-y-8">
         @csrf
         @method('PUT')
@@ -150,6 +191,16 @@
                         </div>
                     @endif
                 </div>
+
+                @if(data_get($pendingUpgradeRequest, 'status') === 'pending')
+                <div class="rounded-xl border border-amber-500/20 bg-amber-500/10 p-4">
+                    <p class="text-[8px] font-bold uppercase tracking-wider text-amber-300">Requested Package</p>
+                    <p class="mt-2 text-xs font-bold uppercase tracking-wider text-white">{{ data_get($pendingUpgradeRequest, 'plan_name') }}</p>
+                    <p class="mt-2 text-[10px] font-bold uppercase tracking-wider text-amber-100/80">
+                        Amount due: Rp {{ number_format((int) data_get($pendingUpgradeRequest, 'amount_due', 0), 0, ',', '.') }}
+                    </p>
+                </div>
+                @endif
             </div>
 
             <!-- Webhook Pipeline -->

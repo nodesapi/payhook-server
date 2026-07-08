@@ -13,6 +13,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $pendingUpgradeQuery = Tenant::with('plan')
+            ->where('settings->upgrade_request->status', 'pending');
+
         // Statistics
         $stats = [
             'total_tenants' => Tenant::count(),
@@ -20,6 +23,7 @@ class DashboardController extends Controller
             'total_invoices' => Invoice::count(),
             'paid_invoices' => Invoice::where('status', 'paid')->count(),
             'pending_invoices' => Invoice::where('status', 'pending')->count(),
+            'pending_upgrade_requests' => (clone $pendingUpgradeQuery)->count(),
             'total_revenue' => Invoice::where('status', 'paid')->sum('unique_amount'),
             'today_transactions' => Invoice::where('status', 'paid')
                 ->whereDate('paid_at', today())
@@ -38,6 +42,16 @@ class DashboardController extends Controller
             ->latest('paid_at')
             ->take(10)
             ->get();
+
+        $pending_upgrade_requests = (clone $pendingUpgradeQuery)
+            ->latest('updated_at')
+            ->take(8)
+            ->get()
+            ->map(function (Tenant $tenant) {
+                $tenant->upgrade_request_details = $tenant->getUpgradeRequestDetails();
+
+                return $tenant;
+            });
 
         // Chart Data - Last 7 days
         $chart_data = Invoice::where('status', 'paid')
@@ -62,9 +76,9 @@ class DashboardController extends Controller
             'stats',
             'recent_tenants',
             'recent_transactions',
+            'pending_upgrade_requests',
             'chart_data',
             'webhook_stats'
         ));
     }
 }
-

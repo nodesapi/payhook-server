@@ -119,6 +119,76 @@ class Tenant extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public function hasPendingUpgradeRequest(): bool
+    {
+        return data_get($this->getUpgradeRequestDetails(), 'status') === 'pending';
+    }
+
+    public function getUpgradeRequestDetails(): ?array
+    {
+        $upgradeRequest = data_get($this->settings, 'upgrade_request');
+
+        if (!is_array($upgradeRequest) || empty($upgradeRequest['plan_id'])) {
+            return null;
+        }
+
+        $targetPlan = Plan::find($upgradeRequest['plan_id']);
+
+        if (!$targetPlan) {
+            return $upgradeRequest;
+        }
+
+        return array_merge(
+            $this->getUpgradeQuoteForPlan($targetPlan),
+            [
+                'plan_id' => $targetPlan->id,
+                'plan_name' => $targetPlan->name,
+            ],
+            $upgradeRequest
+        );
+    }
+
+    public function getUpgradeQuoteForPlan(Plan $targetPlan): array
+    {
+        $currentPlan = $this->relationLoaded('plan') ? $this->plan : $this->plan()->first();
+        $currentPlanPrice = $currentPlan ? (float) $currentPlan->price : 0.0;
+        $targetPlanPrice = (float) $targetPlan->price;
+        $remainingDays = $this->isSubscriptionActive() ? $this->getSubscriptionDaysLeft() : 0;
+
+        $fullAmount = (int) ceil($targetPlanPrice);
+        $currentCredit = 0;
+        $proratedTargetCost = $fullAmount;
+        $amountDue = $fullAmount;
+        $billingRule = 'full_cycle';
+        $billingLabel = 'Full cycle charge';
+
+        if ($currentPlan && $remainingDays > 0) {
+            $currentDailyRate = $currentPlanPrice / max(1, $currentPlan->duration_days);
+            $targetDailyRate = $targetPlanPrice / max(1, $targetPlan->duration_days);
+
+            $currentCredit = (int) ceil($currentDailyRate * $remainingDays);
+            $proratedTargetCost = (int) ceil($targetDailyRate * $remainingDays);
+            $amountDue = max(0, $proratedTargetCost - $currentCredit);
+            $billingRule = 'prorated_top_up';
+            $billingLabel = 'Prorated top-up for remaining days';
+        }
+
+        return [
+            'current_plan_id' => $currentPlan?->id,
+            'current_plan_name' => $currentPlan?->name,
+            'current_plan_price' => (int) ceil($currentPlanPrice),
+            'requested_plan_price' => $fullAmount,
+            'current_credit' => $currentCredit,
+            'prorated_target_cost' => $proratedTargetCost,
+            'full_amount' => $fullAmount,
+            'amount_due' => $amountDue,
+            'remaining_days' => $remainingDays,
+            'billing_rule' => $billingRule,
+            'billing_label' => $billingLabel,
+            'current_expires_at' => $this->expired_at?->toDateTimeString(),
+        ];
+    }
+
     // Scopes
     public function scopeActive($query)
     {
@@ -210,4 +280,3 @@ class Tenant extends Model
         return max(0, (int) now()->diffInDays($this->expired_at, false));
     }
 }
-
