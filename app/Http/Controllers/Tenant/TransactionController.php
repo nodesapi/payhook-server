@@ -5,11 +5,16 @@ namespace App\Http\Controllers\Tenant;
 use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use App\Models\Tenant;
+use App\Services\TransactionWebhookService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class TransactionController extends Controller
 {
+    public function __construct(private readonly TransactionWebhookService $webhookService)
+    {
+    }
+
     private function getTenant()
     {
         $user = auth()->user();
@@ -227,6 +232,59 @@ class TransactionController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', "Webhook error: {$e->getMessage()}");
         }
+    }
+
+    /**
+     * Manually flip a transaction from pending/processing to success.
+     *
+     * For cases where the Android notification listener never captured the
+     * payment (e.g. GoPay Merchant notification permission was not granted
+     * yet), even though the money already landed. Mirrors what the real
+     * webhook flow does: marks the linked invoice as paid and notifies the
+     * merchant via the same v1 payload/signature used by the API.
+     */
+    public function confirm(Transaction $transaction)
+    {
+        $tenant = $this->getTenant();
+
+        if ($transaction->tenant_id !== $tenant->id) {
+            abort(403);
+        }
+
+        if (!in_array($transaction->status, ['pending', 'processing'], true)) {
+            return back()->with('error', 'Hanya transaksi berstatus pending/processing yang bisa ditandai sukses secara manual.');
+        }
+
+        $invoice = $this->webhookService->resolveInvoice($transaction);
+        $paidAt = now();
+
+        if ($invoice && $invoice->status !== 'paid') {
+            $invoice->update([
+                'status' => 'paid',
+                'paid_at' => $paidAt,
+                'payment_source' => 'Manual Confirmation (Tenant Dashboard)',
+                'payment_notification_text' => 'Dikonfirmasi manual oleh tenant karena notifikasi otomatis tidak diterima.',
+            ]);
+        }
+
+        $transaction->update([
+            'status' => 'success',
+            'paid_at' => $paidAt,
+            'notes' => trim(($transaction->notes ? $transaction->notes . ' | ' : '') . 'Dikonfirmasi manual oleh tenant.'),
+        ]);
+
+        if (!$tenant->webhook_enabled || empty($tenant->webhook_url)) {
+            return back()->with('success', 'Transaksi ditandai sukses. Webhook tidak dikirim karena belum dikonfigurasi / dinonaktifkan untuk tenant ini.');
+        }
+
+        $payload = $this->webhookService->buildPayload($tenant, $transaction, $invoice);
+        $result = $this->webhookService->dispatch($tenant, $transaction, $payload, 'manual_confirm');
+
+        if ($result['success']) {
+            return back()->with('success', 'Transaksi ditandai sukses dan webhook berhasil dikirim ke merchant.');
+        }
+
+        return back()->with('error', 'Transaksi ditandai sukses, tapi pengiriman webhook gagal: ' . $result['message']);
     }
 
     public function refund(Transaction $transaction)

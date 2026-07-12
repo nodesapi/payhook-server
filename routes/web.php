@@ -136,6 +136,7 @@ Route::middleware(['auth', 'verified', \App\Http\Middleware\CheckKyc::class])->p
     Route::get('transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
     Route::post('transactions/{transaction}/refund', [TransactionController::class, 'refund'])->name('transactions.refund');
     Route::post('transactions/{transaction}/resend-webhook', [TransactionController::class, 'resendWebhook'])->name('transactions.resend-webhook');
+    Route::post('transactions/{transaction}/confirm', [TransactionController::class, 'confirm'])->name('transactions.confirm');
     
     // API Playground
     Route::get('api-playground', [ApiPlaygroundController::class, 'index'])->name('api-playground');

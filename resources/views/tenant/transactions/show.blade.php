@@ -15,6 +15,14 @@
         <p class="text-supabase-muted mt-2 font-mono text-xs">Node ID: {{ $transaction->transaction_id }}</p>
     </div>
     <div class="flex items-center space-x-3">
+        @if(in_array($transaction->status, ['pending', 'processing'], true))
+            <form method="POST" action="{{ route('tenant.transactions.confirm', $transaction) }}" onsubmit="return confirm('Tandai transaksi ini SUKSES secara manual? Gunakan hanya jika dana sudah benar-benar diterima (mis. notifikasi otomatis tidak terdeteksi). Aksi ini akan mengirim webhook ke merchant.')">
+                @csrf
+                <button type="submit" class="px-6 py-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 hover:bg-emerald-500 hover:text-white rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all">
+                    Tandai Sukses (Manual)
+                </button>
+            </form>
+        @endif
         <form method="POST" action="{{ route('tenant.transactions.resend-webhook', $transaction) }}">
             @csrf
             <button type="submit" class="sb-button-secondary !w-auto !py-3 !px-6 !text-[10px] uppercase font-bold tracking-wider">

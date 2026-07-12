@@ -8,15 +8,18 @@ use App\Models\PaymentChannel;
 use App\Models\Tenant;
 use App\Models\Transaction;
 use App\Services\QrisService;
+use App\Services\TransactionWebhookService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-use Throwable;
 
 class MerchantApiController extends Controller
 {
+    public function __construct(private readonly TransactionWebhookService $webhookService)
+    {
+    }
+
     public function getWebhookConfig(Request $request): JsonResponse
     {
         $tenant = $this->authenticateTenant($request);
@@ -252,8 +255,8 @@ class MerchantApiController extends Controller
             return response()->json(['success' => false, 'message' => 'Transaction not found'], 404);
         }
 
-        $payload = $this->buildWebhookPayload($tenant, $transaction);
-        $result = $this->dispatchWebhook($tenant, $transaction, $payload, 'manual_retry');
+        $payload = $this->webhookService->buildPayload($tenant, $transaction);
+        $result = $this->webhookService->dispatch($tenant, $transaction, $payload, 'manual_retry');
 
         return response()->json([
             'success' => $result['success'],
@@ -584,8 +587,8 @@ class MerchantApiController extends Controller
         ];
 
         if ($sendWebhook && $tenant->webhook_enabled && !empty($tenant->webhook_url)) {
-            $payload = $this->buildWebhookPayload($tenant, $transaction);
-            $result = $this->dispatchWebhook($tenant, $transaction, $payload, 'refund_update');
+            $payload = $this->webhookService->buildPayload($tenant, $transaction);
+            $result = $this->webhookService->dispatch($tenant, $transaction, $payload, 'refund_update');
 
             $webhook = [
                 'attempted' => true,
@@ -870,99 +873,6 @@ class MerchantApiController extends Controller
             ->first();
     }
 
-    private function buildWebhookPayload(Tenant $tenant, Transaction $transaction): array
-    {
-        $invoice = Invoice::where('tenant_id', $tenant->id)
-            ->where(function ($q) use ($transaction) {
-                $invoiceId = data_get($transaction->metadata, 'invoice_id');
-                $invoiceNumber = $transaction->payment_reference;
-
-                if ($invoiceId) {
-                    $q->where('id', $invoiceId);
-                }
-
-                if (!empty($invoiceNumber)) {
-                    if ($invoiceId) {
-                        $q->orWhere('invoice_number', $invoiceNumber);
-                    } else {
-                        $q->where('invoice_number', $invoiceNumber);
-                    }
-                }
-            })
-            ->latest('id')
-            ->first();
-
-        return [
-            'event' => 'payment.status.updated',
-            'occurred_at' => now()->toIso8601String(),
-            'merchant' => [
-                'id' => $tenant->id,
-                'name' => $tenant->name,
-            ],
-            'transaction' => [
-                'transaction_id' => $transaction->transaction_id,
-                'external_id' => $transaction->external_id,
-                'status' => $transaction->status,
-                'amount' => (float) $transaction->amount,
-                'fee' => (float) $transaction->fee,
-                'net_amount' => (float) $transaction->net_amount,
-                'payment_method' => $transaction->payment_method,
-                'paid_at' => optional($transaction->paid_at)->toIso8601String(),
-            ],
-            'invoice' => $invoice ? [
-                'invoice_id' => $invoice->id,
-                'invoice_number' => $invoice->invoice_number,
-                'status' => $invoice->status,
-                'amount' => (float) $invoice->amount,
-                'pay_amount' => (float) $invoice->unique_amount,
-            ] : null,
-        ];
-    }
-
-    private function dispatchWebhook(Tenant $tenant, Transaction $transaction, array $payload, string $reason): array
-    {
-        $attempts = ((int) ($transaction->webhook_attempts ?? 0)) + 1;
-        $signature = $tenant->webhook_secret
-            ? hash_hmac('sha256', json_encode($payload), $tenant->webhook_secret)
-            : null;
-
-        try {
-            $client = Http::timeout(15)->acceptJson()->withHeaders(array_filter([
-                'Content-Type' => 'application/json',
-                'User-Agent' => 'PayHook-MerchantApi/1.0',
-                'X-Webhook-Signature' => $signature,
-                'X-Webhook-Event' => 'payment.status.updated',
-                'X-Webhook-Reason' => $reason,
-            ]));
-
-            $response = $client->post($tenant->webhook_url, $payload);
-            $success = $response->successful();
-
-            $transaction->update([
-                'webhook_attempts' => $attempts,
-                'webhook_sent' => $success,
-                'webhook_sent_at' => $success ? now() : null,
-                'webhook_response' => Str::limit('HTTP ' . $response->status() . ': ' . $response->body(), 2000, ''),
-            ]);
-
-            return [
-                'success' => $success,
-                'message' => $success ? 'Webhook sent successfully' : 'Webhook delivery failed',
-            ];
-        } catch (Throwable $e) {
-            $transaction->update([
-                'webhook_attempts' => $attempts,
-                'webhook_sent' => false,
-                'webhook_sent_at' => null,
-                'webhook_response' => Str::limit('ERROR: ' . $e->getMessage(), 2000, ''),
-            ]);
-
-            return [
-                'success' => false,
-                'message' => 'Webhook delivery failed: ' . $e->getMessage(),
-            ];
-        }
-    }
 
     private function detectApiKeyType(string $apiKey): string
     {
