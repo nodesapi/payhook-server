@@ -193,7 +193,7 @@ class TenantController extends Controller
             'months' => 'required|integer|min:1|max:24',
         ]);
 
-        $months = $request->months;
+        $months = (int) $request->months;
         $currentExpiry = $tenant->expired_at && $tenant->expired_at->isFuture() 
             ? $tenant->expired_at 
             : now();
